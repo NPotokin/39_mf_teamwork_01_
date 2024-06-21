@@ -1,14 +1,20 @@
 import App from './App'
-import { render, screen } from '@testing-library/react'
-
-const appContent = 'Вот тут будет жить ваше приложение :)'
+import { render, waitFor } from '@testing-library/react'
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
-  Promise.resolve({ json: () => Promise.resolve('hey') })
+  Promise.resolve({ json: () => Promise.resolve({ message: 'Success' }) })
 )
 
-test('Example test', async () => {
+test('fetches data from server on mount', async () => {
+  const consoleSpy = jest.spyOn(console, 'log')
+
   render(<App />)
-  // expect(screen.getByText(appContent)).toBeDefined()
+
+  await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1))
+  await waitFor(() =>
+    expect(consoleSpy).toHaveBeenCalledWith({ message: 'Success' })
+  )
+
+  consoleSpy.mockRestore()
 })
