@@ -1,14 +1,16 @@
-import App from './App'
-import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
+import { render, screen, waitFor } from '@testing-library/react'
 
-const appContent = 'Вот тут будет жить ваше приложение :)'
+import App from './App'
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
-  Promise.resolve({ json: () => Promise.resolve('hey') })
+  Promise.resolve({ json: () => Promise.resolve({ message: 'Success' }) })
 )
 
-test('Example test', async () => {
+test('renders home page component for "/" route', async () => {
   render(<App />)
-  // expect(screen.getByText(appContent)).toBeDefined()
+
+  const homePageElement = await screen.findByText(/Home Page/i)
+  expect(homePageElement).toBeInTheDocument()
 })
