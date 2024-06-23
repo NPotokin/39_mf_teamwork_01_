@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import './App.css'
 import Routes from './Routes'
+import { ConfigProvider } from 'antd'
 
 const App = () => {
   useEffect(() => {
@@ -14,7 +15,23 @@ const App = () => {
 
     fetchServerData()
   }, [])
-  return <Routes />
+
+  {
+    return (
+      <>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#F77704',
+              borderRadius: 2,
+              fontFamily: 'Press Start 2P',
+            },
+          }}>
+          <Routes />
+        </ConfigProvider>
+      </>
+    )
+  }
 }
 
 export default App
