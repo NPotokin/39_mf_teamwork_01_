@@ -10,6 +10,7 @@ export default defineConfig({
   },
   define: {
     __SERVER_PORT__: process.env.SERVER_PORT,
+    __API_URL__: `'${process.env.API_URL}'`,
   },
   plugins: [react()],
 })
