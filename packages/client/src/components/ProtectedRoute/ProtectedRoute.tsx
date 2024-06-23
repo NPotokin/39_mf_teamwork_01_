@@ -1,13 +1,19 @@
-import { FC } from 'react'
-import { Navigate, Route, RouteProps } from 'react-router-dom'
+import { RoutePath } from '@/core/Routes.enum'
+import { useIsAuth } from '@/lib/hooks'
+import { FC, ReactNode, isValidElement } from 'react'
+import { Navigate } from 'react-router-dom'
 
-const ProtectedRoute: FC<RouteProps> = props => {
-  const isAuthenticated = false
+type Props = {
+  children: ReactNode
+}
 
-  return isAuthenticated ? (
-    <Route {...props} />
+const ProtectedRoute: FC<Props> = ({ children }) => {
+  const isAuthenticated = useIsAuth()
+
+  return isAuthenticated && isValidElement(children) ? (
+    children
   ) : (
-    <Navigate to="/login" replace />
+    <Navigate to={RoutePath.SIGN_IN} replace />
   )
 }
 

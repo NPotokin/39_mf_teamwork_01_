@@ -6,7 +6,7 @@ import {
   ILoginRequestData,
   IUserInfo,
 } from '../api/model'
-import { isApiError } from '../../lib/utils/type-check'
+import { isApiError } from '@/lib/utils/type-check'
 
 const authApi = new AuthApi()
 
@@ -39,7 +39,7 @@ export const createUser = async (data: ICreateUser): Promise<void> => {
   const responseData = response.data
 
   if (isApiError(responseData)) {
-    // setGlobalError(createResponse);
+    console.error(responseData.reason)
   }
 
   if (responseData.id) {

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import {
   IAPIError,
   ICreateUser,
@@ -6,14 +6,7 @@ import {
   ISignUpResponse,
   IUserInfo,
 } from './model'
-
-const HOST = __API_URL__
-
-const axiosDB = axios.create({
-  baseURL: HOST,
-  withCredentials: true,
-  responseType: 'json',
-})
+import axiosDB from './api'
 
 export default class AuthApi {
   public create(data: ICreateUser): Promise<AxiosResponse<ISignUpResponse>> {
