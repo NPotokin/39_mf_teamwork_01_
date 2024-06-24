@@ -1,21 +1,58 @@
 import * as Yup from 'yup'
 import { errorMessages } from './errorMessages'
 
+/**
+ * Regular expression for validating login.
+ * Requires the login to be 3 to 20 characters long, allowing letters, numbers, underscores, and hyphens.
+ */
+const loginRegex = /^[a-zA-Z0-9_-]{3,20}$/
+
+/**
+ * Regular expression for checking if the string consists only of digits.
+ * Used to ensure the login is not purely numeric.
+ */
+const notOnlyDigitsRegex = /^\d+$/
+
+/**
+ * Regular expression for validating passwords.
+ * This example requires at least 8 characters, including at least one letter and one number.
+ * Adjust the regex according to your specific password policy requirements.
+ */
+export const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+
+/**
+ * Regular expression for validating first and last names.
+ * Requires the string to start with an uppercase letter followed by lowercase letters or a hyphen.
+ */
+const nameRegex = /^[A-ZА-Я][a-zа-я-]*$/
+
+/**
+ * Regular expression for validating email addresses.
+ * Requires the email to contain characters before the '@', the '@' symbol, characters after the '@', a period, and characters after the period.
+ */
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+/**
+ * Regular expression for validating phone numbers.
+ * Allows an optional '+' at the start, followed by 10 to 15 digits.
+ */
+const phoneRegex = /^\+?\d{10,15}$/
+
 const baseLoginSchema = {
   login: Yup.string()
-    .matches(/^[a-zA-Z0-9_-]{3,20}$/, {
+    .matches(loginRegex, {
       message: errorMessages.login,
       excludeEmptyString: true,
     })
     .test('not-only-digits', errorMessages.login, value => {
-      return !/^\d+$/.test(value || '')
+      return !notOnlyDigitsRegex.test(value || '')
     })
     .required(errorMessages.required),
 
   password: Yup.string()
     .min(8, errorMessages.min)
     .max(40, errorMessages.max)
-    .matches(/^(?=.*[A-Z])(?=.*[0-9])/, {
+    .matches(passwordRegex, {
       message: errorMessages.password,
       excludeEmptyString: true,
     })
@@ -29,28 +66,28 @@ const baseLoginSchema = {
 
 const baseProfileSchema = {
   first_name: Yup.string()
-    .matches(/^[A-ZА-Я][a-zа-я-]*$/, {
+    .matches(nameRegex, {
       message: errorMessages.first_name,
       excludeEmptyString: true,
     })
     .required(errorMessages.required),
 
   second_name: Yup.string()
-    .matches(/^[A-ZА-Я][a-zа-я-]*$/, {
+    .matches(nameRegex, {
       message: errorMessages.second_name,
       excludeEmptyString: true,
     })
     .required(errorMessages.required),
 
   email: Yup.string()
-    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, {
+    .matches(emailRegex, {
       message: errorMessages.email,
       excludeEmptyString: true,
     })
     .required(errorMessages.required),
 
   phone: Yup.string()
-    .matches(/^\+?\d{10,15}$/, errorMessages.phone)
+    .matches(phoneRegex, errorMessages.phone)
     .required(errorMessages.required),
 }
 

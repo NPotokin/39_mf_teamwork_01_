@@ -1,6 +1,10 @@
 import * as Yup from 'yup'
 import { errorMessages } from './errorMessages'
-import { baseLoginSchema, baseProfileSchema } from './validationBase'
+import {
+  baseLoginSchema,
+  baseProfileSchema,
+  passwordRegex,
+} from './validationBase'
 
 const loginSchema = Yup.object().shape(baseLoginSchema)
 
@@ -21,7 +25,7 @@ const passwordChangeSchema = Yup.object().shape({
   newPassword: Yup.string()
     .min(8, errorMessages.min)
     .max(40, errorMessages.max)
-    .matches(/^(?=.*[A-Z])(?=.*[0-9])/, {
+    .matches(passwordRegex, {
       message: errorMessages.password,
       excludeEmptyString: true,
     })
