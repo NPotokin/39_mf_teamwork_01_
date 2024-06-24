@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import './App.css'
 import Routes from './Routes'
 import { ConfigProvider } from 'antd'
+import themeConfig from './themeConfig'
 
 const App = () => {
   useEffect(() => {
@@ -19,14 +20,7 @@ const App = () => {
   {
     return (
       <>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: '#F77704',
-              borderRadius: 2,
-              fontFamily: 'Press Start 2P',
-            },
-          }}>
+        <ConfigProvider theme={themeConfig}>
           <Routes />
         </ConfigProvider>
       </>
