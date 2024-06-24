@@ -4,56 +4,47 @@ import {
   IAPIError,
   ICreateUser,
   ILoginRequestData,
+  ISignUpResponse,
   IUserInfo,
 } from '../api/model'
 import { isApiError } from '@/lib/utils/type-check'
 
 const authApi = new AuthApi()
 
-export const getUser = async (): Promise<IUserInfo> => {
+export const getUser = async (): Promise<void> => {
   const userResponse: AxiosResponse<IUserInfo | IAPIError> =
     await authApi.user()
-  const data = userResponse.data
+  const data: IUserInfo | IAPIError = userResponse.data
 
   if (isApiError(data)) {
     throw new Error(data.reason)
   }
 
-  return data
+  // TODO сохранить данные пользователя в store
 }
 
-export const login = async (data: ILoginRequestData): Promise<boolean> => {
+export const login = async (data: ILoginRequestData): Promise<void> => {
   try {
     await authApi.login(data)
-    const user = await getUser()
-    console.log(user)
-    return true
+    await getUser()
   } catch (error: unknown) {
     console.error(error)
   }
-  return false
 }
 
 export const createUser = async (data: ICreateUser): Promise<void> => {
-  const response = await authApi.create(data)
-  const responseData = response.data
+  const response: AxiosResponse<ISignUpResponse> = await authApi.create(data)
+  const responseData: ISignUpResponse = response.data
 
   if (isApiError(responseData)) {
-    console.error(responseData.reason)
+    throw new Error(responseData.reason)
   }
 
   if (responseData.id) {
-    // получить и сохранить данные пользователя в store
+    await getUser()
   }
 }
 
-export const logout = async (): Promise<boolean> => {
-  try {
-    await authApi.logout()
-    return true
-  } catch (error) {
-    console.error(error)
-  }
-
-  return false
+export const logout = async (): Promise<void> => {
+  await authApi.logout()
 }

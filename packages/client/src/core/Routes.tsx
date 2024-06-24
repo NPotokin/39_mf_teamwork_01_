@@ -25,7 +25,11 @@ const routes: RouteObject[] = [
   },
   {
     path: RoutePath.GAME,
-    element: <Game />,
+    element: (
+      <ProtectedRoute>
+        <Game />
+      </ProtectedRoute>
+    ),
   },
   {
     path: RoutePath.SIGN_IN,

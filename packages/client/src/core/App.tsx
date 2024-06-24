@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 
 import './App.css'
 import Routes from './Routes'
+import { ConfigProvider } from 'antd'
+import themeConfig from './themeConfig'
 
 const App = () => {
   useEffect(() => {
@@ -14,7 +16,16 @@ const App = () => {
 
     fetchServerData()
   }, [])
-  return <Routes />
+
+  {
+    return (
+      <>
+        <ConfigProvider theme={themeConfig}>
+          <Routes />
+        </ConfigProvider>
+      </>
+    )
+  }
 }
 
 export default App
