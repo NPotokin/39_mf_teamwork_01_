@@ -1,0 +1,11 @@
+canvas {
+  border: 5px solid orange;
+  background-color: bisque;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
