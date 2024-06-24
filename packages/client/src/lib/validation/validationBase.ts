@@ -15,10 +15,9 @@ const notOnlyDigitsRegex = /^\d+$/
 
 /**
  * Regular expression for validating passwords.
- * This example requires at least 8 characters, including at least one letter and one number.
- * Adjust the regex according to your specific password policy requirements.
+ * Requires at least 8 characters, max 40, including at least one uppercase letter and one number.
  */
-export const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+export const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/
 
 /**
  * Regular expression for validating first and last names.
