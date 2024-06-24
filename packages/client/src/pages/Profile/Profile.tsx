@@ -47,7 +47,6 @@ const Profile = () => {
           handleChange,
           handleBlur,
           isValid,
-          dirty,
           validateForm,
           setTouched,
         }) => (
@@ -128,7 +127,7 @@ const Profile = () => {
             <Button
               type="primary"
               htmlType="submit"
-              disabled={!(dirty && isValid) || isSubmitting}>
+              disabled={!isValid || isSubmitting}>
               Submit
             </Button>
             {isSubmitting && <div>Sending...</div>}
