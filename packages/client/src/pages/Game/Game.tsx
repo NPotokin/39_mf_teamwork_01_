@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Modal, Image, Flex, ConfigProvider } from 'antd'
 import styles from './styles.module.scss'
-import logo from '../../assets/images/panda_start.svg'
+import logo from '@images/panda_start.svg'
 import { Link } from 'react-router-dom'
 
 const Game: React.FC = () => {
