@@ -3,6 +3,7 @@ import { Button, Modal, Image, Flex, ConfigProvider } from 'antd'
 import styles from './styles.module.scss'
 import logo from '@images/panda_start.svg'
 import { Link } from 'react-router-dom'
+import themeConfig from '@/core/themeConfig'
 
 const Game: React.FC = () => {
   const [isStartModalVisible, setIsStartModalVisible] = useState(true)
@@ -13,26 +14,14 @@ const Game: React.FC = () => {
 
   return (
     <div className={styles.game}>
-      <ConfigProvider
-        theme={{
-          components: {
-            Modal: {
-              contentBg: 'rgba(255, 255, 255, 0.3)',
-            },
-          },
-        }}>
+      <ConfigProvider theme={themeConfig}>
         <Modal
           open={isStartModalVisible}
           footer={null}
           centered={true}
           closable={false}>
           <Flex vertical={true} align="center" gap="large">
-            <Image
-              preview={false}
-              src={logo}
-              width={100}
-              className={styles.image}
-            />
+            <Image preview={false} src={logo} width={100} />
             <h1>Start the game</h1>
             <h2>Are you ready?</h2>
             <Flex gap="large">
