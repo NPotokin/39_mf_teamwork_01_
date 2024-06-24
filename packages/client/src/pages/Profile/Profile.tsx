@@ -1,5 +1,7 @@
 import { Formik, Field, Form, FormikHelpers } from 'formik'
 
+import styles from './Profile.module.css'
+
 interface Values {
   firstName: string
   lastName: string
@@ -13,8 +15,9 @@ const initialValues: Values = {
 }
 
 const Profile = () => (
-  <>
+  <div className={styles.container}>
     <h1>Profile page</h1>
+    //TODO refactor with use Ant design form
     <Formik
       initialValues={initialValues}
       onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
@@ -41,7 +44,7 @@ const Profile = () => (
         <button type="submit">Submit</button>
       </Form>
     </Formik>
-  </>
+  </div>
 )
 
 export default Profile
