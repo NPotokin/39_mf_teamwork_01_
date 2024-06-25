@@ -33,24 +33,21 @@ const Game: React.FC = () => {
   )
 
   // Отрисовка
-  const drawObstacles = useCallback(
-    (ctx: CanvasRenderingContext2D) => {
-      const img = new Image()
-      img.src = rock
-      img.onload = () => {
-        obstacles.forEach(obstacle => {
-          ctx.drawImage(
-            img,
-            obstacle.x,
-            obstacle.y,
-            obstacle.width,
-            obstacle.height
-          )
-        })
-      }
-    },
-    [obstacles]
-  )
+  const drawObstacles = useCallback((ctx: CanvasRenderingContext2D) => {
+    const img = new Image()
+    img.src = rock
+    img.onload = () => {
+      obstacles.forEach(obstacle => {
+        ctx.drawImage(
+          img,
+          obstacle.x,
+          obstacle.y,
+          obstacle.width,
+          obstacle.height
+        )
+      })
+    }
+  }, [])
 
   const drawGems = useCallback(
     (ctx: CanvasRenderingContext2D) => {
@@ -99,8 +96,6 @@ const Game: React.FC = () => {
     setTime(0)
     setGems(Positions.gems)
     setEnemies(Positions.enemies)
-    setTime(0)
-    setSteps(0)
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
@@ -153,7 +148,6 @@ const Game: React.FC = () => {
 
         if (isCollidingWithEnemies) {
           handleDefeat()
-          console.log('player collided', playerPosition, enemies)
         }
 
         const isCollidingWithObstaclesOrWalls =
@@ -238,7 +232,6 @@ const Game: React.FC = () => {
               enemyY + 40 > obstacle.y
           )
 
-          // Check collision with player
           const isCollidingWithPlayer =
             playerPosition.x < enemyX + 40 &&
             playerPosition.x + 40 > enemyX &&
@@ -262,12 +255,10 @@ const Game: React.FC = () => {
       )
     },
     [
-      canvasSize.height,
-      canvasSize.width,
-      obstacles,
-      gems,
-      enemies,
-      playerPosition,
+      // obstacles,
+      // gems,
+      // enemies,
+      // playerPosition,
       steps,
     ]
   )
@@ -277,31 +268,24 @@ const Game: React.FC = () => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
 
-    const draw = () => {
+    function draw() {
       if (context) {
         context.clearRect(0, 0, canvasSize.width, canvasSize.height)
         drawObstacles(context)
         drawGems(context)
         drawPlayer(context)
         drawEnemies(context)
+        // window.requestAnimationFrame(draw)
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
-    draw()
+    window.requestAnimationFrame(draw)
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [
-    // canvasSize.width,
-    // canvasSize.height,
-    // drawObstacles,
-    // drawGems,
-    // drawPlayer,
-    // drawEnemies,
-    handleKeyDown,
-  ])
+  }, [handleKeyDown])
 
   return (
     <div className={styles.game}>
@@ -316,7 +300,7 @@ const Game: React.FC = () => {
         />
       </div>
 
-      {/* Start game modal */}
+      {/* Модалка старта */}
       <GameModal
         visible={isStartModalVisible}
         imageSrc={pandaStart}
@@ -325,7 +309,7 @@ const Game: React.FC = () => {
         onYesClick={handleStartModalButton}
       />
 
-      {/* Win game modal */}
+      {/* Модалка победы */}
       <GameModal
         visible={isGameWinVisible}
         imageSrc={pandaWin}
@@ -335,7 +319,7 @@ const Game: React.FC = () => {
         onYesClick={handleStartModalButton}
       />
 
-      {/* Lost game modal */}
+      {/* Модалка фиаско */}
       <GameModal
         visible={isGameOverVisible}
         imageSrc={pandaLost}

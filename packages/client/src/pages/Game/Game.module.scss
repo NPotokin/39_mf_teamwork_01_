@@ -11,8 +11,8 @@
   }
 
   canvas {
-    border: 2px solid orange;
-    // background-color: bisque;
+    border: 40px solid transparent;
+    border-image: url('@images/rock.png') 80;
   }
   
   .canvas {
