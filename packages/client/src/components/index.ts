@@ -1,1 +1,1 @@
-export { default as GameModal } from './GameModal'
+export { GameModal } from './GameModal'
