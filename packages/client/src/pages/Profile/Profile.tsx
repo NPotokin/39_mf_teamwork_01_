@@ -53,17 +53,21 @@ const Profile = () => {
           <AntForm
             layout="vertical"
             autoComplete="off"
-            onFinish={() => {
-              validateForm().then(() => {
-                setTouched({
+            onFinish={async () => {
+              setTouched(
+                {
                   first_name: true,
                   second_name: true,
                   email: true,
                   password: true,
                   phone: true,
-                })
+                },
+                false
+              )
+              const errors = await validateForm()
+              if (Object.keys(errors).length === 0) {
                 handleSubmit()
-              })
+              }
             }}
             onKeyDown={e => e.key === 'Enter' && handleSubmit()}>
             <AntForm.Item
