@@ -8,9 +8,9 @@ export default {
   globals: {
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
-  moduleNameMapper: {
+   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '\\.(scc|scss)$': 'identity-obj-proxy',
-	"^antd/es/(.*)$": "antd/lib/$1",
+    '\\.(css|scss|svg)$': 'identity-obj-proxy',
+    '^antd/es/(.*)$': 'antd/lib/$1',
   },
 }
