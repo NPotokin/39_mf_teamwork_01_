@@ -4,6 +4,9 @@ import { Positions } from './positions'
 import pandaStart from '@images/panda_start.svg'
 import pandaWin from '@images/panda_win.svg'
 import pandaLost from '@images/panda_over.svg'
+import pumpkin from '@images/pumpkin.png'
+import tiger from '@images/tiger.png'
+import rock from '@images/rock.png'
 import { GameModal } from '@/components'
 
 const Game: React.FC = () => {
@@ -32,38 +35,56 @@ const Game: React.FC = () => {
   // Отрисовка
   const drawObstacles = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      ctx.fillStyle = 'gray'
-      obstacles.forEach(obstacle => {
-        ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height)
-      })
+      const img = new Image()
+      img.src = rock
+      img.onload = () => {
+        obstacles.forEach(obstacle => {
+          ctx.drawImage(
+            img,
+            obstacle.x,
+            obstacle.y,
+            obstacle.width,
+            obstacle.height
+          )
+        })
+      }
     },
     [obstacles]
   )
 
   const drawGems = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      ctx.fillStyle = 'yellow'
-      gems.forEach(gem => {
-        ctx.fillRect(gem.x, gem.y, 40, 40)
-      })
+      const img = new Image()
+      img.src = pumpkin
+      img.onload = () => {
+        gems.forEach(gem => {
+          ctx.drawImage(img, gem.x, gem.y, 40, 40)
+        })
+      }
     },
     [gems]
   )
 
   const drawPlayer = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      ctx.fillStyle = 'blue'
-      ctx.fillRect(playerPosition.x, playerPosition.y, 40, 40)
+      const img = new Image()
+      img.src = pandaWin
+      img.onload = () => {
+        ctx.drawImage(img, playerPosition.x, playerPosition.y, 40, 40)
+      }
     },
     [playerPosition]
   )
 
   const drawEnemies = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      ctx.fillStyle = 'red'
-      enemies.forEach(enemy => {
-        ctx.fillRect(enemy.x, enemy.y, 40, 40)
-      })
+      const img = new Image()
+      img.src = tiger
+      img.onload = () => {
+        enemies.forEach(enemy => {
+          ctx.drawImage(img, enemy.x, enemy.y, 40, 40)
+        })
+      }
     },
     [enemies]
   )
@@ -257,11 +278,13 @@ const Game: React.FC = () => {
     const context = canvas?.getContext('2d')
 
     const draw = () => {
-      context?.clearRect(0, 0, canvasSize.width, canvasSize.height)
-      drawObstacles(context!)
-      drawGems(context!)
-      drawPlayer(context!)
-      drawEnemies(context!)
+      if (context) {
+        context.clearRect(0, 0, canvasSize.width, canvasSize.height)
+        drawObstacles(context)
+        drawGems(context)
+        drawPlayer(context)
+        drawEnemies(context)
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)
@@ -271,12 +294,12 @@ const Game: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [
-    canvasSize.width,
-    canvasSize.height,
-    drawObstacles,
-    drawGems,
-    drawPlayer,
-    drawEnemies,
+    // canvasSize.width,
+    // canvasSize.height,
+    // drawObstacles,
+    // drawGems,
+    // drawPlayer,
+    // drawEnemies,
     handleKeyDown,
   ])
 
