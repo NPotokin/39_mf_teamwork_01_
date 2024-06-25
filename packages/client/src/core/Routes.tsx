@@ -1,24 +1,35 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  RouteObject,
+  RouterProvider,
+} from 'react-router-dom'
 
-import { Home } from '@/pages/Home'
-import { Profile } from '@/pages/Profile'
-import { Game } from '@/pages/Game'
-import { Login } from '@/pages/Login'
-import { Registration } from '@/pages/Registration'
-import { LeaderBoard } from '@/pages/LeaderBoard'
-import { Forum } from '@/pages/Forum'
-import { NotFoundPage } from '@/pages/NotFoundPage'
-import { ServerErrorPage } from '@/pages/ServerErrorPage'
 import { RoutePath } from './Routes.enum'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import {
+  Home,
+  Game,
+  Login,
+  Registration,
+  LeaderBoard,
+  Forum,
+  Profile,
+  NotFoundPage,
+  ServerErrorPage,
+} from '@/pages'
 
-const routes = [
+const routes: RouteObject[] = [
   {
     path: RoutePath.HOME,
     element: <Home />,
   },
   {
     path: RoutePath.GAME,
-    element: <Game />,
+    element: (
+      <ProtectedRoute>
+        <Game />
+      </ProtectedRoute>
+    ),
   },
   {
     path: RoutePath.SIGN_IN,
@@ -30,15 +41,27 @@ const routes = [
   },
   {
     path: RoutePath.LEADER_BOARD,
-    element: <LeaderBoard />,
+    element: (
+      <ProtectedRoute>
+        <LeaderBoard />
+      </ProtectedRoute>
+    ),
   },
   {
     path: RoutePath.FORUM,
-    element: <Forum />,
+    element: (
+      <ProtectedRoute>
+        <Forum />
+      </ProtectedRoute>
+    ),
   },
   {
     path: RoutePath.PROFILE,
-    element: <Profile />,
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
   },
   {
     path: RoutePath.PAGE_NOT_FOUND,
