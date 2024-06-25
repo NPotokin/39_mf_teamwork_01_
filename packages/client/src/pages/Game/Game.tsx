@@ -32,58 +32,88 @@ const Game: React.FC = () => {
     Positions.enemies
   )
 
-  // Отрисовка
-  const drawObstacles = useCallback((ctx: CanvasRenderingContext2D) => {
-    const img = new Image()
-    img.src = rock
-    img.onload = () => {
+  // Пре-прогружаем картинки - иначе RAF не отрабатывает
+  const [imagesLoaded, setImagesLoaded] = useState(false)
+  const [images, setImages] = useState({
+    rock: new Image(),
+    pumpkin: new Image(),
+    pandaWin: new Image(),
+    tiger: new Image(),
+  })
+
+  useEffect(() => {
+    const rockImg = new Image()
+    const pumpkinImg = new Image()
+    const pandaWinImg = new Image()
+    const tigerImg = new Image()
+
+    let loaded = 0
+    const total = 4
+
+    const onLoad = () => {
+      loaded += 1
+      if (loaded === total) {
+        setImagesLoaded(true)
+      }
+    }
+
+    rockImg.src = rock
+    pumpkinImg.src = pumpkin
+    pandaWinImg.src = pandaWin
+    tigerImg.src = tiger
+
+    rockImg.onload = onLoad
+    pumpkinImg.onload = onLoad
+    pandaWinImg.onload = onLoad
+    tigerImg.onload = onLoad
+
+    setImages({
+      rock: rockImg,
+      pumpkin: pumpkinImg,
+      pandaWin: pandaWinImg,
+      tiger: tigerImg,
+    })
+  }, [])
+
+  // Отрисовываем
+  const drawObstacles = useCallback(
+    (ctx: CanvasRenderingContext2D) => {
       obstacles.forEach(obstacle => {
         ctx.drawImage(
-          img,
+          images.rock,
           obstacle.x,
           obstacle.y,
           obstacle.width,
           obstacle.height
         )
       })
-    }
-  }, [])
+    },
+    [obstacles, images.rock]
+  )
 
   const drawGems = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      const img = new Image()
-      img.src = pumpkin
-      img.onload = () => {
-        gems.forEach(gem => {
-          ctx.drawImage(img, gem.x, gem.y, 40, 40)
-        })
-      }
+      gems.forEach(gem => {
+        ctx.drawImage(images.pumpkin, gem.x, gem.y, 40, 40)
+      })
     },
-    [gems]
+    [gems, images.pumpkin]
   )
 
   const drawPlayer = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      const img = new Image()
-      img.src = pandaWin
-      img.onload = () => {
-        ctx.drawImage(img, playerPosition.x, playerPosition.y, 40, 40)
-      }
+      ctx.drawImage(images.pandaWin, playerPosition.x, playerPosition.y, 40, 40)
     },
-    [playerPosition]
+    [playerPosition, images.pandaWin]
   )
 
   const drawEnemies = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      const img = new Image()
-      img.src = tiger
-      img.onload = () => {
-        enemies.forEach(enemy => {
-          ctx.drawImage(img, enemy.x, enemy.y, 40, 40)
-        })
-      }
+      enemies.forEach(enemy => {
+        ctx.drawImage(images.tiger, enemy.x, enemy.y, 40, 40)
+      })
     },
-    [enemies]
+    [enemies, images.tiger]
   )
 
   // Хэндлеры модалок
@@ -92,7 +122,7 @@ const Game: React.FC = () => {
     setIsGameWinVisible(false)
     setIsGameOverVisible(false)
     setPlayerPosition({ x: 0, y: 0 })
-    setSteps(0)
+    setSteps(1) // хак, чтоб не прогружалось пустое поле
     setTime(0)
     setGems(Positions.gems)
     setEnemies(Positions.enemies)
@@ -254,13 +284,7 @@ const Game: React.FC = () => {
         })
       )
     },
-    [
-      // obstacles,
-      // gems,
-      // enemies,
-      // playerPosition,
-      steps,
-    ]
+    [steps]
   )
 
   // Основной луп игры
@@ -268,14 +292,14 @@ const Game: React.FC = () => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
 
-    function draw() {
+    const draw = () => {
       if (context) {
         context.clearRect(0, 0, canvasSize.width, canvasSize.height)
         drawObstacles(context)
         drawGems(context)
         drawPlayer(context)
         drawEnemies(context)
-        // window.requestAnimationFrame(draw)
+        window.requestAnimationFrame(draw)
       }
     }
 
