@@ -37,7 +37,8 @@
 
   position: relative;
   display: inline-block;
-  padding: 6px 8px;
+  // padding: 6px 8px; Некорректно центрируется текст при использовании с antd
+  line-height: 1;
   margin: $border-size;
   text-align: center;
   vertical-align: middle;
