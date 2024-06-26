@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import styles from './Game.module.scss'
-import { Positions } from './positions'
+import { Constants } from './constants'
 import pandaStart from '@images/panda_start.svg'
 import pandaWin from '@images/panda_win.svg'
 import pandaLost from '@images/panda_over.svg'
@@ -13,8 +13,14 @@ const Game: React.FC = () => {
   // Канвас и препятствия
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
-  const obstacles = useMemo(() => Positions.obsticles, [])
-  const canvasSize = useMemo(() => ({ width: 800, height: 600 }), [])
+  const obstacles = useMemo(() => Constants.obstacles.startPositions, [])
+  const canvasSize = useMemo(
+    () => ({
+      width: Constants.canvas.width,
+      height: Constants.canvas.height,
+    }),
+    []
+  )
 
   // Стейты модалок
   const [isStartModalVisible, setIsStartModalVisible] = useState(true)
@@ -26,10 +32,14 @@ const Game: React.FC = () => {
   const [steps, setSteps] = useState(0)
 
   // Стейты игрока, врагов и кристаллов
-  const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 })
-  const [gems, setGems] = useState<{ x: number; y: number }[]>(Positions.gems)
+  const [playerPosition, setPlayerPosition] = useState(
+    Constants.player.startPosition
+  )
+  const [gems, setGems] = useState<{ x: number; y: number }[]>(
+    Constants.gems.startPositions
+  )
   const [enemies, setEnemies] = useState<{ x: number; y: number }[]>(
-    Positions.enemies
+    Constants.enemy.startPositions
   )
 
   // Пре-прогружаем картинки - иначе RAF не отрабатывает
@@ -83,8 +93,8 @@ const Game: React.FC = () => {
           images.rock,
           obstacle.x,
           obstacle.y,
-          obstacle.width,
-          obstacle.height
+          Constants.obstacles.width,
+          Constants.obstacles.height
         )
       })
     },
@@ -94,7 +104,13 @@ const Game: React.FC = () => {
   const drawGems = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       gems.forEach(gem => {
-        ctx.drawImage(images.pumpkin, gem.x, gem.y, 40, 40)
+        ctx.drawImage(
+          images.pumpkin,
+          gem.x,
+          gem.y,
+          Constants.gems.width,
+          Constants.gems.height
+        )
       })
     },
     [gems, images.pumpkin]
@@ -102,7 +118,13 @@ const Game: React.FC = () => {
 
   const drawPlayer = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      ctx.drawImage(images.pandaWin, playerPosition.x, playerPosition.y, 40, 40)
+      ctx.drawImage(
+        images.pandaWin,
+        playerPosition.x,
+        playerPosition.y,
+        Constants.player.width,
+        Constants.player.height
+      )
     },
     [playerPosition, images.pandaWin]
   )
@@ -110,7 +132,13 @@ const Game: React.FC = () => {
   const drawEnemies = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       enemies.forEach(enemy => {
-        ctx.drawImage(images.tiger, enemy.x, enemy.y, 40, 40)
+        ctx.drawImage(
+          images.tiger,
+          enemy.x,
+          enemy.y,
+          Constants.enemy.width,
+          Constants.enemy.height
+        )
       })
     },
     [enemies, images.tiger]
@@ -121,11 +149,11 @@ const Game: React.FC = () => {
     setIsStartModalVisible(false)
     setIsGameWinVisible(false)
     setIsGameOverVisible(false)
-    setPlayerPosition({ x: 0, y: 0 })
+    setPlayerPosition(Constants.player.startPosition)
     setSteps(1) // хак, чтоб не прогружалось пустое поле
     setTime(0)
-    setGems(Positions.gems)
-    setEnemies(Positions.enemies)
+    setGems(Constants.gems.startPositions)
+    setEnemies(Constants.enemy.startPositions)
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
@@ -151,7 +179,7 @@ const Game: React.FC = () => {
     (event: KeyboardEvent) => {
       setPlayerPosition(prev => {
         let { x, y } = prev
-        const step = 20
+        const step = Constants.player.step
 
         switch (event.key) {
           case 'ArrowUp':
@@ -170,10 +198,10 @@ const Game: React.FC = () => {
 
         const isCollidingWithEnemies = enemies.some(
           enemy =>
-            x < enemy.x + 40 &&
-            x + 40 > enemy.x &&
-            y < enemy.y + 40 &&
-            y + 40 > enemy.y
+            x < enemy.x + Constants.enemy.width &&
+            x + Constants.player.width > enemy.x &&
+            y < enemy.y + Constants.enemy.height &&
+            y + Constants.player.height > enemy.y
         )
 
         if (isCollidingWithEnemies) {
@@ -183,15 +211,15 @@ const Game: React.FC = () => {
         const isCollidingWithObstaclesOrWalls =
           obstacles.some(
             obstacle =>
-              x < obstacle.x + obstacle.width &&
-              x + 40 > obstacle.x &&
-              y < obstacle.y + obstacle.height &&
-              y + 40 > obstacle.y
+              x < obstacle.x + Constants.obstacles.width &&
+              x + Constants.player.width > obstacle.x &&
+              y < obstacle.y + Constants.obstacles.height &&
+              y + Constants.player.height > obstacle.y
           ) ||
           x < 0 ||
-          x + 40 > canvasSize.width ||
+          x + Constants.player.width > canvasSize.width ||
           y < 0 ||
-          y + 40 > canvasSize.height
+          y + Constants.player.height > canvasSize.height
 
         if (isCollidingWithObstaclesOrWalls) {
           return prev
@@ -200,10 +228,10 @@ const Game: React.FC = () => {
         const newGems = gems.filter(
           gem =>
             !(
-              x < gem.x + 40 &&
-              x + 40 > gem.x &&
-              y < gem.y + 40 &&
-              y + 40 > gem.y
+              x < gem.x + Constants.gems.width &&
+              x + Constants.player.width > gem.x &&
+              y < gem.y + Constants.gems.height &&
+              y + Constants.player.height > gem.y
             )
         )
         setGems(newGems)
@@ -220,7 +248,7 @@ const Game: React.FC = () => {
       setEnemies(prev =>
         prev.map(enemy => {
           let { x: enemyX, y: enemyY } = enemy
-          const step = 40
+          const step = Constants.enemy.step
           const directions = ['up', 'down', 'left', 'right']
           const randomDirection =
             directions[Math.floor(Math.random() * directions.length)]
@@ -242,31 +270,31 @@ const Game: React.FC = () => {
 
           const isCollidingWithWalls =
             enemyX < 0 ||
-            enemyX + 40 > canvasSize.width ||
+            enemyX + Constants.enemy.width > canvasSize.width ||
             enemyY < 0 ||
-            enemyY + 40 > canvasSize.height
+            enemyY + Constants.enemy.height > canvasSize.height
 
           const isCollidingWithGems = gems.some(
             gem =>
-              enemyX < gem.x + 40 &&
-              enemyX + 40 > gem.x &&
-              enemyY < gem.y + 40 &&
-              enemyY + 40 > gem.y
+              enemyX < gem.x + Constants.gems.width &&
+              enemyX + Constants.enemy.width > gem.x &&
+              enemyY < gem.y + Constants.gems.height &&
+              enemyY + Constants.enemy.height > gem.y
           )
 
           const isCollidingWithObstacles = obstacles.some(
             obstacle =>
-              enemyX < obstacle.x + obstacle.width &&
-              enemyX + 40 > obstacle.x &&
-              enemyY < obstacle.y + obstacle.height &&
-              enemyY + 40 > obstacle.y
+              enemyX < obstacle.x + Constants.obstacles.width &&
+              enemyX + Constants.enemy.width > obstacle.x &&
+              enemyY < obstacle.y + Constants.obstacles.height &&
+              enemyY + Constants.enemy.height > obstacle.y
           )
 
           const isCollidingWithPlayer =
-            playerPosition.x < enemyX + 40 &&
-            playerPosition.x + 40 > enemyX &&
-            playerPosition.y < enemyY + 40 &&
-            playerPosition.y + 40 > enemyY
+            playerPosition.x < enemyX + Constants.enemy.width &&
+            playerPosition.x + Constants.player.width > enemyX &&
+            playerPosition.y < enemyY + Constants.enemy.height &&
+            playerPosition.y + Constants.player.height > enemyY
 
           if (
             isCollidingWithWalls ||
