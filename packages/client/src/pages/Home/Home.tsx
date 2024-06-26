@@ -23,6 +23,12 @@ const Home = () => (
     <Link className="nes-btn is-error" to={RoutePath.FORUM}>
       Forum page
     </Link>
+    <Link className="nes-btn is-error" to={RoutePath.PAGE_NOT_FOUND}>
+      PAGE_NOT_FOUND 404
+    </Link>
+    <Link className="nes-btn is-error" to={RoutePath.SERVER_ERROR}>
+      SERVER_ERROR 500
+    </Link>
   </>
 )
 

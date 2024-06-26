@@ -9,6 +9,19 @@
     align-items: center;
     justify-content: center;
   }
+
+  canvas {
+    border: 40px solid transparent;
+    border-image: url('@images/rock.png') 80;
+  }
+  
+  .canvas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
  
 
 
