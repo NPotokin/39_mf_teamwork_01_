@@ -1,5 +1,5 @@
 import { Formik, FormikTouched } from 'formik'
-import { FC, KeyboardEvent, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import * as Yup from 'yup'
 import { Form as AntForm, Input, Button } from 'antd'
 import { empty } from '@/lib/utils/empty'
@@ -23,21 +23,6 @@ const CustomForm: FC<Props> = ({
   handleSubmit,
   buttonTitle = 'Submit',
 }) => {
-  const handleKeyDown = (
-    event: KeyboardEvent<HTMLFormElement>,
-    handleSubmit: (e?: React.FormEvent<HTMLFormElement>) => void
-  ) => {
-    if (event.key === 'Enter') {
-      handleSubmit()
-    }
-  }
-  const some: Props = {
-    schema,
-    handleSubmit,
-    initialValues: { a: 'a' },
-    titles: { b: 'a' },
-  }
-
   /**
    * Принудительная установка всех полей в состояние touched
    * @param initialValues
@@ -79,14 +64,14 @@ const CustomForm: FC<Props> = ({
           layout="vertical"
           autoComplete="off"
           onFinish={async () => {
-            setTouched(setTouchedAllFields(initialValues), true)
+            // TODO пока не получается корректно вынести в отдельную функцию
+            setTouched(setTouchedAllFields(initialValues), false)
 
             const errors = await validateForm()
             if (empty(errors)) {
               handleSubmit()
             }
-          }}
-          onKeyDown={event => handleKeyDown(event, handleSubmit)}>
+          }}>
           {Object.keys(initialValues).map((key: string) => (
             <AntForm.Item
               key={key}

@@ -3,11 +3,11 @@ import styles from './Login.module.scss'
 import cn from 'classnames'
 import { CustomForm } from '@/components'
 import { loginSchema } from '@/lib/validation/validationSchema'
-import { FormikValues } from 'formik'
-import { Link } from 'react-router-dom'
-import { RoutePath } from '@/core/Routes.enum'
 import { titles } from './Login.const'
 import logo from '@images/logo_md.svg'
+import { Button } from 'antd'
+import { useNavigate } from 'react-router'
+import { RoutePath } from '@/core/Routes.enum'
 
 export type LoginForm = {
   login: string
@@ -20,15 +20,21 @@ const Login = () => {
     password: EMPTY_STRING,
   }
   const containerClass = cn('container', 'center', styles.login)
+  const navigate = useNavigate()
 
   const handleSubmit = (
-    values: FormikValues,
+    values: Record<string, string>,
     setSubmittingCb: (isSubmitting: boolean) => void
   ): void => {
+    // TODO заменить на api запрос, добавлено для демонстрации спинера
     setTimeout(() => {
       console.log(values)
       setSubmittingCb(false)
     }, 2000)
+  }
+
+  const handleSignUpClick = (): void => {
+    navigate(RoutePath.SIGN_UP)
   }
 
   return (
@@ -50,9 +56,9 @@ const Login = () => {
         </div>
         <footer className={styles.footer}>
           <span>Don't have an account?</span>
-          <Link className="nes-btn w-full" to={RoutePath.SIGN_UP}>
+          <Button className="nes-btn w-full" onClick={handleSignUpClick}>
             Sign Up
-          </Link>
+          </Button>
         </footer>
       </div>
     </div>
