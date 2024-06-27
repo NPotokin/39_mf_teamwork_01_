@@ -1,0 +1,42 @@
+.root {
+  height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(@images/bg_landing.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.intro {
+  text-align: center;
+  color: var(--light);
+}
+
+.title {
+  margin: 3rem 0 2.5rem;
+
+  @media screen and (max-width: 767px) {
+    font-size: 1.5rem;
+    margin: 2rem 0 1.5rem;
+  }
+}
+
+.logo {
+  @media screen and (max-width: 767px) {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+.text {
+  margin-bottom: 2.5rem;
+}
+
+@supports (background-image: url(@images/bg_landing.webp)) {
+  .root {
+    background-image: url(@images/bg_landing.webp);
+  }
+}

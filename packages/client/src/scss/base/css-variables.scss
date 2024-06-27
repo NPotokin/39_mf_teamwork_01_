@@ -1,0 +1,51 @@
+:root {
+  --white: #fff;
+  --black: #000;
+  --orange: #F77704;
+  --blue: #0044CC;
+  --purple: #AA33CC;
+  --green: #00CC55;
+  --dark: #212529;
+  --light: #f4f4f4;
+
+  --state-primary: var(--orange);
+  --state-secondary1: var(--blue);
+  --state-secondary2: var(--purple);
+  --state-secondary3: var(--green);
+  --state-success: #92CC41;
+  --state-info: #209CEE;
+  --state-warning: #F7D51D;
+  --state-danger: #E76E55;
+
+  --gray: #888;
+
+  --nav-color-light: var(--light);
+  --nav-color-light-hover: var(--white);
+  --color-text: var(--dark);
+  --component-bg:  linear-gradient(111.03deg, rgba(239, 239, 239, 0.32) 2.82%, rgba(239, 239, 239, 0.06) 90.94%)
+  --component-blur: blur(20px);
+  --font-family: "Press Start 2P", sans-serif;
+  --border-radius: 4px;
+  --body-bg: var(--white);
+
+  --transition-duration: 0.35s;
+  --transition-function: cubic-bezier(0.5, 0, 0.5, 1);
+
+  --z-index-1: 1;
+  --z-index-5: 5;
+  --z-index-10: 10;
+  --z-index-navigation: 999;
+  --cursor-url: url(../assets/images/cursor.png);
+  --cursor-click-url: url(../assets/images/cursor-click.png) 14 0;
+
+  --input-bg: var(--white);
+  --input-border-width: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg: var(--dark);
+    --color-text: var(--light);
+    --input-bg: var(--black);
+  }
+}

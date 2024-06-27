@@ -20,9 +20,24 @@ $disabled-colors: (
   shadow: #adafbc
 ) !default;
 $primary-colors: (
-  normal: #209cee,
-  hover: #108de0,
-  shadow: #006bb3
+  normal: #F77704,
+  hover: #f47a0f,
+  shadow: #dd6904
+) !default;
+$secondary1-colors: (
+  normal: #0044CC,
+  hover: #0a4aca,
+  shadow: #023bab
+) !default;
+$secondary2-colors: (
+  normal: #00CC55,
+  hover: #0dca5c,
+  shadow: #01af4a
+) !default;
+$secondary3-colors: (
+  normal: #AA33CC,
+  hover: #a941c5,
+  shadow: #902bac
 ) !default;
 $success-colors: (
   normal: #92cc41,
@@ -39,3 +54,4 @@ $error-colors: (
   hover: #ce372b,
   shadow: #8c2022
 ) !default;
+$gutter: 24px;

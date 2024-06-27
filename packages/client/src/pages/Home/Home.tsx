@@ -1,29 +1,23 @@
-import { Link } from 'react-router-dom'
+import { Layout } from 'antd'
+import { Content } from 'antd/es/layout/layout'
 
-import { RoutePath } from '@/core/Routes.enum'
+import { Hero } from '@/components/Hero'
+import { Footer } from '@/components/Footer'
+import { Header } from '@/components/Header'
+import { SectionJoin } from '@/components/SectionJoin'
+import { SectionFeatures } from '@/components/SectionFeatures'
+import styles from './Home.module.scss'
 
 const Home = () => (
-  <>
-    <h1>Home page</h1>
-    <Link className="nes-btn" to={RoutePath.GAME}>
-      GAME page
-    </Link>
-    <Link className="nes-btn" to={RoutePath.SIGN_IN}>
-      Login page
-    </Link>
-    <Link className="nes-btn is-primary" to={RoutePath.SIGN_UP}>
-      Registration page
-    </Link>
-    <Link className="nes-btn is-success" to={RoutePath.PROFILE}>
-      Profile page
-    </Link>
-    <Link className="nes-btn is-warning" to={RoutePath.LEADER_BOARD}>
-      Leader page
-    </Link>
-    <Link className="nes-btn is-error" to={RoutePath.FORUM}>
-      Forum page
-    </Link>
-  </>
+  <Layout className={styles.root}>
+    <Header />
+    <Content>
+      <Hero />
+      <SectionFeatures />
+      <SectionJoin />
+    </Content>
+    <Footer />
+  </Layout>
 )
 
 export default Home

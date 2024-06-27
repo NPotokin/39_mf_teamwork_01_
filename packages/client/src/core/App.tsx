@@ -1,11 +1,15 @@
 import { useEffect } from 'react'
-
-import './App.css'
-import Routes from './Routes'
 import { ConfigProvider } from 'antd'
-import themeConfig from './themeConfig'
+
+import Routes from './Routes'
+import { usePreferredColorScheme } from './theme/usePreferredColorScheme'
+import { darkTheme, lightTheme } from './theme'
+import './App.css'
 
 const App = () => {
+  const preferredColorScheme = usePreferredColorScheme()
+  const theme = preferredColorScheme === 'dark' ? darkTheme : lightTheme
+
   useEffect(() => {
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
@@ -20,7 +24,7 @@ const App = () => {
   {
     return (
       <>
-        <ConfigProvider theme={themeConfig}>
+        <ConfigProvider theme={theme}>
           <Routes />
         </ConfigProvider>
       </>

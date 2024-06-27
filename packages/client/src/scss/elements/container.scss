@@ -1,0 +1,9 @@
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding-right: $gutter;
+  padding-left: $gutter;
+  @media screen and (min-width: 1200px) {
+    max-width: 1170px;
+  }
+}
