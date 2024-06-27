@@ -6,6 +6,7 @@ import TopicModal from './TopicModal/TopicModal'
 import CommentModal from './CommentModal/CommentModal'
 import ForumList from './ForumList/ForumList'
 import TopicDetails from './TopicDetails/TopicDetails'
+import styles from './Forum.module.scss'
 
 export type Comment = {
   key: string
@@ -28,7 +29,6 @@ const Forum = () => {
   const [newTopicContent, setNewTopicContent] = useState('')
   const [newComment, setNewComment] = useState('')
   const [dataSource, setDataSource] = useState<Topic[]>([])
-  //TODO: убрать any
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null)
   const [selectedComments, setSelectedComments] = useState<Comment[]>([])
 
@@ -129,7 +129,7 @@ const Forum = () => {
           <Space>
             {emojis.map(emoji => (
               <Button
-                className="popover__emoji-btn"
+                className={styles[`popover__emoji-btn`]}
                 key={emoji}
                 onClick={() => handleEmojiSelect(commentKey, emoji)}>
                 {emoji}
@@ -138,7 +138,7 @@ const Forum = () => {
           </Space>
         }
         trigger="click">
-        <Button className="popover__btn" icon={<LikeOutlined />} />
+        <Button className={styles.popover__btn} icon={<LikeOutlined />} />
       </Popover>
     )
   }
@@ -177,8 +177,8 @@ const Forum = () => {
   ]
 
   return (
-    <div className="wrapper">
-      <div className="forums">
+    <div className={styles.wrapper}>
+      <div className={styles.forums}>
         {!selectedTopic ? (
           <ForumList
             dataSource={dataSource}

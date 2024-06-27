@@ -14,7 +14,7 @@ const NotFoundPage = () => {
           <img
             src={panda404}
             alt="panda"
-            className={styles[`pageError__500-img`]}
+            className={styles[`pageError__404-img`]}
           />
           4
         </h1>
