@@ -23,9 +23,9 @@ export const TopicDetails: FC<TopicDetailsProps> = ({
   return (
     <>
       <h2 className={styles.forums__header}>{selectedTopic.name}</h2>
-      <p>{selectedTopic.content}</p>
+      <p className={styles.forums__content}> {selectedTopic.content}</p>
       <Table
-        className="forums__table"
+        className={styles.forums__table}
         dataSource={selectedComments}
         columns={commentsColumns}
         showHeader={false}
@@ -33,12 +33,15 @@ export const TopicDetails: FC<TopicDetailsProps> = ({
       />
       <div className={styles.forums__btn}>
         <Button
-          className={cn(styles['forums__btn-games'], 'nes-btn')}
+          className={cn(styles['forums__btn-games'], 'nes-btn  is-secondary1')}
           onClick={onBack}>
           Back
         </Button>
         <Button
-          className={cn(styles['forums__btn-comments'], 'nes-btn')}
+          className={cn(
+            styles['forums__btn-comments'],
+            'nes-btn  is-secondary1'
+          )}
           onClick={showCommentModal}>
           Add Comment
         </Button>

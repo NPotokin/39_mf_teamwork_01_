@@ -7,6 +7,7 @@ import CommentModal from './CommentModal/CommentModal'
 import ForumList from './ForumList/ForumList'
 import TopicDetails from './TopicDetails/TopicDetails'
 import styles from './Forum.module.scss'
+import cn from 'classnames'
 
 export type Comment = {
   key: string
@@ -177,7 +178,7 @@ const Forum = () => {
   ]
 
   return (
-    <div className={styles.wrapper}>
+    <div className={cn(styles.wrapper, 'page')}>
       <div className={styles.forums}>
         {!selectedTopic ? (
           <ForumList

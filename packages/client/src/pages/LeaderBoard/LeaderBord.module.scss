@@ -1,31 +1,14 @@
 .wrapper{
 	background-image: url(@images/bg.jpg);
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: center;
-	width: 100%;
 	height: 100vh;
-	&::before{
-		content: "";
-		position: absolute;
-		top:0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: #AA33CC1D;
-		z-index: 1;
-	}
 }
 .leaderBoard{
-	padding-top: 5em;
+	padding-top: 3em;
 		&__header{
 			text-align: center;
 			font-size: 16px;
 			color: #fff;
-			z-index: 2;
 			position: relative;
-		
 		}
 		&__table{
 			width: 450px;
@@ -34,18 +17,19 @@
 			margin: 20px auto;
 			border-radius: 10px;
 			overflow: hidden;
-			z-index: 2;
 			position: relative;
 			opacity: 60%;
 		}
 		
 		&__btn{
 			width: 300px;
-			background-color: #0044CC;
-			color: #fff;
-			margin: auto;
+			margin:  auto ;
 			text-align: center;
-			z-index: 2;
-
 		}
 	}
+
+	@supports (background-image: url(@images/bg.webp)) {
+		.root {
+		  background-image: url(@images/bg.webp);
+		}
+	  }
