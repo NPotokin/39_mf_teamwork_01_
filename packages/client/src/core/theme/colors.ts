@@ -1,0 +1,6 @@
+export const colorPrimary = '#F77704'
+export const colorTextBase = '#212529'
+export const colorInfo = '#0044CC'
+export const colorSuccess = '#00CC55'
+export const colorWarning = '#F7D51D'
+export const colorError = '#E76E55'

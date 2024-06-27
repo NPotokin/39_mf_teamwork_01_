@@ -1,0 +1,62 @@
+.root {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(
+    111.03deg,
+    rgba(33, 37, 41, 0.32) 2.82%,
+    rgba(33, 37, 41, 0.06) 90.94%
+  );
+  backdrop-filter: blur(2px);
+  z-index: var(--z-index-10);
+}
+.logo {
+  margin-right: 40px;
+}
+
+.action {
+  margin: 0 0 0 auto;
+}
+
+.button {
+  height: 32px;
+  padding: 0 10px !important;
+  line-height: 28px;
+  font-size: .85rem;
+}
+
+.close,
+.burger {
+  color: var(--light);
+
+  &:hover {
+    color: var(--state-primary) !important;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.burger {
+  @media screen and (min-width: 1024px) {
+    display: none;
+  }
+}
+
+.menu {
+  @media screen and (max-width: 1023px) {
+    display: none;
+  }
+}
+
+.close {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  z-index: calc(var(--z-index-navigation) + 1);
+}
