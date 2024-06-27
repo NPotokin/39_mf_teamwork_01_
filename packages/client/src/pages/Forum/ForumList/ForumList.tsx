@@ -21,6 +21,7 @@ const ForumList: FC<ForumListProps> = ({ dataSource, columns, showModal }) => {
         className={styles.forums__table}
         dataSource={dataSource}
         columns={columns}
+        pagination={{ pageSize: 5 }}
       />
       <div className={styles.forums__btn}>
         <Button

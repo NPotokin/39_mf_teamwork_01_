@@ -24,7 +24,7 @@ const GameModal: React.FC<GameModalProps> = ({
       theme={{
         components: {
           Modal: {
-            contentBg: 'rgba(255, 255, 255, 0.3)',
+            contentBg: 'rgba(255, 255, 255, 0.6)',
           },
         },
       }}>

@@ -23,8 +23,8 @@ const userProfileSchema = Yup.object().shape({
 const passwordChangeSchema = Yup.object().shape({
   currentPassword: Yup.string().required(errorMessages.required),
   newPassword: Yup.string()
-    .min(8, errorMessages.min)
-    .max(40, errorMessages.max)
+    .min(8, errorMessages.passwordMinMax)
+    .max(40, errorMessages.passwordMinMax)
     .matches(passwordRegex, {
       message: errorMessages.password,
       excludeEmptyString: true,

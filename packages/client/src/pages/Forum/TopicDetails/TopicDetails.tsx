@@ -29,13 +29,12 @@ export const TopicDetails: FC<TopicDetailsProps> = ({
         dataSource={selectedComments}
         columns={commentsColumns}
         showHeader={false}
+        pagination={{ pageSize: 5 }}
       />
       <div className={styles.forums__btn}>
         <Button
           className={cn(styles['forums__btn-games'], 'nes-btn')}
-          onClick={() => {
-            onBack
-          }}>
+          onClick={onBack}>
           Back
         </Button>
         <Button

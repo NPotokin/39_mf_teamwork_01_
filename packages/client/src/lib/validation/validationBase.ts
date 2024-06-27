@@ -5,7 +5,7 @@ import { errorMessages } from './errorMessages'
  * Regular expression for validating login.
  * Requires the login to be 3 to 20 characters long, allowing letters, numbers, underscores, and hyphens.
  */
-const loginRegex = /^[a-zA-Z0-9_-]{3,20}$/
+const loginRegex = /^[a-zA-Z]+$/
 
 /**
  * Regular expression for checking if the string consists only of digits.
@@ -39,18 +39,20 @@ const phoneRegex = /^\+?\d{10,15}$/
 
 const baseLoginSchema = {
   login: Yup.string()
+    .min(3, errorMessages.loginMinMax)
+    .max(20, errorMessages.loginMinMax)
     .matches(loginRegex, {
-      message: errorMessages.login,
+      message: errorMessages.loginSymbols,
       excludeEmptyString: true,
     })
-    .test('not-only-digits', errorMessages.login, value => {
+    .test('not-only-digits', errorMessages.loginSymbols, value => {
       return !notOnlyDigitsRegex.test(value || '')
     })
     .required(errorMessages.required),
 
   password: Yup.string()
-    .min(8, errorMessages.min)
-    .max(40, errorMessages.max)
+    .min(8, errorMessages.passwordMinMax)
+    .max(40, errorMessages.passwordMinMax)
     .matches(passwordRegex, {
       message: errorMessages.password,
       excludeEmptyString: true,
