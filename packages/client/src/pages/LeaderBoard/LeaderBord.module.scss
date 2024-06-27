@@ -27,7 +27,13 @@
 			text-align: center;
 		}
 	}
-
+	.columns__name{
+		display: flex;
+		align-items: center;
+		&--text{
+			margin-left: 8px;
+		}
+	}
 	@supports (background-image: url(@images/bg.webp)) {
 		.root {
 		  background-image: url(@images/bg.webp);

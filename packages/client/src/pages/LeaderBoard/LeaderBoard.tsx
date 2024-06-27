@@ -45,12 +45,17 @@ const LeaderBoard = () => {
       title: 'NAME',
       dataIndex: 'name',
       key: 'name',
+      width: 250,
       render: (text: string, record: LeaderboardEntry) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src={record.avatarUrl} />
-          <a className={styles.columns__nameAvatar} style={{ marginLeft: 8 }}>
-            {text}
-          </a>
+        <div className={styles.columns__name}>
+          <Avatar
+            src={
+              record.avatarUrl
+                ? record.avatarUrl
+                : 'https://c-int-sf.smule.com/rs-s38-int/sing/performance/cover/3b/f8/b352f35f-7c02-4bca-86b0-eafba9cd0a33_1024.png'
+            }
+          />
+          <a className={styles[`columns__name--text`]}>{text}</a>
         </div>
       ),
     },
