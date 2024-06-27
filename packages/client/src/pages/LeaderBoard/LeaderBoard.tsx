@@ -75,7 +75,7 @@ const LeaderBoard = () => {
         />
         <div className={styles.leaderBoard__btn}>
           <Button
-            className={cn(styles['leaderBoard__btn'])}
+            className={cn(styles['leaderBoard__btn'], 'nes-btn  is-secondary1')}
             onClick={() => navigate(RoutePath.HOME)}>
             Back
           </Button>

@@ -25,12 +25,18 @@ const ForumList: FC<ForumListProps> = ({ dataSource, columns, showModal }) => {
       />
       <div className={styles.forums__btn}>
         <Button
-          className={cn(styles['forums__btn-comments'], 'nes-btn')}
+          className={cn(
+            styles['forums__btn-comments'],
+            'nes-btn is-secondary1'
+          )}
           onClick={() => navigate(RoutePath.HOME)}>
           Back
         </Button>
         <Button
-          className={cn(styles['forums__btn-comments'], 'nes-btn')}
+          className={cn(
+            styles['forums__btn-comments'],
+            'nes-btn is-secondary1'
+          )}
           onClick={showModal}>
           Add Topic
         </Button>
