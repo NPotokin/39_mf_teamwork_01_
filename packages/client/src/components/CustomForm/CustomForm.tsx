@@ -7,6 +7,11 @@ import { EMPTY_STRING } from '@/core/constants'
 import cn from 'classnames'
 import styles from './CustomForm.module.scss'
 
+export type Dependency = {
+  field: string
+  dependency: string
+}
+
 type Props = {
   initialValues: Record<string, string>
   titles: Record<string, string>
@@ -16,6 +21,7 @@ type Props = {
     setSubmitting: (isSubmitting: boolean) => void
   ) => void
   buttonTitle?: string
+  dependency?: Dependency
 }
 
 const CustomForm: FC<Props> = ({
