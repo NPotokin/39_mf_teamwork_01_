@@ -4,6 +4,8 @@ import * as Yup from 'yup'
 import { Form as AntForm, Input, Button } from 'antd'
 import { empty } from '@/lib/utils/empty'
 import { EMPTY_STRING } from '@/core/constants'
+import cn from 'classnames'
+import styles from './CustomForm.module.scss'
 
 type Props = {
   initialValues: Record<string, string>
@@ -23,6 +25,7 @@ const CustomForm: FC<Props> = ({
   handleSubmit,
   buttonTitle = 'Submit',
 }) => {
+  const buttonClass = cn('nes-btn', 'is-warning', styles.button)
   /**
    * Принудительная установка всех полей в состояние touched
    * @param initialValues
@@ -91,7 +94,7 @@ const CustomForm: FC<Props> = ({
           ))}
 
           <Button
-            className="nes-btn is-warning w-full"
+            className={buttonClass}
             type="primary"
             htmlType="submit"
             loading={isSubmitting}>

@@ -20,6 +20,7 @@ const Login = () => {
     password: EMPTY_STRING,
   }
   const containerClass = cn('container', 'center', styles.login)
+  const buttonClass = cn('nes-btn', styles.button)
   const navigate = useNavigate()
 
   const handleSubmit = (
@@ -56,7 +57,7 @@ const Login = () => {
         </div>
         <footer className={styles.footer}>
           <span>Don't have an account?</span>
-          <Button className="nes-btn w-full" onClick={handleSignUpClick}>
+          <Button className={buttonClass} onClick={handleSignUpClick}>
             Sign Up
           </Button>
         </footer>
