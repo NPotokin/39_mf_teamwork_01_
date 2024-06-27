@@ -1,0 +1,35 @@
+.root {
+  background-color: var(--dark);
+  color: var(--light);
+  text-align: center;
+
+  @media screen and (min-width: 1200px) {
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+}
+.copyright {
+  font-size: 80%;
+  margin: 1.25rem 0 0;
+
+  @media screen and (min-width: 1200px) {
+    margin: 0 0 0 auto;
+  }
+}
+
+.logo {
+  margin-bottom: 1rem;
+  
+  @media screen and (min-width: 1200px) {
+    margin-right: 40px;
+    margin-bottom: 0;
+  }
+}
+
+.menu {
+  @media screen and (max-width: 1199px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
