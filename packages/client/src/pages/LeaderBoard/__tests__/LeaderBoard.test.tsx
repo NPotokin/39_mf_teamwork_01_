@@ -29,9 +29,10 @@ describe('LeaderBoard', () => {
     const { getByText } = render(<LeaderBoard />)
     const backBtn = getByText('Back')
 
-    expect(getByText('Back')).toBeInTheDocument()
+    expect(backBtn).toBeInTheDocument()
 
     fireEvent.click(backBtn)
+
     expect(mockNavigate).toHaveBeenCalledWith(RoutePath.HOME)
   })
 })

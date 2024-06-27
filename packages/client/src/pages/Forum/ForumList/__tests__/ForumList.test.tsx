@@ -1,5 +1,4 @@
 import { fireEvent, render } from '@testing-library/react'
-
 import '@testing-library/jest-dom'
 import { RoutePath } from '@/core/Routes.enum'
 import ForumList from '../ForumList'
@@ -57,7 +56,7 @@ describe('ForumList', () => {
     const backBtn = getByText('Back')
     const addTopicBtn = getByText('Add Topic')
 
-    expect(getByText('Back')).toBeInTheDocument()
+    expect(backBtn).toBeInTheDocument()
 
     fireEvent.click(backBtn)
 
