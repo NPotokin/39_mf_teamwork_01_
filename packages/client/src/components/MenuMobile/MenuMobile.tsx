@@ -8,22 +8,22 @@ const Menu = () => (
   <div className={styles.root}>
     <ul className={classNames(styles.menu, 'list')}>
       <li className={styles.item}>
-        <Link to={RoutePath.FORUM} className={styles.link}>
+        <Link to={RoutePath.FORUM} className={styles.link || ''}>
           Forum page
         </Link>
       </li>
       <li className={styles.item}>
-        <Link to={RoutePath.LEADER_BOARD} className={styles.link}>
+        <Link to={RoutePath.LEADER_BOARD} className={styles.link || ''}>
           Leaderboard
         </Link>
       </li>
       <li className={styles.item}>
-        <Link to={RoutePath.PROFILE} className={styles.link}>
+        <Link to={RoutePath.PROFILE} className={styles.link || ''}>
           Profile
         </Link>
       </li>
       <li className={styles.item}>
-        <Link to={RoutePath.GAME} className={styles.link}>
+        <Link to={RoutePath.GAME} className={styles.link || ''}>
           Game
         </Link>
       </li>

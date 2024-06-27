@@ -12,23 +12,21 @@ type MenuProps = {
 const Menu: React.FC<MenuProps> = ({ variant, className }) => (
   <ul className={classNames(styles.root, className, 'list')}>
     <li className={styles.item}>
-      <Link to={RoutePath.FORUM} className={styles.link}>
+      <Link to={RoutePath.FORUM} className={styles.link || ''}>
         Forum page
       </Link>
     </li>
     <li className={styles.item}>
-      <Link to={RoutePath.LEADER_BOARD} className={styles.link}>
-        Leaderboard
-      </Link>
+      <Link to={RoutePath.LEADER_BOARD}>Leaderboard</Link>
     </li>
     <li className={styles.item}>
-      <Link to={RoutePath.PROFILE} className={styles.link}>
+      <Link to={RoutePath.PROFILE} className={styles.link || ''}>
         Profile
       </Link>
     </li>
     {variant === 'bottom' && (
       <li className={styles.item}>
-        <Link to={RoutePath.GAME} className={styles.link}>
+        <Link to={RoutePath.GAME} className={styles.link || ''}>
           Game
         </Link>
       </li>
