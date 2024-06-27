@@ -7,11 +7,6 @@ import { EMPTY_STRING } from '@/core/constants'
 import cn from 'classnames'
 import styles from './CustomForm.module.scss'
 
-export type Dependency = {
-  field: string
-  dependency: string
-}
-
 type Props = {
   initialValues: Record<string, string>
   titles: Record<string, string>
@@ -21,7 +16,7 @@ type Props = {
     setSubmitting: (isSubmitting: boolean) => void
   ) => void
   buttonTitle?: string
-  dependency?: Dependency
+  className?: string
 }
 
 const CustomForm: FC<Props> = ({
@@ -30,6 +25,7 @@ const CustomForm: FC<Props> = ({
   titles,
   handleSubmit,
   buttonTitle = 'Submit',
+  className,
 }) => {
   const buttonClass = cn('nes-btn', 'is-warning', styles.button)
   /**
@@ -70,6 +66,7 @@ const CustomForm: FC<Props> = ({
         setTouched,
       }) => (
         <AntForm
+          className={className}
           layout="vertical"
           autoComplete="off"
           onFinish={async () => {
@@ -81,31 +78,35 @@ const CustomForm: FC<Props> = ({
               handleSubmit()
             }
           }}>
-          {Object.keys(initialValues).map((key: string) => (
-            <AntForm.Item
-              key={key}
-              name={key}
-              label={titles[key]}
-              validateStatus={
-                touched[key] && errors[key] ? 'error' : EMPTY_STRING
-              }
-              help={touched[key] && errors[key] ? errors[key] : EMPTY_STRING}>
-              <Input
+          <div className={styles.form}>
+            {Object.keys(initialValues).map((key: string) => (
+              <AntForm.Item
+                key={key}
                 name={key}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values[key]}
-              />
-            </AntForm.Item>
-          ))}
+                label={titles[key]}
+                validateStatus={
+                  touched[key] && errors[key] ? 'error' : EMPTY_STRING
+                }
+                help={touched[key] && errors[key] ? errors[key] : EMPTY_STRING}>
+                <Input
+                  name={key}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values[key]}
+                />
+              </AntForm.Item>
+            ))}
+          </div>
 
-          <Button
-            className={buttonClass}
-            type="primary"
-            htmlType="submit"
-            loading={isSubmitting}>
-            {isSubmitting ? EMPTY_STRING : buttonTitle}
-          </Button>
+          <div className={styles.footer}>
+            <Button
+              className={buttonClass}
+              type="primary"
+              htmlType="submit"
+              loading={isSubmitting}>
+              {isSubmitting ? EMPTY_STRING : buttonTitle}
+            </Button>
+          </div>
         </AntForm>
       )}
     </Formik>

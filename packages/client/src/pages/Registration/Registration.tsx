@@ -53,8 +53,9 @@ const Registration = () => {
         <header className={styles.header}>
           <div className={styles.title}>Create account</div>
         </header>
-        <div className={styles.form}>
+        <div className={styles['form-wrapper']}>
           <CustomForm
+            className={styles.form}
             initialValues={initialValues}
             titles={titles}
             schema={registrationSchema}
@@ -62,7 +63,7 @@ const Registration = () => {
             handleSubmit={handleSubmit}></CustomForm>
         </div>
         <footer className={styles.footer}>
-          <span>Don't have an account?</span>
+          <span>Already have an account?</span>
           <Button className={buttonClass} onClick={handleSignInClick}>
             Sign In
           </Button>
