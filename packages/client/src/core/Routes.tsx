@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 
 import { RoutePath } from './Routes.enum'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
+import { ProtectedRoute } from '@/components'
 import {
   Home,
   Game,
