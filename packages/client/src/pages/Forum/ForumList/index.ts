@@ -1,1 +1,1 @@
-import { default as ForumList } from './ForumList'
+export { default as ForumList } from './ForumList'

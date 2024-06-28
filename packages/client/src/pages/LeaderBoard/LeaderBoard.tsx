@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router'
 import styles from './LeaderBord.module.scss'
-import { Avatar, Button, Table } from 'antd'
+import { Avatar } from 'antd'
 import { useEffect, useState } from 'react'
 import { leaderboardData } from './mockData'
-import { RoutePath } from '@/core/Routes.enum'
-import cn from 'classnames'
+import { UniversalTable } from '@/components/Table'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
 
 export type Comment = {
   key: string
@@ -32,7 +32,6 @@ const LeaderBoard = () => {
     }
     fetchData()
   }, [])
-  const navigate = useNavigate()
 
   const columns = [
     {
@@ -45,12 +44,17 @@ const LeaderBoard = () => {
       title: 'NAME',
       dataIndex: 'name',
       key: 'name',
+      width: 250,
       render: (text: string, record: LeaderboardEntry) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar src={record.avatarUrl} />
-          <a className={styles.columns__nameAvatar} style={{ marginLeft: 8 }}>
-            {text}
-          </a>
+        <div className={styles.columns__name}>
+          <Avatar
+            src={
+              record.avatarUrl
+                ? record.avatarUrl
+                : 'https://c-int-sf.smule.com/rs-s38-int/sing/performance/cover/3b/f8/b352f35f-7c02-4bca-86b0-eafba9cd0a33_1024.png'
+            }
+          />
+          <a className={styles[`columns__name--text`]}>{text}</a>
         </div>
       ),
     },
@@ -63,24 +67,20 @@ const LeaderBoard = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Header />
       <div className={styles.leaderBoard}>
         <h1 className={styles.leaderBoard__header}>Leaderboard</h1>
-        <Table
-          className={styles.leaderBoard__table}
-          dataSource={dataSource}
-          columns={columns}
-          rowKey="key"
-          scroll={{ y: 476 }}
-          pagination={false}
-        />
-        <div className={styles.leaderBoard__btn}>
-          <Button
-            className={cn(styles['leaderBoard__btn'])}
-            onClick={() => navigate(RoutePath.HOME)}>
-            Back
-          </Button>
+        <div className={styles.leaderBoard__table}>
+          <UniversalTable
+            data={dataSource}
+            columns={columns}
+            rowKey="key"
+            scroll={{ y: 476 }}
+            pagination={false}
+          />
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
