@@ -9,23 +9,18 @@
 			font-size: 16px;
 			color: #fff;
 			position: relative;
+			margin-top: 2em;
 		}
 		&__table{
 			width: 450px;
 			height: 532px;
-			background: rgba(255, 255, 255, 0.6);
+
 			margin: 20px auto;
-			border-radius: 10px;
-			overflow: hidden;
+	
 			position: relative;
-			opacity: 60%;
-		}
 		
-		&__btn{
-			width: 300px;
-			margin:  auto ;
-			text-align: center;
 		}
+
 	}
 	.columns__name{
 		display: flex;
@@ -35,7 +30,7 @@
 		}
 	}
 	@supports (background-image: url(@images/bg.webp)) {
-		.root {
+		.wrapper {
 		  background-image: url(@images/bg.webp);
 		}
 	  }

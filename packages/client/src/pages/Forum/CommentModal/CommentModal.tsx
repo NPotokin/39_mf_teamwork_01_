@@ -1,4 +1,4 @@
-import { Input, Modal } from 'antd'
+import { Modal } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { ChangeEvent, FC } from 'react'
 type CommentModalProps = {
@@ -21,7 +21,13 @@ const CommentModal: FC<CommentModalProps> = ({
     okText="Add"
     open={visible}
     onOk={onOk}
-    onCancel={onCancel}>
+    onCancel={onCancel}
+    okButtonProps={{
+      className: 'nes-btn is-secondary1',
+    }}
+    cancelButtonProps={{
+      className: 'nes-btn is-necessary',
+    }}>
     <TextArea
       placeholder="New comment"
       value={comment}
