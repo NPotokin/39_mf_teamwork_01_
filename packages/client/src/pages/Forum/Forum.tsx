@@ -10,6 +10,7 @@ import styles from './Forum.module.scss'
 import cn from 'classnames'
 import { useForum } from '@/context/ForumContext'
 import { Footer } from '@/components/Footer'
+import { Header } from '@/components/Header'
 
 export type Comment = {
   key: string
@@ -186,7 +187,8 @@ const Forum = () => {
 
   return (
     <div className={cn(styles.wrapper, 'page')}>
-      <div className={styles.forums}>
+      <Header />
+      <div className={cn(styles.forums, 'container')}>
         {!selectedTopic ? (
           <ForumList
             dataSource={dataSource}
@@ -221,8 +223,8 @@ const Forum = () => {
           onCancel={handleCommentCancel}
           onCommentChange={handleCommentInputChange}
         />
-        <Footer />
       </div>
+      <Footer />
     </div>
   )
 }

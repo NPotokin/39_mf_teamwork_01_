@@ -1,6 +1,7 @@
 import styles from './LeaderBord.module.scss'
 import { Avatar } from 'antd'
 import { useEffect, useState } from 'react'
+import cn from 'classnames'
 import { leaderboardData } from './mockData'
 import { UniversalTable } from '@/components/Table'
 import { Header } from '@/components/Header'
@@ -66,10 +67,9 @@ const LeaderBoard = () => {
   ]
 
   return (
-    <div className={styles.wrapper}>
+    <div className={cn(styles.wrapper, 'page')}>
       <Header />
-      <div className={styles.leaderBoard}>
-        <h1 className={styles.leaderBoard__header}>Leaderboard</h1>
+      <div className={cn(styles.leaderBoard, 'container')}>
         <div className={styles.leaderBoard__table}>
           <UniversalTable
             data={dataSource}

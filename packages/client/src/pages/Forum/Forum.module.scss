@@ -1,25 +1,24 @@
-.wrapper{
-	background-image: url(@images/bg.jpg);
+.wrapper {
+  background-image: url(@images/bg.jpg);
 }
 
-.forums{
-	padding-top: 1em;
+.forums {
+	padding-top: 100px;
+	padding-bottom: 50px;
 }
 
-.popover{
-	
-	&__emoji{
-		&-btn{
-			border: 0;
-		}
-	}
-	&__btn{
-		border: 0;
-	}
+.popover {
+  &__emoji {
+    &-btn {
+      border: 0;
+    }
+  }
+  &__btn {
+    border: 0;
+  }
 }
 @supports (background-image: url(@images/bg.webp)) {
-	.wrapper {
-	  background-image: url(@images/bg.webp);
-	}
+  .wrapper {
+    background-image: url(@images/bg.webp);
   }
-  
+}

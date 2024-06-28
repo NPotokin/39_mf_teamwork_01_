@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
-import styles from './Game.module.scss'
+import { Layout } from 'antd'
+import classNames from 'classnames'
+
 import { Constants } from './constants'
 import pandaStart from '@images/panda_start.svg'
 import pandaWin from '@images/panda_win.svg'
@@ -8,7 +10,7 @@ import pumpkin from '@images/pumpkin.png'
 import tiger from '@images/tiger.png'
 import rock from '@images/rock.png'
 import { GameModal, Header, Footer } from '@/components'
-import { Layout } from 'antd'
+import styles from './Game.module.scss'
 
 const Game: React.FC = () => {
   // Канвас и препятствия
@@ -349,7 +351,7 @@ const Game: React.FC = () => {
 
   return (
     <Layout>
-      <div className={styles.game}>
+      <div className={classNames(styles.game, 'page')}>
         <Header />
         {/* Игра */}
         <div className={styles.canvas}>

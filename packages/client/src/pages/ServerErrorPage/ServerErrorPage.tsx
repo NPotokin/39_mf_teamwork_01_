@@ -33,7 +33,9 @@ const ServerErrorPage: FC<Props> = ({ resetErrorBoundary }) => {
           0
         </h1>
         <h1 className={styles.pageError__header}>we’ll fix it soon</h1>
-        <Button className={cn(styles['pageError__btn'])} onClick={handleClick}>
+        <Button
+          className={cn(styles['pageError__btn'], 'nes-btn is-warning')}
+          onClick={handleClick}>
           Go home
         </Button>
       </div>

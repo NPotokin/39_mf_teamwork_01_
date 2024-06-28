@@ -4,7 +4,6 @@ import styles from './ForumList.module.scss'
 import cn from 'classnames'
 import { Topic } from '../Forum'
 import { ColumnsType } from 'antd/es/table'
-import { Header } from '@/components/Header'
 import { UniversalTable } from '@/components/Table'
 
 type ForumListProps = {
@@ -15,8 +14,6 @@ type ForumListProps = {
 const ForumList: FC<ForumListProps> = ({ dataSource, columns, showModal }) => {
   return (
     <div className={styles.wrapper}>
-      <Header />
-      <h1 className={styles.forums__header}>Forums</h1>
       <div className={styles.forums__table}>
         <UniversalTable
           data={dataSource}
