@@ -17,6 +17,7 @@ import {
   NotFoundPage,
   ServerErrorPage,
 } from '@/pages'
+import { ForumProvider } from '@/context/ForumContext'
 
 const routes: RouteObject[] = [
   {
@@ -54,7 +55,9 @@ const routes: RouteObject[] = [
         path: RoutePath.FORUM,
         element: (
           <ProtectedRoute>
-            <Forum />
+            <ForumProvider>
+              <Forum />
+            </ForumProvider>
           </ProtectedRoute>
         ),
       },

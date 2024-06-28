@@ -77,7 +77,7 @@ export const leaderboardData: LeaderboardEntry[] = [
     ],
   },
   {
-    key: '5',
+    key: '6',
     index: 2,
     name: 'Charlie',
     score: 1600,
@@ -91,7 +91,7 @@ export const leaderboardData: LeaderboardEntry[] = [
     ],
   },
   {
-    key: '6',
+    key: '7',
     index: 2,
     name: 'Tom',
     score: 3200,
@@ -106,7 +106,7 @@ export const leaderboardData: LeaderboardEntry[] = [
     ],
   },
   {
-    key: '7',
+    key: '8',
     index: 2,
     name: 'Mini',
     score: 600,

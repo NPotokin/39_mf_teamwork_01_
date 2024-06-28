@@ -1,11 +1,11 @@
-import { RoutePath } from '@/core/Routes.enum'
-import { Button, Table } from 'antd'
+import { Button } from 'antd'
 import { FC } from 'react'
-import { useNavigate } from 'react-router'
 import styles from './ForumList.module.scss'
 import cn from 'classnames'
 import { Topic } from '../Forum'
 import { ColumnsType } from 'antd/es/table'
+import { Header } from '@/components/Header'
+import { UniversalTable } from '@/components/Table'
 
 type ForumListProps = {
   dataSource: Topic[]
@@ -13,29 +13,29 @@ type ForumListProps = {
   showModal: () => void
 }
 const ForumList: FC<ForumListProps> = ({ dataSource, columns, showModal }) => {
-  const navigate = useNavigate()
   return (
-    <>
+    <div className={styles.wrapper}>
+      <Header />
       <h1 className={styles.forums__header}>Forums</h1>
-      <Table
-        className={styles.forums__table}
-        dataSource={dataSource}
-        columns={columns}
-        pagination={{ pageSize: 5 }}
-      />
+      <div className={styles.forums__table}>
+        <UniversalTable
+          data={dataSource}
+          columns={columns}
+          pagination={false}
+          scroll={{ y: 476 }}
+        />
+      </div>
       <div className={styles.forums__btn}>
         <Button
-          className={cn(styles['forums__btn-comments'], 'nes-btn')}
-          onClick={() => navigate(RoutePath.HOME)}>
-          Back
-        </Button>
-        <Button
-          className={cn(styles['forums__btn-comments'], 'nes-btn')}
+          className={cn(
+            styles['forums__btn-comments'],
+            'nes-btn is-secondary1'
+          )}
           onClick={showModal}>
           Add Topic
         </Button>
       </div>
-    </>
+    </div>
   )
 }
 export default ForumList

@@ -7,6 +7,9 @@ import CommentModal from './CommentModal/CommentModal'
 import ForumList from './ForumList/ForumList'
 import TopicDetails from './TopicDetails/TopicDetails'
 import styles from './Forum.module.scss'
+import cn from 'classnames'
+import { useForum } from '@/context/ForumContext'
+import { Footer } from '@/components/Footer'
 
 export type Comment = {
   key: string
@@ -23,14 +26,19 @@ export type Topic = {
 }
 
 const Forum = () => {
+  const {
+    dataSource,
+    setDataSource,
+    selectedComments,
+    setSelectedComments,
+    selectedTopic,
+    setSelectedTopic,
+  } = useForum()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isCommentModalVisible, setIsCommentModalVisible] = useState(false)
   const [newTopicName, setNewTopicName] = useState('')
   const [newTopicContent, setNewTopicContent] = useState('')
   const [newComment, setNewComment] = useState('')
-  const [dataSource, setDataSource] = useState<Topic[]>([])
-  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null)
-  const [selectedComments, setSelectedComments] = useState<Comment[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +46,7 @@ const Forum = () => {
       setDataSource(data)
     }
     fetchData()
-  }, [dataSource])
+  }, [])
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -177,7 +185,7 @@ const Forum = () => {
   ]
 
   return (
-    <div className={styles.wrapper}>
+    <div className={cn(styles.wrapper, 'page')}>
       <div className={styles.forums}>
         {!selectedTopic ? (
           <ForumList
@@ -213,6 +221,7 @@ const Forum = () => {
           onCancel={handleCommentCancel}
           onCommentChange={handleCommentInputChange}
         />
+        <Footer />
       </div>
     </div>
   )

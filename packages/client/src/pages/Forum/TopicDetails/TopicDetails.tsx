@@ -1,10 +1,12 @@
-import { Button, Table } from 'antd'
+import { Button } from 'antd'
 import { FC } from 'react'
 
 import styles from './TopicDetails.module.scss'
 import cn from 'classnames'
 import { Comment, Topic } from '../Forum'
 import { ColumnsType } from 'antd/es/table'
+import { UniversalTable } from '@/components/Table'
+import { Header } from '@/components/Header'
 
 type TopicDetailsProps = {
   selectedTopic: Topic
@@ -22,26 +24,40 @@ export const TopicDetails: FC<TopicDetailsProps> = ({
 }) => {
   return (
     <>
-      <h2 className={styles.forums__header}>{selectedTopic.name}</h2>
-      <p>{selectedTopic.content}</p>
-      <Table
-        className="forums__table"
-        dataSource={selectedComments}
-        columns={commentsColumns}
-        showHeader={false}
-        pagination={{ pageSize: 5 }}
-      />
-      <div className={styles.forums__btn}>
-        <Button
-          className={cn(styles['forums__btn-games'], 'nes-btn')}
-          onClick={onBack}>
-          Back
-        </Button>
-        <Button
-          className={cn(styles['forums__btn-comments'], 'nes-btn')}
-          onClick={showCommentModal}>
-          Add Comment
-        </Button>
+      <Header />
+      <div className={styles.forums__table}>
+        <UniversalTable
+          data={selectedComments}
+          columns={commentsColumns}
+          pagination={false}
+          showHeader={false}
+          scroll={{ y: 450 }}
+          title={() => (
+            <div className={styles[`forums__table-title`]}>
+              <h1 className={styles.forums__header}> {selectedTopic.name}</h1>
+              <p className={styles.forums__content}> {selectedTopic.content}</p>
+            </div>
+          )}
+        />
+
+        <div className={styles.forums__btn}>
+          <Button
+            className={cn(
+              styles['forums__btn-games'],
+              'nes-btn  is-secondary1'
+            )}
+            onClick={onBack}>
+            Back
+          </Button>
+          <Button
+            className={cn(
+              styles['forums__btn-comments'],
+              'nes-btn  is-secondary1'
+            )}
+            onClick={showCommentModal}>
+            Add Comment
+          </Button>
+        </div>
       </div>
     </>
   )
