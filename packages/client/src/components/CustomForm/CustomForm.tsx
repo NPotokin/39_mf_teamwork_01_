@@ -39,7 +39,7 @@ const CustomForm: FC<Props> = ({
         initialValues: Record<string, string>
       ): FormikTouched<Record<string, string>> => {
         return Object.fromEntries(
-          Object.entries(initialValues).map(([key, value]) => [key, true])
+          Object.entries(initialValues).map(([key]) => [key, true])
         )
       },
     [initialValues]
