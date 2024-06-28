@@ -7,7 +7,8 @@ import pandaLost from '@images/panda_over.svg'
 import pumpkin from '@images/pumpkin.png'
 import tiger from '@images/tiger.png'
 import rock from '@images/rock.png'
-import { GameModal } from '@/components'
+import { GameModal, Header, Footer } from '@/components'
+import { Layout } from 'antd'
 
 const Game: React.FC = () => {
   // Канвас и препятствия
@@ -347,47 +348,51 @@ const Game: React.FC = () => {
   }, [handleKeyDown])
 
   return (
-    <div className={styles.game}>
-      {/* Игра */}
-      <div className={styles.canvas}>
-        <div>Steps: {steps}</div>
-        <div>Time: {time}</div>
-        <canvas
-          ref={canvasRef}
-          width={canvasSize.width}
-          height={canvasSize.height}
+    <Layout>
+      <div className={styles.game}>
+        <Header />
+        {/* Игра */}
+        <div className={styles.canvas}>
+          <div>Steps: {steps}</div>
+          <div>Time: {time}</div>
+          <canvas
+            ref={canvasRef}
+            width={canvasSize.width}
+            height={canvasSize.height}
+          />
+        </div>
+
+        {/* Модалка старта */}
+        <GameModal
+          visible={isStartModalVisible}
+          imageSrc={pandaStart}
+          title={'Start the game'}
+          subtitle={'Are you ready?'}
+          onYesClick={handleStartModalButton}
+        />
+
+        {/* Модалка победы */}
+        <GameModal
+          visible={isGameWinVisible}
+          imageSrc={pandaWin}
+          titleClass={'nes-text is-success'}
+          title={'You Win!'}
+          subtitle={'Play again?'}
+          onYesClick={handleStartModalButton}
+        />
+
+        {/* Модалка фиаско */}
+        <GameModal
+          visible={isGameOverVisible}
+          imageSrc={pandaLost}
+          titleClass={'nes-text is-warning'}
+          title={'Game Over'}
+          subtitle={'Play again?'}
+          onYesClick={handleStartModalButton}
         />
       </div>
-
-      {/* Модалка старта */}
-      <GameModal
-        visible={isStartModalVisible}
-        imageSrc={pandaStart}
-        title={'Start the game'}
-        subtitle={'Are you ready?'}
-        onYesClick={handleStartModalButton}
-      />
-
-      {/* Модалка победы */}
-      <GameModal
-        visible={isGameWinVisible}
-        imageSrc={pandaWin}
-        titleClass={'nes-text is-success'}
-        title={'You Win!'}
-        subtitle={'Play again?'}
-        onYesClick={handleStartModalButton}
-      />
-
-      {/* Модалка фиаско */}
-      <GameModal
-        visible={isGameOverVisible}
-        imageSrc={pandaLost}
-        titleClass={'nes-text is-warning'}
-        title={'Game Over'}
-        subtitle={'Play again?'}
-        onYesClick={handleStartModalButton}
-      />
-    </div>
+      <Footer />
+    </Layout>
   )
 }
 
