@@ -26,6 +26,7 @@ const Game: React.FC = () => {
   const [isStartModalVisible, setIsStartModalVisible] = useState(true)
   const [isGameOverVisible, setIsGameOverVisible] = useState(false)
   const [isGameWinVisible, setIsGameWinVisible] = useState(false)
+  const [isGameActive, setIsGameActive] = useState(false)
 
   // Стейты скора игры
   const [time, setTime] = useState(0)
@@ -154,6 +155,7 @@ const Game: React.FC = () => {
     setTime(0)
     setGems(Constants.gems.startPositions)
     setEnemies(Constants.enemy.startPositions)
+    setIsGameActive(true)
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
@@ -162,6 +164,7 @@ const Game: React.FC = () => {
 
   const handleVictory = () => {
     setIsGameWinVisible(true)
+    setIsGameActive(false)
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -169,6 +172,7 @@ const Game: React.FC = () => {
 
   const handleDefeat = () => {
     setIsGameOverVisible(true)
+    setIsGameActive(false)
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -177,6 +181,7 @@ const Game: React.FC = () => {
   // Хэндлер позиций игрока и врагов
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      if (!isGameActive) return
       const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
       if (!validKeys.includes(event.key)) return
       setPlayerPosition(prev => {
