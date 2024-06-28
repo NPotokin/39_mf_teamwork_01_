@@ -17,9 +17,6 @@ const darkTheme: ThemeConfig = {
       colorText: 'f4f4f4',
       fontSize: 14,
     },
-    Modal: {
-      contentBg: 'rgba(33, 37, 41, 0.6)',
-    },
   },
 }
 

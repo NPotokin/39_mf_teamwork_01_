@@ -6,7 +6,6 @@ import cn from 'classnames'
 import { Comment, Topic } from '../Forum'
 import { ColumnsType } from 'antd/es/table'
 import { UniversalTable } from '@/components/Table'
-import { Header } from '@/components/Header'
 
 type TopicDetailsProps = {
   selectedTopic: Topic
@@ -24,7 +23,6 @@ export const TopicDetails: FC<TopicDetailsProps> = ({
 }) => {
   return (
     <>
-      <Header />
       <div className={styles.forums__table}>
         <UniversalTable
           data={selectedComments}

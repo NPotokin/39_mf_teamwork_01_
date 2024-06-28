@@ -1,6 +1,8 @@
 import React from 'react'
-import { Modal, Image, Flex, Button } from 'antd'
+import { Modal, Image, Flex, Button, ConfigProvider } from 'antd'
 import { Link } from 'react-router-dom'
+
+import styles from './GameModal.module.css'
 
 type GameModalProps = {
   visible: boolean
