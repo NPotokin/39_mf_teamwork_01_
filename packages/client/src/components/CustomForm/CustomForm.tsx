@@ -16,6 +16,7 @@ type Props = {
     setSubmitting: (isSubmitting: boolean) => void
   ) => void
   buttonTitle?: string
+  className?: string
 }
 
 const CustomForm: FC<Props> = ({
@@ -24,8 +25,9 @@ const CustomForm: FC<Props> = ({
   titles,
   handleSubmit,
   buttonTitle = 'Submit',
+  className,
 }) => {
-  const buttonClass = cn('nes-btn', 'is-warning', styles.button)
+  const buttonClass = cn('nes-btn', 'is-primary', 'w-full', styles.button)
   /**
    * Принудительная установка всех полей в состояние touched
    * @param initialValues
@@ -42,6 +44,16 @@ const CustomForm: FC<Props> = ({
       },
     [initialValues]
   )
+
+  const isPasswordField = (key: string): boolean => {
+    if (!key) return false
+
+    if (key.toLowerCase().includes('password')) {
+      return true
+    }
+
+    return false
+  }
 
   return (
     <Formik
@@ -64,6 +76,7 @@ const CustomForm: FC<Props> = ({
         setTouched,
       }) => (
         <AntForm
+          className={className}
           layout="vertical"
           autoComplete="off"
           onFinish={async () => {
@@ -75,31 +88,45 @@ const CustomForm: FC<Props> = ({
               handleSubmit()
             }
           }}>
-          {Object.keys(initialValues).map((key: string) => (
-            <AntForm.Item
-              key={key}
-              name={key}
-              label={titles[key]}
-              validateStatus={
-                touched[key] && errors[key] ? 'error' : EMPTY_STRING
-              }
-              help={touched[key] && errors[key] ? errors[key] : EMPTY_STRING}>
-              <Input
+          <div className={styles.form}>
+            {Object.keys(initialValues).map((key: string) => (
+              <AntForm.Item
+                key={key}
                 name={key}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values[key]}
-              />
-            </AntForm.Item>
-          ))}
+                label={titles[key]}
+                validateStatus={
+                  touched[key] && errors[key] ? 'error' : EMPTY_STRING
+                }
+                help={touched[key] && errors[key] ? errors[key] : EMPTY_STRING}>
+                {!isPasswordField(key) ? (
+                  <Input
+                    className="nes-input"
+                    name={key}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values[key]}
+                  />
+                ) : (
+                  <Input.Password
+                    className="nes-input"
+                    name={key}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values[key]}
+                  />
+                )}
+              </AntForm.Item>
+            ))}
+          </div>
 
-          <Button
-            className={buttonClass}
-            type="primary"
-            htmlType="submit"
-            loading={isSubmitting}>
-            {isSubmitting ? EMPTY_STRING : buttonTitle}
-          </Button>
+          <div className={styles.footer}>
+            <Button
+              className={buttonClass}
+              htmlType="submit"
+              loading={isSubmitting}>
+              {isSubmitting ? EMPTY_STRING : buttonTitle}
+            </Button>
+          </div>
         </AntForm>
       )}
     </Formik>

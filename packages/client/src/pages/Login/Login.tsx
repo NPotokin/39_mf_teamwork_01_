@@ -19,7 +19,7 @@ const Login = () => {
     login: EMPTY_STRING,
     password: EMPTY_STRING,
   }
-  const containerClass = cn('container', 'center', styles.login)
+  const pageClass = cn('page', styles.page)
   const buttonClass = cn('nes-btn', styles.button)
   const navigate = useNavigate()
 
@@ -39,7 +39,7 @@ const Login = () => {
   }
 
   return (
-    <div className={containerClass}>
+    <div className={pageClass}>
       <div className={styles.card}>
         <header className={styles.header}>
           <div className={styles.logo}>

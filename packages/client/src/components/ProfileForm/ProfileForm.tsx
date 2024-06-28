@@ -4,6 +4,7 @@ import { Form as AntForm, Input, Button, Row, Col } from 'antd'
 import classNames from 'classnames'
 
 import { userProfileSchema } from '@/lib/validation/validationSchema'
+import { EMPTY_STRING } from '@/core/constants'
 import { UploadAvatar } from '@/components/UploadAvatar'
 import styles from './ProfileForm.module.scss'
 
@@ -165,8 +166,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onCancel }) => {
               <Button
                 className={classNames(styles.button, 'nes-btn is-secondary1')}
                 htmlType="submit"
+                loading={isSubmitting}
                 disabled={isSubmitting}>
-                Save
+                {isSubmitting ? EMPTY_STRING : 'Save'}
               </Button>
               <Button
                 className={classNames(styles.button, 'nes-btn')}

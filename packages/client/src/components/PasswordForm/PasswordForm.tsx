@@ -3,6 +3,7 @@ import { Form as AntForm, Input, Button } from 'antd'
 import classNames from 'classnames'
 
 import { passwordChangeSchema } from '@/lib/validation/validationSchema'
+import { EMPTY_STRING } from '@/core/constants'
 import styles from './PasswordForm.module.scss'
 
 type PasswordFormValues = {
@@ -117,8 +118,9 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
             <Button
               className={classNames(styles.button, 'nes-btn is-secondary1')}
               htmlType="submit"
+              loading={isSubmitting}
               disabled={isSubmitting}>
-              Save
+              {isSubmitting ? EMPTY_STRING : 'Save'}
             </Button>
             <Button
               className={classNames(styles.button, 'nes-btn')}

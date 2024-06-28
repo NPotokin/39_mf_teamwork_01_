@@ -10,10 +10,12 @@
   flex-direction: column;
   width: 95%;
   margin: auto;
-  background-color: var(--component-bg);
-  backdrop-filter: var(--ba) ;
+  height: 90vh;
+  max-height: 70rem;
+  background: var(--component-bg);
+  backdrop-filter: blur(5px);
   border-radius: 8px;
-  padding: 40px 24px 50px;
+  padding: 30px 24px 50px;
 
   @media screen and (min-width: 567px) {
     width: 25rem;
@@ -21,8 +23,17 @@
   }
 }
 
+.form-wrapper {
+  height: 75%;
+}
+
+.form {
+  height: 100%;
+}
+
 .logo {
   text-align: center;
+  padding: 1rem 0;
 
   img {
     width: 25%;
@@ -30,19 +41,23 @@
 }
 
 .title {
-  margin: 40px 0;
+  margin: 0 0 30px;
   text-align: center;
   font-size: 1.25rem;
 }
 
-.footer {
-  text-align: center;
-  padding-top: 20px;
+.text {
+  display: block;
+  margin: 5px 0;
 }
 
-.button {
-  width: 100%;
-  margin-top: 20px !important;
+.footer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-around;
+  text-align: center;
+  padding-top: 20px;
 }
 
 @supports (background-image: url(@images/bg.webp)) {
