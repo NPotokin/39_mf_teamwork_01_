@@ -11,9 +11,11 @@ export type TableColumns<T> = ColumnsType<T>
 
 type UniversalTableProps = {
   data: unknown[]
+  /* eslint-disable */
   columns: TableColumns<any>
   pagination?: false | TablePaginationConfig | undefined
   scroll?: object
+  /* eslint-disable */
   title?: any
   showHeader?: boolean
   rowKey?: number | string
