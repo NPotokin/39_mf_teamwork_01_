@@ -27,7 +27,7 @@ const CustomForm: FC<Props> = ({
   buttonTitle = 'Submit',
   className,
 }) => {
-  const buttonClass = cn('nes-btn', 'is-warning', styles.button)
+  const buttonClass = cn('nes-btn', 'is-primary', 'w-full', styles.button)
   /**
    * Принудительная установка всех полей в состояние touched
    * @param initialValues
@@ -44,6 +44,16 @@ const CustomForm: FC<Props> = ({
       },
     [initialValues]
   )
+
+  const isPasswordField = (key: string): boolean => {
+    if (!key) return false
+
+    if (key.toLowerCase().includes('password')) {
+      return true
+    }
+
+    return false
+  }
 
   return (
     <Formik
@@ -88,12 +98,21 @@ const CustomForm: FC<Props> = ({
                   touched[key] && errors[key] ? 'error' : EMPTY_STRING
                 }
                 help={touched[key] && errors[key] ? errors[key] : EMPTY_STRING}>
-                <Input
-                  name={key}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values[key]}
-                />
+                {!isPasswordField(key) ? (
+                  <Input
+                    name={key}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values[key]}
+                  />
+                ) : (
+                  <Input.Password
+                    name={key}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values[key]}
+                  />
+                )}
               </AntForm.Item>
             ))}
           </div>
@@ -101,7 +120,6 @@ const CustomForm: FC<Props> = ({
           <div className={styles.footer}>
             <Button
               className={buttonClass}
-              type="primary"
               htmlType="submit"
               loading={isSubmitting}>
               {isSubmitting ? EMPTY_STRING : buttonTitle}

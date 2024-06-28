@@ -28,15 +28,13 @@ const Registration = () => {
     password: EMPTY_STRING,
     confirmPassword: EMPTY_STRING,
   }
-  const pageClass = cn('container', 'center', styles.page)
-  const buttonClass = cn('nes-btn', styles.button)
+  const pageClass = cn('page', styles.page)
   const navigate = useNavigate()
 
   const handleSubmit = (
     values: Record<string, string>,
     setSubmittingCb: (isSubmitting: boolean) => void
   ): void => {
-    // TODO заменить на api запрос, добавлено для демонстрации спинера
     setTimeout(() => {
       console.log(values)
       setSubmittingCb(false)
@@ -64,7 +62,7 @@ const Registration = () => {
         </div>
         <footer className={styles.footer}>
           <span>Already have an account?</span>
-          <Button className={buttonClass} onClick={handleSignInClick}>
+          <Button className="nes-btn" onClick={handleSignInClick}>
             Sign In
           </Button>
         </footer>
