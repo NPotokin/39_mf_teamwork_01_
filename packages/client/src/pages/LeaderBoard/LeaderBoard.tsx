@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router'
 import styles from './LeaderBord.module.scss'
-import { Avatar, Button, Table } from 'antd'
+import { Avatar } from 'antd'
 import { useEffect, useState } from 'react'
 import { leaderboardData } from './mockData'
-import { RoutePath } from '@/core/Routes.enum'
-import cn from 'classnames'
+import { UniversalTable } from '@/components/Table'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
 
 export type Comment = {
   key: string
@@ -32,7 +32,6 @@ const LeaderBoard = () => {
     }
     fetchData()
   }, [])
-  const navigate = useNavigate()
 
   const columns = [
     {
@@ -68,24 +67,20 @@ const LeaderBoard = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Header />
       <div className={styles.leaderBoard}>
         <h1 className={styles.leaderBoard__header}>Leaderboard</h1>
-        <Table
-          className={styles.leaderBoard__table}
-          dataSource={dataSource}
-          columns={columns}
-          rowKey="key"
-          scroll={{ y: 476 }}
-          pagination={false}
-        />
-        <div className={styles.leaderBoard__btn}>
-          <Button
-            className={cn(styles['leaderBoard__btn'], 'nes-btn  is-secondary1')}
-            onClick={() => navigate(RoutePath.HOME)}>
-            Back
-          </Button>
+        <div className={styles.leaderBoard__table}>
+          <UniversalTable
+            data={dataSource}
+            columns={columns}
+            rowKey="key"
+            scroll={{ y: 476 }}
+            pagination={false}
+          />
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

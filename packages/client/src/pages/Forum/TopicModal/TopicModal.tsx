@@ -25,6 +25,12 @@ const TopicModal: FC<TopicModalProps> = ({
     okText="Add"
     open={visible}
     onOk={onOk}
+    okButtonProps={{
+      className: 'nes-btn is-secondary1',
+    }}
+    cancelButtonProps={{
+      className: 'nes-btn is-necessary',
+    }}
     onCancel={onCancel}>
     <Input
       placeholder="Enter new topic name"
