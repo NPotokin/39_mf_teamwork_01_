@@ -49,9 +49,9 @@ const CustomForm: FC<Props> = ({
       validationSchema={schema}
       validateOnBlur
       validateOnChange
-      onSubmit={(values, { setSubmitting }) =>
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values, setSubmitting)
-      }>
+      }}>
       {({
         values,
         errors,
