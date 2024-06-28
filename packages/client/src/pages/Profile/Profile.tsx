@@ -1,152 +1,67 @@
-import { Formik, FormikHelpers } from 'formik'
-import { Form as AntForm, Input, Button } from 'antd'
+import { useEffect, useReducer } from 'react'
 import classNames from 'classnames'
+import { Button } from 'antd'
 
-import { userProfileSchema } from '@/lib/validation/validationSchema'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
+import { ProfileInfo } from '@/components/ProfileInfo'
+import { PasswordForm } from '@/components/PasswordForm'
+import { ProfileForm } from '@/components/ProfileForm'
+import {
+  ProfileAction,
+  ProfileState,
+  actionTypes,
+  initialState,
+  profileReducer,
+} from './reducer/Profile.reducer'
+import { userData } from './mocks/userData'
 import styles from './Profile.module.scss'
 
-type ProfileFormValues = {
-  first_name: string
-  second_name: string
-  email: string
-  password: string
-  phone: string
-}
-
 const Profile = () => {
-  const initialValues: ProfileFormValues = {
-    first_name: '',
-    second_name: '',
-    email: '',
-    password: '',
-    phone: '',
-  }
+  const [state, dispatch] = useReducer<
+    React.Reducer<ProfileState, ProfileAction>
+  >(profileReducer, initialState)
+
+  useEffect(() => {
+    //TODO get request for user profile
+  }, [])
 
   return (
     <div className={classNames(styles.root, 'page')}>
-      <div className="container">
+      <Header />
+      <div className={classNames(styles.container, 'container')}>
         <div className={styles.card}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={userProfileSchema}
-            validateOnBlur
-            validateOnChange
-            onSubmit={(
-              values: ProfileFormValues,
-              { setSubmitting }: FormikHelpers<ProfileFormValues>
-            ) => {
-              setTimeout(() => {
-                console.log(JSON.stringify(values, null, 2))
-                setSubmitting(false)
-              }, 500)
-            }}>
-            {({
-              values,
-              errors,
-              touched,
-              handleSubmit,
-              isSubmitting,
-              handleChange,
-              handleBlur,
-              isValid,
-              validateForm,
-              setTouched,
-            }) => (
-              <AntForm
-                layout="vertical"
-                autoComplete="off"
-                onFinish={async () => {
-                  setTouched(
-                    {
-                      first_name: true,
-                      second_name: true,
-                      email: true,
-                      password: true,
-                      phone: true,
-                    },
-                    false
-                  )
-                  const errors = await validateForm()
-                  if (Object.keys(errors).length === 0) {
-                    handleSubmit()
-                  }
-                }}>
-                <AntForm.Item
-                  name="first_name"
-                  label="First Name"
-                  validateStatus={
-                    touched.first_name && errors.first_name ? 'error' : ''
-                  }
-                  help={
-                    touched.first_name && errors.first_name
-                      ? errors.first_name
-                      : ''
-                  }>
-                  <Input
-                    className="nes-input"
-                    name="first_name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.first_name}
-                  />
-                </AntForm.Item>
-                <AntForm.Item
-                  name="second_name"
-                  label="Last Name"
-                  validateStatus={
-                    touched.second_name && errors.second_name ? 'error' : ''
-                  }
-                  help={
-                    touched.second_name && errors.second_name
-                      ? errors.second_name
-                      : ''
-                  }>
-                  <Input
-                    className="nes-input"
-                    name="second_name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.second_name}
-                  />
-                </AntForm.Item>
-                <AntForm.Item
-                  name="email"
-                  label="Email"
-                  validateStatus={touched.email && errors.email ? 'error' : ''}
-                  help={touched.email && errors.email ? errors.email : ''}>
-                  <Input
-                    className="nes-input"
-                    name="email"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.email}
-                  />
-                </AntForm.Item>
-                <AntForm.Item
-                  name="phone"
-                  label="Phone"
-                  validateStatus={touched.phone && errors.phone ? 'error' : ''}
-                  help={touched.phone && errors.phone ? errors.phone : ''}>
-                  <Input
-                    className="nes-input"
-                    name="phone"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.phone}
-                  />
-                </AntForm.Item>
+          {state.view === 'info' && (
+            <>
+              <ProfileInfo {...userData} />
+              <div className={styles.footer}>
                 <Button
-                  className="nes-btn is-primary"
-                  htmlType="submit"
-                  disabled={isSubmitting}>
-                  Submit
+                  className={classNames(styles.button, 'nes-btn is-primary')}
+                  onClick={() => dispatch({ type: actionTypes.EDIT_PROFILE })}>
+                  Edit
                 </Button>
-                {isSubmitting && <div>Sending...</div>}
-              </AntForm>
-            )}
-          </Formik>
+                <Button
+                  className={classNames(styles.button, 'nes-btn is-secondary1')}
+                  onClick={() => dispatch({ type: actionTypes.EDIT_PASSWORD })}>
+                  Change password
+                </Button>
+              </div>
+            </>
+          )}
+          {state.view === 'editPassword' && (
+            <PasswordForm
+              onCancel={() => dispatch({ type: actionTypes.SHOW_INFO })}
+            />
+          )}
+          {state.view === 'editProfile' && (
+            <ProfileForm
+              onCancel={() => dispatch({ type: actionTypes.SHOW_INFO })}
+            />
+          )}
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

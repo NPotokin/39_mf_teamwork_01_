@@ -24,8 +24,8 @@ const themeConfig: ThemeConfig = {
     colorBorder: colorTextBase,
   },
   components: {
-    Button: {
-      colorPrimary,
+    Form: {
+      fontSize: 14,
     },
   },
   cssVar: true,
