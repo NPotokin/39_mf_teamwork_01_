@@ -19,8 +19,7 @@ const Login = () => {
     login: EMPTY_STRING,
     password: EMPTY_STRING,
   }
-  const containerClass = cn('container', 'center', styles.login)
-  const buttonClass = cn('nes-btn', styles.button)
+  const pageClass = cn('page', styles.page)
   const navigate = useNavigate()
 
   const handleSubmit = (
@@ -39,7 +38,7 @@ const Login = () => {
   }
 
   return (
-    <div className={containerClass}>
+    <div className={pageClass}>
       <div className={styles.card}>
         <header className={styles.header}>
           <div className={styles.logo}>
@@ -57,7 +56,7 @@ const Login = () => {
         </div>
         <footer className={styles.footer}>
           <span>Don't have an account?</span>
-          <Button className={buttonClass} onClick={handleSignUpClick}>
+          <Button className="nes-btn" onClick={handleSignUpClick}>
             Sign Up
           </Button>
         </footer>
