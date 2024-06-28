@@ -26,6 +26,8 @@ const CommentModal: FC<CommentModalProps> = ({
       const values = form.getFieldsValue()
       if (values.comment.length > 0) {
         setIsFullFields(true)
+      } else if (values.comment.length <= 0) {
+        setIsFullFields(false)
       }
     }
   }, [visible, comment, form])
@@ -62,6 +64,7 @@ const CommentModal: FC<CommentModalProps> = ({
             placeholder="New comment"
             value={comment}
             onChange={onCommentChange}
+            className="nes-textarea"
           />
         </Form.Item>
       </Form>

@@ -30,6 +30,11 @@ const TopicModal: FC<TopicModalProps> = ({
 
       if (values.topicName.length > 0 && values.topicContent.length > 0) {
         setIsFullFields(true)
+      } else if (
+        values.topicName.length <= 0 ||
+        values.topicContent.length <= 0
+      ) {
+        setIsFullFields(false)
       }
     }
   }, [visible, topicContent, topicName, form])
@@ -71,6 +76,7 @@ const TopicModal: FC<TopicModalProps> = ({
             placeholder="Enter new topic name"
             value={topicName}
             onChange={onTopicNameChange}
+            className="nes-input"
           />
         </Form.Item>
         <Form.Item
@@ -82,6 +88,7 @@ const TopicModal: FC<TopicModalProps> = ({
             placeholder="Enter new topic content"
             value={topicContent}
             onChange={onTopicContentChange}
+            className="nes-textarea"
           />
         </Form.Item>
       </Form>
