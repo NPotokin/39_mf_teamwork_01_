@@ -177,6 +177,8 @@ const Game: React.FC = () => {
   // Хэндлер позиций игрока и врагов
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
+      if (!validKeys.includes(event.key)) return
       setPlayerPosition(prev => {
         let { x, y } = prev
         const step = Constants.player.step
