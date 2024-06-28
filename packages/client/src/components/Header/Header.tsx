@@ -25,7 +25,9 @@ const Header = () => {
 
   return (
     <AntHeader className={styles.root}>
-      <Logo className={styles.logo} title="Panda" />
+      <Link to={RoutePath.HOME}>
+        <Logo className={styles.logo} title="Panda" />
+      </Link>
       <Menu className={styles.menu} />
       <div className={styles.action}>
         <Link

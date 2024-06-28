@@ -61,7 +61,7 @@ const Registration = () => {
             handleSubmit={handleSubmit}></CustomForm>
         </div>
         <footer className={styles.footer}>
-          <span>Already have an account?</span>
+          <span className={styles.text}>Already have an account?</span>
           <Button className="nes-btn" onClick={handleSignInClick}>
             Sign In
           </Button>

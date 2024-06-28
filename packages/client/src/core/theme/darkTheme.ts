@@ -15,6 +15,7 @@ const darkTheme: ThemeConfig = {
     Form: {
       labelColor: '#f4f4f4',
       colorText: 'f4f4f4',
+      fontSize: 14,
     },
   },
 }

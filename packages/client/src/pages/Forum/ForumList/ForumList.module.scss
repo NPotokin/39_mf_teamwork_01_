@@ -1,21 +1,11 @@
-.wrapper{
-	height: 100vh;
+.forums {
+  &__table {
+    width: 970px;
+    margin: auto;
+    position: relative;
+  }
+  &__btn {
+    text-align: center;
+    margin-top: 1em;
+  }
 }
-.forums{
-		&__header{
-			text-align: center;
-			font-size: 16px;
-			color: var(--color-text);
-			position: relative;
-			margin-top: 4em;
-		}
-		&__table{
-			width: 970px;
-			margin: auto;
-			position: relative;
-		}
-		&__btn{
-			text-align: center;
-			margin-top: 1em;
-		}
-	}

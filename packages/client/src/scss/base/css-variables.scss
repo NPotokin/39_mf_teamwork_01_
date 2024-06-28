@@ -19,14 +19,15 @@
 
   --gray: #888;
 
+  --body-bg: var(--white);
   --nav-color-light: var(--light);
   --nav-color-light-hover: var(--white);
   --color-text: var(--dark);
-  --component-bg:  linear-gradient(111.03deg, rgba(239, 239, 239, 0.32) 2.82%, rgba(239, 239, 239, 0.06) 90.94%);
+  --component-bg: rgba(255, 255, 255, 0.4);
   --component-blur: blur(20px);
   --font-family: "Press Start 2P", sans-serif;
   --border-radius: 4px;
-  --body-bg: var(--white);
+  --backdrop-filter: blur(20px);
 
   --transition-duration: 0.35s;
   --transition-function: cubic-bezier(0.5, 0, 0.5, 1);
@@ -47,5 +48,6 @@
     --body-bg: var(--dark);
     --color-text: var(--light);
     --input-bg: var(--black);
+    --component-bg: rgba(33, 37, 41, 0.4);
   }
 }

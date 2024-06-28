@@ -1,5 +1,5 @@
 import { Table } from 'antd'
-import { FC } from 'react'
+import { ReactNode } from 'react'
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table'
 import styles from './Table.module.scss'
 
@@ -9,19 +9,17 @@ export type TableData = {
 }
 export type TableColumns<T> = ColumnsType<T>
 
-type UniversalTableProps = {
-  data: unknown[]
-  /* eslint-disable */
-  columns: TableColumns<any>
+type UniversalTableProps<T> = {
+  data: T[]
+  columns: TableColumns<T>
   pagination?: false | TablePaginationConfig | undefined
   scroll?: object
-  /* eslint-disable */
-  title?: any
+  title?: () => ReactNode
   showHeader?: boolean
   rowKey?: number | string
 }
 
-const UniversalTable: FC<UniversalTableProps> = ({
+const UniversalTable = <T extends TableData>({
   data,
   columns,
   pagination,
@@ -29,7 +27,7 @@ const UniversalTable: FC<UniversalTableProps> = ({
   title,
   showHeader,
   rowKey,
-}) => {
+}: UniversalTableProps<T>) => {
   return (
     <Table
       dataSource={data}

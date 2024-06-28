@@ -1,36 +1,28 @@
-.wrapper{
-	background-image: url(@images/bg.jpg);
-	height: 100vh;
+.wrapper {
+  background-image: url(@images/bg.jpg);
 }
-.leaderBoard{
-	padding-top: 3em;
-		&__header{
-			text-align: center;
-			font-size: 16px;
-			color: var(--color-text);
-			position: relative;
-			margin-top: 2em;
-		}
-		&__table{
-			width: 450px;
-			height: 532px;
+.leaderBoard {
+  padding-top: 100px;
+  padding-bottom: 50px;
 
-			margin: 20px auto;
-	
-			position: relative;
-		
-		}
+  &__table {
+    width: 450px;
+    height: 532px;
+    margin: 20px auto;
+    position: relative;
+  }
 
-	}
-	.columns__name{
-		display: flex;
-		align-items: center;
-		&--text{
-			margin-left: 8px;
-		}
-	}
-	@supports (background-image: url(@images/bg.webp)) {
-		.wrapper {
-		  background-image: url(@images/bg.webp);
-		}
-	  }
+ 
+}
+.columns__name {
+  display: flex;
+  align-items: center;
+  &--text {
+    margin-left: 8px;
+  }
+}
+@supports (background-image: url(@images/bg.webp)) {
+  .wrapper {
+    background-image: url(@images/bg.webp);
+  }
+}

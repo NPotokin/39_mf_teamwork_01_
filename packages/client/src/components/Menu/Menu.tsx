@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { RoutePath } from '@/core/Routes.enum'
@@ -12,23 +12,41 @@ type MenuProps = {
 const Menu: React.FC<MenuProps> = ({ variant, className }) => (
   <ul className={classNames(styles.root, className, 'list')}>
     <li className={styles.item}>
-      <Link to={RoutePath.FORUM} className={styles.link || ''}>
+      <NavLink
+        to={RoutePath.FORUM}
+        className={({ isActive }) =>
+          classNames(styles.link, { 'is-active': isActive })
+        }>
         Forum page
-      </Link>
+      </NavLink>
     </li>
     <li className={styles.item}>
-      <Link to={RoutePath.LEADER_BOARD}>Leaderboard</Link>
+      <NavLink
+        to={RoutePath.LEADER_BOARD}
+        className={({ isActive }) =>
+          classNames(styles.link, { 'is-active': isActive })
+        }>
+        Leaderboard
+      </NavLink>
     </li>
     <li className={styles.item}>
-      <Link to={RoutePath.PROFILE} className={styles.link || ''}>
+      <NavLink
+        to={RoutePath.PROFILE}
+        className={({ isActive }) =>
+          classNames(styles.link, { 'is-active': isActive })
+        }>
         Profile
-      </Link>
+      </NavLink>
     </li>
     {variant === 'bottom' && (
       <li className={styles.item}>
-        <Link to={RoutePath.GAME} className={styles.link || ''}>
+        <NavLink
+          to={RoutePath.GAME}
+          className={({ isActive }) =>
+            classNames(styles.link, { 'is-active': isActive })
+          }>
           Game
-        </Link>
+        </NavLink>
       </li>
     )}
   </ul>

@@ -1,0 +1,40 @@
+.card {
+  p {
+    margin: 0 0 10px;
+  }
+}
+
+.title {
+  text-decoration: underline;
+}
+
+.link {
+  color: var(--color-text);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.info {
+  font-size: 1.25rem;
+
+  span {
+    display: block;
+  }
+}

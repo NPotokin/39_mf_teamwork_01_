@@ -1,5 +1,5 @@
 // Font
-$font-family: "Press Start 2P" !default;
+$font-family: 'Press Start 2P' !default;
 $font-size: 16px !default;
 
 $base-color: $color-black !default;
@@ -11,47 +11,47 @@ $cursor-click-url: url(../assets/images/cursor-click.png) 14 0 !default;
 $border-size: 4px !default;
 
 $default-colors: (
-  normal: $background-color,
+ normal: $background-color,
   hover: #e7e7e7,
   shadow: #adafbc
 ) !default;
 $disabled-colors: (
   normal: #d3d3d3,
-  shadow: #adafbc
+  shadow: #adafbc,
 ) !default;
 $primary-colors: (
-  normal: #F77704,
+  normal: #f77704,
   hover: #f47a0f,
-  shadow: #dd6904
+  shadow: #dd6904,
 ) !default;
 $secondary1-colors: (
-  normal: #0044CC,
+  normal: #0044cc,
   hover: #0a4aca,
-  shadow: #023bab
+  shadow: #023bab,
 ) !default;
 $secondary2-colors: (
-  normal: #00CC55,
+  normal: #00cc55,
   hover: #0dca5c,
-  shadow: #01af4a
+  shadow: #01af4a,
 ) !default;
 $secondary3-colors: (
-  normal: #AA33CC,
+  normal: #aa33cc,
   hover: #a941c5,
-  shadow: #902bac
+  shadow: #902bac,
 ) !default;
 $success-colors: (
   normal: #92cc41,
   hover: #76c442,
-  shadow: #4aa52e
+  shadow: #4aa52e,
 ) !default;
 $warning-colors: (
   normal: #f7d51d,
   hover: #f2c409,
-  shadow: #e59400
+  shadow: #e59400,
 ) !default;
 $error-colors: (
   normal: #e76e55,
   hover: #ce372b,
-  shadow: #8c2022
+  shadow: #8c2022,
 ) !default;
 $gutter: 15px;
