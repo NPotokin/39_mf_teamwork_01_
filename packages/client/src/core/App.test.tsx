@@ -21,7 +21,7 @@ global.fetch = jest.fn(() =>
   Promise.resolve({ json: () => Promise.resolve({ message: 'Success' }) })
 )
 
-test.skip('renders home page component for "/" route', async () => {
+test('renders home page component for "/" route', async () => {
   render(<App />)
 
   const homePageElement = await screen.findByText(/WELCOME/i)
