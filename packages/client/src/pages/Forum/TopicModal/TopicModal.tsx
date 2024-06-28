@@ -1,6 +1,7 @@
-import { Input, Modal } from 'antd'
+import { Input, Modal, Form } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, useEffect } from 'react'
+
 type TopicModalProps = {
   visible: boolean
   topicName: string
@@ -19,29 +20,65 @@ const TopicModal: FC<TopicModalProps> = ({
   onCancel,
   onTopicNameChange,
   onTopicContentChange,
-}) => (
-  <Modal
-    title="New Topic"
-    okText="Add"
-    open={visible}
-    onOk={onOk}
-    okButtonProps={{
-      className: 'nes-btn is-secondary1',
-    }}
-    cancelButtonProps={{
-      className: 'nes-btn is-necessary',
-    }}
-    onCancel={onCancel}>
-    <Input
-      placeholder="Enter new topic name"
-      value={topicName}
-      onChange={onTopicNameChange}
-    />
-    <TextArea
-      placeholder="Enter new topic content"
-      value={topicContent}
-      onChange={onTopicContentChange}
-    />
-  </Modal>
-)
+}) => {
+  const [form] = Form.useForm()
+  useEffect(() => {
+    if (visible) {
+      form.setFieldsValue({ topicContent, topicName })
+    }
+  }, [visible, topicContent, topicName, form])
+
+  // Проверка заполненности полей
+  const isFieldsFilled = () => {
+    const values = form.getFieldsValue()
+    return values.topicName && values.topicContent
+  }
+
+  return (
+    <Modal
+      title="New Topic"
+      okText="Add"
+      open={visible}
+      onOk={() => {
+        if (isFieldsFilled()) {
+          onOk()
+        }
+      }}
+      okButtonProps={{
+        className: 'nes-btn is-secondary1',
+        disabled: !isFieldsFilled(), // Блокируем кнопку, если поля не заполнены
+      }}
+      cancelButtonProps={{
+        className: 'nes-btn is-necessary',
+      }}
+      onCancel={onCancel}>
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={{ topicName, topicContent }}>
+        <Form.Item
+          name="topicName"
+          rules={[{ required: true, message: 'Please enter the topic name' }]}>
+          <Input
+            placeholder="Enter new topic name"
+            value={topicName}
+            onChange={onTopicNameChange}
+          />
+        </Form.Item>
+        <Form.Item
+          name="topicContent"
+          rules={[
+            { required: true, message: 'Please enter the topic content' },
+          ]}>
+          <TextArea
+            placeholder="Enter new topic content"
+            value={topicContent}
+            onChange={onTopicContentChange}
+          />
+        </Form.Item>
+      </Form>
+    </Modal>
+  )
+}
+
 export default TopicModal
