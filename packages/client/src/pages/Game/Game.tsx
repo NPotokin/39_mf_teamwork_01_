@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
-import styles from './Game.module.scss'
+import { Layout } from 'antd'
+import classNames from 'classnames'
+
 import { Constants } from './constants'
 import pandaStart from '@images/panda_start.svg'
 import pandaWin from '@images/panda_win.svg'
@@ -7,7 +9,8 @@ import pandaLost from '@images/panda_over.svg'
 import pumpkin from '@images/pumpkin.png'
 import tiger from '@images/tiger.png'
 import rock from '@images/rock.png'
-import { GameModal } from '@/components'
+import { GameModal, Header, Footer } from '@/components'
+import styles from './Game.module.scss'
 
 const Game: React.FC = () => {
   // Канвас и препятствия
@@ -26,6 +29,7 @@ const Game: React.FC = () => {
   const [isStartModalVisible, setIsStartModalVisible] = useState(true)
   const [isGameOverVisible, setIsGameOverVisible] = useState(false)
   const [isGameWinVisible, setIsGameWinVisible] = useState(false)
+  const [isGameActive, setIsGameActive] = useState(false)
 
   // Стейты скора игры
   const [time, setTime] = useState(0)
@@ -154,6 +158,7 @@ const Game: React.FC = () => {
     setTime(0)
     setGems(Constants.gems.startPositions)
     setEnemies(Constants.enemy.startPositions)
+    setIsGameActive(true)
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
@@ -162,6 +167,7 @@ const Game: React.FC = () => {
 
   const handleVictory = () => {
     setIsGameWinVisible(true)
+    setIsGameActive(false)
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -169,6 +175,7 @@ const Game: React.FC = () => {
 
   const handleDefeat = () => {
     setIsGameOverVisible(true)
+    setIsGameActive(false)
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -177,6 +184,9 @@ const Game: React.FC = () => {
   // Хэндлер позиций игрока и врагов
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      if (!isGameActive) return
+      const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
+      if (!validKeys.includes(event.key)) return
       setPlayerPosition(prev => {
         let { x, y } = prev
         const step = Constants.player.step
@@ -340,47 +350,51 @@ const Game: React.FC = () => {
   }, [handleKeyDown])
 
   return (
-    <div className={styles.game}>
-      {/* Игра */}
-      <div className={styles.canvas}>
-        <div>Steps: {steps}</div>
-        <div>Time: {time}</div>
-        <canvas
-          ref={canvasRef}
-          width={canvasSize.width}
-          height={canvasSize.height}
+    <Layout>
+      <div className={classNames(styles.game, 'page')}>
+        <Header />
+        {/* Игра */}
+        <div className={styles.canvas}>
+          <div>Steps: {steps}</div>
+          <div>Time: {time}</div>
+          <canvas
+            ref={canvasRef}
+            width={canvasSize.width}
+            height={canvasSize.height}
+          />
+        </div>
+
+        {/* Модалка старта */}
+        <GameModal
+          visible={isStartModalVisible}
+          imageSrc={pandaStart}
+          title={'Start the game'}
+          subtitle={'Are you ready?'}
+          onYesClick={handleStartModalButton}
+        />
+
+        {/* Модалка победы */}
+        <GameModal
+          visible={isGameWinVisible}
+          imageSrc={pandaWin}
+          titleClass={'nes-text is-success'}
+          title={'You Win!'}
+          subtitle={'Play again?'}
+          onYesClick={handleStartModalButton}
+        />
+
+        {/* Модалка фиаско */}
+        <GameModal
+          visible={isGameOverVisible}
+          imageSrc={pandaLost}
+          titleClass={'nes-text is-warning'}
+          title={'Game Over'}
+          subtitle={'Play again?'}
+          onYesClick={handleStartModalButton}
         />
       </div>
-
-      {/* Модалка старта */}
-      <GameModal
-        visible={isStartModalVisible}
-        imageSrc={pandaStart}
-        title={'Start the game'}
-        subtitle={'Are you ready?'}
-        onYesClick={handleStartModalButton}
-      />
-
-      {/* Модалка победы */}
-      <GameModal
-        visible={isGameWinVisible}
-        imageSrc={pandaWin}
-        titleClass={'nes-text is-success'}
-        title={'You Win!'}
-        subtitle={'Play again?'}
-        onYesClick={handleStartModalButton}
-      />
-
-      {/* Модалка фиаско */}
-      <GameModal
-        visible={isGameOverVisible}
-        imageSrc={pandaLost}
-        titleClass={'nes-text is-warning'}
-        title={'Game Over'}
-        subtitle={'Play again?'}
-        onYesClick={handleStartModalButton}
-      />
-    </div>
+      <Footer />
+    </Layout>
   )
 }
 

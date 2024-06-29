@@ -19,3 +19,7 @@
     color: map_get($disabled-colors, "normal");
   }
 }
+
+.is-active {
+  color: map-get($primary-colors, "normal");
+}

@@ -1,0 +1,65 @@
+.page {
+  justify-content: center;
+  background-image: url('src/assets/images/bg.jpg');
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  margin: auto;
+  height: 90vh;
+  max-height: 70rem;
+  background: var(--component-bg);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  padding: 30px 24px 50px;
+
+  @media screen and (min-width: 567px) {
+    width: 25rem;
+    min-width: 25rem;
+  }
+}
+
+.form-wrapper {
+  height: 75%;
+}
+
+.form {
+  height: 100%;
+}
+
+.logo {
+  text-align: center;
+  padding: 1rem 0;
+
+  img {
+    width: 25%;
+  }
+}
+
+.title {
+  margin: 0 0 30px;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.text {
+  display: block;
+  margin: 5px 0;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-around;
+  text-align: center;
+  padding-top: 20px;
+}
+
+@supports (background-image: url(@images/bg.webp)) {
+  .page {
+    background-image: url(@images/bg.webp);
+  }
+}

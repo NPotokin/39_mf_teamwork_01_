@@ -20,7 +20,7 @@ const NotFoundPage = () => {
         </h1>
         <h1 className={styles.pageError__header}>page not found</h1>
         <Button
-          className={cn(styles['pageError__btn'])}
+          className={cn(styles['pageError__btn'], 'nes-btn is-warning')}
           onClick={() => navigate(RoutePath.HOME)}>
           Go home
         </Button>

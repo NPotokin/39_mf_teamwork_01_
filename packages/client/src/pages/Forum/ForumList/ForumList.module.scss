@@ -1,38 +1,11 @@
-.forums{
-	padding-top: 1em;
-		
-		&__header{
-			text-align: center;
-			font-size: 16px;
-			color: #fff;
-			z-index: 2;
-			position: relative;
-		
-		}
-		&__table{
-			width: 970px;
-	
-			margin: 20px auto;
-			border-radius: 10px;
-			overflow: hidden;
-			z-index: 2;
-			position: relative;
-			border-radius: 5px;
-			opacity: 80%;
-		}
-		&__link{
-			&-home{
-				z-index: 2;
-			}
-		}
-		&__btn{
-			text-align: center;
-		
-			&-games{
-				z-index: 2;
-			}
-			&-comments{
-				z-index: 2;
-			}
-		}
-	}
+.forums {
+  &__table {
+    width: 970px;
+    margin: auto;
+    position: relative;
+  }
+  &__btn {
+    text-align: center;
+    margin-top: 1em;
+  }
+}

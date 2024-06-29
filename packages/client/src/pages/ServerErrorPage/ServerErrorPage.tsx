@@ -4,9 +4,22 @@ import { Button } from 'antd'
 import panda500 from '@images/panda500.svg'
 import { useNavigate } from 'react-router'
 import { RoutePath } from '@/core/Routes.enum'
+import { FC } from 'react'
 
-const ServerErrorPage = () => {
+type Props = {
+  resetErrorBoundary?: () => void
+}
+
+const ServerErrorPage: FC<Props> = ({ resetErrorBoundary }) => {
   const navigate = useNavigate()
+
+  const handleClick = () => {
+    if (resetErrorBoundary) {
+      resetErrorBoundary()
+    }
+    navigate(RoutePath.HOME)
+  }
+
   return (
     <div className={cn(styles.wrapper, 'page')}>
       <div className={styles.pageError}>
@@ -21,8 +34,8 @@ const ServerErrorPage = () => {
         </h1>
         <h1 className={styles.pageError__header}>we’ll fix it soon</h1>
         <Button
-          className={cn(styles['pageError__btn'])}
-          onClick={() => navigate(RoutePath.HOME)}>
+          className={cn(styles['pageError__btn'], 'nes-btn is-warning')}
+          onClick={handleClick}>
           Go home
         </Button>
       </div>

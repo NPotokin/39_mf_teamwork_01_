@@ -59,7 +59,7 @@
   &:focus {
     outline: 0;
   }
-
+  &:disabled,
   &.is-disabled,
   &.is-disabled:hover,
   &.is-disabled:focus {
