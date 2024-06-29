@@ -1,6 +1,6 @@
 import { Input, Modal, Form } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { ChangeEvent, FC, useEffect } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 
 type TopicModalProps = {
   visible: boolean
@@ -22,15 +22,27 @@ const TopicModal: FC<TopicModalProps> = ({
   onTopicContentChange,
 }) => {
   const [form] = Form.useForm()
+  const [isFullFields, setIsFullFields] = useState(false)
   useEffect(() => {
     if (visible) {
       form.setFieldsValue({ topicContent, topicName })
+      const values = form.getFieldsValue()
+
+      if (values.topicName.length > 0 && values.topicContent.length > 0) {
+        setIsFullFields(true)
+      } else if (
+        values.topicName.length <= 0 ||
+        values.topicContent.length <= 0
+      ) {
+        setIsFullFields(false)
+      }
     }
   }, [visible, topicContent, topicName, form])
 
   // Проверка заполненности полей
   const isFieldsFilled = () => {
     const values = form.getFieldsValue()
+
     return values.topicName && values.topicContent
   }
 
@@ -42,11 +54,12 @@ const TopicModal: FC<TopicModalProps> = ({
       onOk={() => {
         if (isFieldsFilled()) {
           onOk()
+          setIsFullFields(false)
         }
       }}
       okButtonProps={{
         className: 'nes-btn is-secondary1',
-        disabled: !isFieldsFilled(), // Блокируем кнопку, если поля не заполнены
+        disabled: !isFullFields, // Блокируем кнопку, если поля не заполнены
       }}
       cancelButtonProps={{
         className: 'nes-btn is-necessary',
@@ -63,6 +76,7 @@ const TopicModal: FC<TopicModalProps> = ({
             placeholder="Enter new topic name"
             value={topicName}
             onChange={onTopicNameChange}
+            className="nes-input"
           />
         </Form.Item>
         <Form.Item
@@ -74,6 +88,7 @@ const TopicModal: FC<TopicModalProps> = ({
             placeholder="Enter new topic content"
             value={topicContent}
             onChange={onTopicContentChange}
+            className="nes-textarea"
           />
         </Form.Item>
       </Form>
