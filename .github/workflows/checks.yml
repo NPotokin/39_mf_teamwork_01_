@@ -22,6 +22,6 @@ jobs:
       - name: Lint
         run: yarn lint
       - name: Unit test
-        run: yarn test:jest
+        run: yarn test
       - name: E2E test
-        run: yarn test:e2e:ci
+        run: yarn test:e2e
