@@ -4,5 +4,5 @@ export const userData = {
   login: 'john_doe',
   email: 'join@gmail.com',
   phone: '+1234567890',
-  avatar: 'https://i.pravatar.cc/150?img=68',
+  avatar: '',
 }

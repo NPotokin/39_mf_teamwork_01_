@@ -14,10 +14,12 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ onChange, preview }) => {
     : {}
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const target = event.target
+    const file = target.files?.[0]
     if (file) {
       onChange && onChange(file)
     }
+    target.value = ''
   }
 
   return (

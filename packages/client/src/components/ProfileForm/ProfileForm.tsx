@@ -32,13 +32,25 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onCancel }) => {
     string | ArrayBuffer | null
   >(null)
 
+  const [file, setFile] = useState<File | null>(null)
+
   const onChangeAvatar = (file: File) => {
     const reader = new FileReader()
     reader.onloadend = () => {
       setUploadPreview(reader.result as string)
     }
     reader.readAsDataURL(file)
-    //TODO: upload file to server
+    setFile(file)
+  }
+
+  const handleSubmit = async (values: ProfileFormValues) => {
+    console.log(JSON.stringify(values, null, 2))
+    const formData = new FormData()
+    if (file) {
+      formData.append('avatar', file)
+      //TODO: upload file to server
+    }
+    //TODO: send user data to server
   }
 
   return (
@@ -54,7 +66,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onCancel }) => {
           { setSubmitting }: FormikHelpers<ProfileFormValues>
         ) => {
           setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2))
+            handleSubmit(values)
             setSubmitting(false)
           }, 500)
         }}>
