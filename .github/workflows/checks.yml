@@ -21,5 +21,7 @@ jobs:
         run: yarn lerna bootstrap
       - name: Lint
         run: yarn lint
-      - name: Test
-        run: yarn test
+      - name: Unit test
+        run: yarn test:jest
+      - name: E2E test
+        run: yarn test:e2e:ci
