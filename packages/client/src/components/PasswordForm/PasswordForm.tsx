@@ -23,6 +23,11 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
     confirm_password: '',
   }
 
+  const handleSubmit = async (values: PasswordFormValues) => {
+    console.log(JSON.stringify(values, null, 2))
+    //TODO: send user data to server
+  }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -35,6 +40,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
       ) => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2))
+          handleSubmit(values)
           setSubmitting(false)
         }, 500)
       }}>
@@ -69,8 +75,14 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
           <AntForm.Item
             name="old_password"
             label="Old Password"
-            validateStatus={touched.password && errors.password ? 'error' : ''}
-            help={touched.password && errors.password ? errors.password : ''}>
+            validateStatus={
+              touched.old_password && errors.old_password ? 'error' : ''
+            }
+            help={
+              touched.old_password && errors.old_password
+                ? errors.old_password
+                : ''
+            }>
             <Input.Password
               className="nes-input"
               name="old_password"
