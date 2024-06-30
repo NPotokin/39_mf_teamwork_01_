@@ -28,7 +28,12 @@
 
 Для клиента используется [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro/)
 
-```yarn test```
+```yarn test:jest```
+
+Для E2E тестов используется библиотека cypress
+
+```yarn test:e2e:ci``` - headless
+```yarn test:e2e:open``` - headful
 
 ### Линтинг
 
