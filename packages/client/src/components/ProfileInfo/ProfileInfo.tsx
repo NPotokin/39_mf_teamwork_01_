@@ -1,5 +1,5 @@
-import classNames from 'classnames'
-
+import { RESOURCE_URL } from '@/lib/constants'
+import holder from '@images/logo_sm.svg'
 import styles from './ProfileInfo.module.scss'
 
 type ProfileInfoProps = {
@@ -18,32 +18,37 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   phone,
   email,
   avatar,
-}) => (
-  <>
-    <div className={styles.card}>
-      <div className={styles.person}>
-        <img className={styles.avatar} src={avatar} alt="avatar" />
-        <span className={styles.info}>
-          <span>
-            {firstName}
-            {secondName}
+}) => {
+  console.log(avatar)
+  const avatarSrc = avatar ? `${RESOURCE_URL}${avatar}` : holder
+
+  return (
+    <>
+      <div className={styles.card}>
+        <div className={styles.person}>
+          <img className={styles.avatar} src={avatarSrc} alt="avatar" />
+          <span className={styles.info}>
+            <span>
+              {firstName}
+              {secondName}
+            </span>
+            <a className={styles.link} href={`mailto:${email}`}>
+              {email}
+            </a>
           </span>
-          <a className={styles.link} href={`mailto:${email}`}>
-            {email}
+        </div>
+        <p>
+          <span className={styles.title}>Login</span>: {login}
+        </p>
+        <p>
+          <span className={styles.title}>Phone</span>:{' '}
+          <a className={styles.link} href={`tel:${phone}`}>
+            {phone}
           </a>
-        </span>
+        </p>
       </div>
-      <p>
-        <span className={styles.title}>Login</span>: {login}
-      </p>
-      <p>
-        <span className={styles.title}>Phone</span>:{' '}
-        <a className={styles.link} href={`tel:${phone}`}>
-          {phone}
-        </a>
-      </p>
-    </div>
-  </>
-)
+    </>
+  )
+}
 
 export default ProfileInfo

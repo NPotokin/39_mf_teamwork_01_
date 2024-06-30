@@ -22,6 +22,12 @@ export interface ICreateUser
   password: string
 }
 
+export interface IUpdateUser extends Omit<IUserInfo, 'avatar' | 'id'> {
+  password: string
+}
+
+export type IUpdateUserResponse = Omit<IUserInfo, 'avatar'>
+
 export interface IUpdatePassword {
   oldPassword: string
   newPassword: string

@@ -5,7 +5,7 @@ import { errorMessages } from './errorMessages'
  * Regular expression for validating login.
  * Requires the login to be 3 to 20 characters long, allowing letters, numbers, underscores, and hyphens.
  */
-const loginRegex = /^[a-zA-Z]+$/
+const loginRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9-_]{3,20}$/
 
 /**
  * Regular expression for checking if the string consists only of digits.
