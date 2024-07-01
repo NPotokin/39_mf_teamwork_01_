@@ -9,7 +9,7 @@ import { RoutePath } from '@/core/Routes.enum'
 import { Menu } from '@/components/Menu'
 import { Logo } from '@/components/Logo'
 import { MenuMobile } from '@/components/MenuMobile'
-
+import { ThemeToggle } from '@/components/ThemeToggle'
 import styles from './Header.module.scss'
 
 const Header = () => {
@@ -36,6 +36,7 @@ const Header = () => {
           Play now
         </Link>
       </div>
+      <ThemeToggle className={styles.theme} />
       <Button
         className={classNames(styles.burger, 'burger-button')}
         type="link"

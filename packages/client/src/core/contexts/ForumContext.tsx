@@ -1,9 +1,9 @@
-import React, {
+import {
   createContext,
   useState,
   FC,
-  ReactNode,
   useContext,
+  PropsWithChildren,
 } from 'react'
 
 export type Comment = {
@@ -33,7 +33,7 @@ export const ForumContext = createContext<ForumContextType | undefined>(
   undefined
 )
 
-export const ForumProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const ForumProvider: FC<PropsWithChildren> = ({ children }) => {
   const [dataSource, setDataSource] = useState<Topic[]>([])
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null)
   const [selectedComments, setSelectedComments] = useState<Comment[]>([])

@@ -4,19 +4,7 @@ import '@testing-library/jest-dom'
 import TopicDetails from '../TopicDetails'
 import { mockData } from '../../mockData'
 import { MemoryRouter } from 'react-router'
-
-beforeAll(() => {
-  window.matchMedia = jest.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  }))
-})
+import { ThemeProvider } from '@/core/contexts'
 
 const commentsColumns = [
   {
@@ -33,31 +21,34 @@ const selectedComments = mockData[0].comments
 describe('TopicDetails', () => {
   it('renders leader', () => {
     const { getByText } = render(
-      <MemoryRouter>
-        {' '}
-        <TopicDetails
-          selectedTopic={selectedTopic}
-          selectedComments={selectedComments}
-          commentsColumns={commentsColumns}
-          onBack={onBack}
-          showCommentModal={showCommentModal}
-        />
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter>
+          <TopicDetails
+            selectedTopic={selectedTopic}
+            selectedComments={selectedComments}
+            commentsColumns={commentsColumns}
+            onBack={onBack}
+            showCommentModal={showCommentModal}
+          />
+        </MemoryRouter>
+      </ThemeProvider>
     )
 
     expect(getByText(selectedTopic.name)).toBeInTheDocument()
   })
   it('renders Back button,  Add Comment button and navigates on click', () => {
     const { getByText } = render(
-      <MemoryRouter>
-        <TopicDetails
-          selectedTopic={selectedTopic}
-          selectedComments={selectedComments}
-          commentsColumns={commentsColumns}
-          onBack={onBack}
-          showCommentModal={showCommentModal}
-        />
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter>
+          <TopicDetails
+            selectedTopic={selectedTopic}
+            selectedComments={selectedComments}
+            commentsColumns={commentsColumns}
+            onBack={onBack}
+            showCommentModal={showCommentModal}
+          />
+        </MemoryRouter>
+      </ThemeProvider>
     )
     const backBtn = getByText('Back')
     const addCommentBtn = getByText('Add Comment')
