@@ -2,16 +2,23 @@ import {
   createContext,
   useContext,
   useState,
-  ReactNode,
   useEffect,
+  PropsWithChildren,
 } from 'react'
 import { ConfigProvider } from 'antd'
 
 import { darkTheme, lightTheme } from '@/core/theme'
 
+type ThemeType = 'light' | 'dark'
+
 type ThemeContextType = {
-  theme: 'light' | 'dark'
+  theme: ThemeType
   toggleTheme: () => void
+}
+
+const themeMap = {
+  light: lightTheme,
+  dark: darkTheme,
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
@@ -24,12 +31,8 @@ export const useTheme = () => {
   return context
 }
 
-type ThemeProviderProps = {
-  children: ReactNode
-}
-
-export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [theme, setTheme] = useState<ThemeType>('light')
   useEffect(() => {
     document.body.setAttribute('data-theme', theme)
     //TODO: send newTheme to the server
@@ -41,9 +44,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <ConfigProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-        {children}
-      </ConfigProvider>
+      <ConfigProvider theme={themeMap[theme]}>{children}</ConfigProvider>
     </ThemeContext.Provider>
   )
 }
