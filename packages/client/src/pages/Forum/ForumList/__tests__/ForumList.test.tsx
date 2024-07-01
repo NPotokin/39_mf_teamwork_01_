@@ -3,19 +3,7 @@ import '@testing-library/jest-dom'
 import ForumList from '../ForumList'
 import { mockData } from '../../mockData'
 import { MemoryRouter } from 'react-router-dom'
-
-beforeAll(() => {
-  window.matchMedia = jest.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  }))
-})
+import { ThemeProvider } from '@/core/contexts'
 
 const columnsForumList = [
   {
@@ -32,13 +20,15 @@ const columnsForumList = [
 describe('ForumList', () => {
   it('renders leader', () => {
     const { getByText } = render(
-      <MemoryRouter>
-        <ForumList
-          dataSource={mockData}
-          columns={columnsForumList}
-          showModal={jest.fn}
-        />
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter>
+          <ForumList
+            dataSource={mockData}
+            columns={columnsForumList}
+            showModal={jest.fn}
+          />
+        </MemoryRouter>
+      </ThemeProvider>
     )
 
     expect(getByText('COMMENTS')).toBeInTheDocument()
@@ -46,13 +36,15 @@ describe('ForumList', () => {
   it('renders Back button and navigates on click', () => {
     const showModalForumList = jest.fn()
     const { getByText } = render(
-      <MemoryRouter>
-        <ForumList
-          dataSource={mockData}
-          columns={columnsForumList}
-          showModal={showModalForumList}
-        />
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter>
+          <ForumList
+            dataSource={mockData}
+            columns={columnsForumList}
+            showModal={showModalForumList}
+          />
+        </MemoryRouter>
+      </ThemeProvider>
     )
 
     const addTopicBtn = getByText('Add Topic')

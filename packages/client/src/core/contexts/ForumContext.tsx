@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  FC,
-  ReactNode,
-  useContext,
-} from 'react'
+import { createContext, useState, FC, ReactNode, useContext } from 'react'
 
 export type Comment = {
   key: string
