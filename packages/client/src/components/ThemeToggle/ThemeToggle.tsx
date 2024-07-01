@@ -1,5 +1,4 @@
 import { Button } from 'antd'
-import classNames from 'classnames'
 import { MoonOutlined, SunOutlined } from '@ant-design/icons'
 
 import { useTheme } from '@/core/contexts'
