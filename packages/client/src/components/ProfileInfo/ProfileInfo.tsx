@@ -19,7 +19,6 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   email,
   avatar,
 }) => {
-  console.log(avatar)
   const avatarSrc = avatar ? `${RESOURCE_URL}${avatar}` : holder
 
   return (

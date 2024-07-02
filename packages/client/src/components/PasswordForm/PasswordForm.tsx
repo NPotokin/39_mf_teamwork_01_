@@ -39,7 +39,6 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
         { setSubmitting }: FormikHelpers<PasswordFormValues>
       ) => {
         setTimeout(() => {
-          console.log(JSON.stringify(values, null, 2))
           handleSubmit(values)
           setSubmitting(false)
         }, 500)

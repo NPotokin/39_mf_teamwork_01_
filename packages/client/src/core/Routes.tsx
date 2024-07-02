@@ -17,7 +17,7 @@ import {
   NotFoundPage,
   ServerErrorPage,
 } from '@/pages'
-import { ForumProvider } from '@/context/ForumContext'
+import { ForumProvider } from '@/core/contexts'
 
 const routes: RouteObject[] = [
   {
