@@ -2,26 +2,16 @@ import { render } from '@testing-library/react'
 import LeaderBoard from '../LeaderBoard'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router'
-
-beforeAll(() => {
-  window.matchMedia = jest.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  }))
-})
+import { ThemeProvider } from '@/core/contexts'
 
 describe('LeaderBoard', () => {
   it('renders leader', () => {
     const { getByText } = render(
-      <MemoryRouter>
-        <LeaderBoard />
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter>
+          <LeaderBoard />
+        </MemoryRouter>
+      </ThemeProvider>
     )
 
     expect(getByText('SCORE')).toBeInTheDocument()

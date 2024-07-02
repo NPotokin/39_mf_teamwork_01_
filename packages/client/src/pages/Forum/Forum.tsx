@@ -8,7 +8,7 @@ import ForumList from './ForumList/ForumList'
 import TopicDetails from './TopicDetails/TopicDetails'
 import styles from './Forum.module.scss'
 import cn from 'classnames'
-import { useForum } from '@/context/ForumContext'
+import { useForum } from '@/core/contexts'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 
