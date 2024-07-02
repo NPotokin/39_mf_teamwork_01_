@@ -10,7 +10,7 @@ import { RoutePath } from '@/core/Routes.enum'
 import { Menu } from '@/components/Menu'
 import { Logo } from '@/components/Logo'
 import { MenuMobile } from '@/components/MenuMobile'
-
+import { ThemeToggle } from '@/components/ThemeToggle'
 import styles from './Header.module.scss'
 
 const Header = () => {
@@ -26,7 +26,7 @@ const Header = () => {
   }
 
   const handleLogout = () => {
-    logout()
+    //TODO: logout logic
     navigate(RoutePath.SIGN_IN)
   }
 
@@ -43,6 +43,7 @@ const Header = () => {
           Play now
         </Link>
       </div>
+      <ThemeToggle className={styles.theme} />
       <Button
         type="link"
         className={classNames(styles.logout)}
