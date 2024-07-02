@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from 'antd'
 import { Header as AntHeader } from 'antd/lib/layout/layout'
-import { CloseOutlined, MenuOutlined } from '@ant-design/icons'
+import { CloseOutlined, MenuOutlined, LogoutOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 
 import { RoutePath } from '@/core/Routes.enum'
@@ -14,6 +14,7 @@ import styles from './Header.module.scss'
 
 const Header = () => {
   const [visible, setVisible] = useState(false)
+  const navigate = useNavigate()
 
   const toggleMenu = () => {
     setVisible(!visible)
@@ -21,6 +22,11 @@ const Header = () => {
 
   const onClose = () => {
     setVisible(false)
+  }
+
+  const handleLogout = () => {
+    //TODO: logout logic
+    navigate(RoutePath.SIGN_IN)
   }
 
   return (
@@ -37,6 +43,12 @@ const Header = () => {
         </Link>
       </div>
       <ThemeToggle className={styles.theme} />
+      <Button
+        type="link"
+        className={classNames(styles.logout)}
+        onClick={handleLogout}>
+        <LogoutOutlined />
+      </Button>
       <Button
         className={classNames(styles.burger, 'burger-button')}
         type="link"

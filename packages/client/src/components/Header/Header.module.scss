@@ -23,13 +23,14 @@
 .button {
   height: 32px;
   padding: 0 10px !important;
-  line-height: 28px;
+  line-height: 26px;
   font-size: 0.85rem;
 }
 
 .close,
 .burger,
-.theme {
+.theme,
+.logout {
   color: var(--light);
 
   &:hover {
@@ -42,8 +43,7 @@
   }
 }
 
-.theme {
-  margin: 0 1rem;
+.theme, .logout {
   font-size: 1.85rem;
 }
 
