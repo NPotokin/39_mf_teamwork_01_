@@ -5,7 +5,6 @@ import { Header as AntHeader } from 'antd/lib/layout/layout'
 import { CloseOutlined, MenuOutlined, LogoutOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 
-import { logout } from '@/core/services/auth.service'
 import { RoutePath } from '@/core/Routes.enum'
 import { Menu } from '@/components/Menu'
 import { Logo } from '@/components/Logo'
