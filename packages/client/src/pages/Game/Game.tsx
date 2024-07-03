@@ -12,6 +12,8 @@ import rock from '@images/rock.png'
 import { GameModal, Header, Footer } from '@/components'
 import styles from './Game.module.scss'
 
+import useSound from '@/lib/hooks/useSound'
+
 const Game: React.FC = () => {
   // Канвас и препятствия
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -23,6 +25,16 @@ const Game: React.FC = () => {
       height: Constants.canvas.height,
     }),
     []
+  )
+
+  // Музыкальное сопровождение
+  const { playSound: playDefeatSound } = useSound('sounds/defeat.ogg')
+  const { playSound: playVictorySound } = useSound('sounds/victory.ogg')
+  const { playSound: playGemSound } = useSound('sounds/gem.ogg')
+  const { playSound: playGameSound, stopSound: stopGameSound } = useSound(
+    'sounds/game.ogg',
+    0.2,
+    true
   )
 
   // Стейты модалок
@@ -159,6 +171,7 @@ const Game: React.FC = () => {
     setGems(Constants.gems.startPositions)
     setEnemies(Constants.enemy.startPositions)
     setIsGameActive(true)
+    playGameSound()
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
@@ -168,6 +181,8 @@ const Game: React.FC = () => {
   const handleVictory = () => {
     setIsGameWinVisible(true)
     setIsGameActive(false)
+    stopGameSound()
+    playVictorySound()
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -176,6 +191,8 @@ const Game: React.FC = () => {
   const handleDefeat = () => {
     setIsGameOverVisible(true)
     setIsGameActive(false)
+    stopGameSound()
+    playDefeatSound()
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -244,6 +261,11 @@ const Game: React.FC = () => {
               y + Constants.player.height > gem.y
             )
         )
+
+        if (newGems.length !== gems.length) {
+          playGemSound()
+        }
+
         setGems(newGems)
 
         if (newGems.length === 0) {
