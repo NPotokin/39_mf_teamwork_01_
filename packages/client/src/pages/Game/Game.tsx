@@ -55,7 +55,7 @@ const Game: React.FC = () => {
     Constants.gems.startPositions
   )
   const [enemies, setEnemies] = useState<{ x: number; y: number }[]>(
-    Constants.enemy.startPositions
+    Constants.enemy.startPositions.easy
   )
 
   // Пре-прогружаем картинки - иначе RAF не отрабатывает
@@ -169,7 +169,7 @@ const Game: React.FC = () => {
     setSteps(1) // хак, чтоб не прогружалось пустое поле
     setTime(0)
     setGems(Constants.gems.startPositions)
-    setEnemies(Constants.enemy.startPositions)
+    // setEnemies(Constants.enemy.startPositions.easy)
     setIsGameActive(true)
     playGameSound()
 
@@ -196,6 +196,16 @@ const Game: React.FC = () => {
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
+  }
+
+  const handleEasyModeOn = () => {
+    setEnemies(Constants.enemy.startPositions.easy)
+  }
+  const handleModerateModeOn = () => {
+    setEnemies(Constants.enemy.startPositions.moderate)
+  }
+  const handleHardModeOn = () => {
+    setEnemies(Constants.enemy.startPositions.hard)
   }
 
   // Хэндлер позиций игрока и врагов
@@ -379,6 +389,11 @@ const Game: React.FC = () => {
         <div className={styles.canvas}>
           <div>Steps: {steps}</div>
           <div>Time: {time}</div>
+          <div className="button">
+            <button onClick={handleEasyModeOn}>Easy</button>
+            <button onClick={handleModerateModeOn}>Moderate</button>
+            <button onClick={handleHardModeOn}>Hard</button>
+          </div>
           <canvas
             ref={canvasRef}
             width={canvasSize.width}

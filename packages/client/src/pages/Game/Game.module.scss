@@ -15,6 +15,11 @@
     justify-content: center;
     align-items: center;
   }
+
+  .button {
+    display: flex;
+    flex-direction: column;
+  }
   
  @supports (background-image: url(@images/bg.webp)) {
   .game {
