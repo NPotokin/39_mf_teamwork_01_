@@ -16,7 +16,7 @@ import useSound from '@/lib/hooks/useSound'
 
 const Game: React.FC = () => {
   // Канвас и препятствия
-  const [level, setLevel] = useState(Constants.levelThree)
+  const [level, setLevel] = useState(Constants.levelOne)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const obstacles = useMemo(() => level.obstacles.startPositions, [])
@@ -199,15 +199,15 @@ const Game: React.FC = () => {
     }
   }
   // Хэндлеры уровня сложности
-  // const handleEasyModeOn = () => {
-  //   setEnemies(level.enemy.startPositions.easy)
-  // }
-  // const handleModerateModeOn = () => {
-  //   setEnemies(level.enemy.startPositions.moderate)
-  // }
-  // const handleHardModeOn = () => {
-  //   setEnemies(level.enemy.startPositions.hard)
-  // }
+  const handleEasyModeOn = () => {
+    setEnemies(level.enemy.startPositions.easy)
+  }
+  const handleModerateModeOn = () => {
+    setEnemies(level.enemy.startPositions.moderate)
+  }
+  const handleHardModeOn = () => {
+    setEnemies(level.enemy.startPositions.hard)
+  }
 
   // Хэндлер позиций игрока и врагов
   const handleKeyDown = useCallback(
