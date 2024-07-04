@@ -209,6 +209,17 @@ const Game: React.FC = () => {
     setEnemies(level.enemy.startPositions.hard)
   }
 
+  // Хэндлеры уровня игры
+  const handlelevelOne = () => {
+    setLevel(Constants.levelOne)
+  }
+  const handlelevelTwo = () => {
+    setLevel(Constants.levelTwo)
+  }
+  const handlelevelThree = () => {
+    setLevel(Constants.levelThree)
+  }
+
   // Хэндлер позиций игрока и врагов
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
