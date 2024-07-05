@@ -9,7 +9,9 @@ import {
 import axiosDB from './api'
 
 export default class AuthApi {
-  public create(data: ICreateUser): Promise<AxiosResponse<ISignUpResponse>> {
+  public create(
+    data: ICreateUser
+  ): Promise<AxiosResponse<ISignUpResponse | IAPIError>> {
     return axiosDB.post<ISignUpResponse>('/auth/signup', data)
   }
 
