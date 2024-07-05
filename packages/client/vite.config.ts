@@ -14,10 +14,14 @@ export default defineConfig({
     __API_URL__: `'${process.env.API_URL}'`,
   },
   plugins: [react()],
+  publicDir: 'public',
   resolve: {
     alias: {
       '@': path.resolve('./src'),
       '@images': path.resolve('./src/assets/images'),
     },
+  },
+  build: {
+    manifest: true,
   },
 })
