@@ -27,19 +27,17 @@ const Login = () => {
   const dispatch = useAppDispatch()
   const [signin] = useSigninMutation()
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: Record<string, string>,
     setSubmittingCb: (isSubmitting: boolean) => void
-  ): void => {
-    setTimeout(async () => {
-      const user = await signin(values as LoginForm).unwrap()
+  ): Promise<void> => {
+    const user = await signin(values as LoginForm).unwrap()
 
-      setSubmittingCb(false)
-      if (user) {
-        dispatch(userFetched(user))
-        navigate(RoutePath.HOME)
-      }
-    }, 0)
+    setSubmittingCb(false)
+    if (user) {
+      dispatch(userFetched(user))
+      navigate(RoutePath.HOME)
+    }
   }
 
   const handleSignUpClick = (): void => {

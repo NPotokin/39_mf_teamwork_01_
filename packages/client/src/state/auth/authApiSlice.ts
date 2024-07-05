@@ -1,42 +1,26 @@
-import {
-  ICreateUser,
-  ILoginRequestData,
-  ISignUpResponse,
-  IUserInfo,
-} from '@/core/api/model'
+import { ICreateUser, ILoginRequestData, IUserInfo } from '@/core/api/model'
 import { getUser, signin, logout, signup } from '@/core/services/auth.service'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import axios from 'axios'
+import { baseApi } from '../baseApi'
 
-export const authApiSlice = createApi({
-  reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/ ' }),
+export const authApiSlice = baseApi.injectEndpoints({
   endpoints: build => ({
     signin: build.mutation<IUserInfo | undefined, ILoginRequestData>({
       queryFn: async data => {
-        try {
-          const user = await signin(data)
-          return { data: user }
-        } catch (error: unknown) {
-          return { error }
-        }
+        const user = await signin(data)
+        return { data: user }
       },
     }),
-    signup: build.mutation<ISignUpResponse, ICreateUser>({
+    signup: build.mutation<IUserInfo | undefined, ICreateUser>({
       queryFn: async (data: ICreateUser) => {
-        try {
-          const user = await signup(data)
-          return { data: user }
-        } catch (error: unknown) {
-          const err = axios.isAxiosError(error) ? error.response?.data : error
-          return { error: err }
-        }
+        const user = await signup(data)
+        return { data: user }
       },
     }),
-    logout: build.mutation<void, void>({
+    logout: build.mutation<boolean, void>({
       queryFn: async () => {
-        await logout()
-        return { data: undefined }
+        const result = await logout()
+        return { data: result }
       },
     }),
     getUser: build.mutation<IUserInfo, void>({

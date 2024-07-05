@@ -1,14 +1,8 @@
-import axios, { AxiosResponse } from 'axios'
 import AuthApi from '../api/auth.api'
-import {
-  IAPIError,
-  ICreateUser,
-  ILoginRequestData,
-  ISignUpResponse,
-  IUserInfo,
-} from '../api/model'
+import { ICreateUser, ILoginRequestData, IUserInfo } from '../api/model'
 import { isApiError } from '@/lib/utils/type-check'
 import { showNotification } from './notification.service'
+import { erroInfo } from '@/lib/utils/errorInfo'
 
 const authApi = new AuthApi()
 
@@ -30,28 +24,29 @@ export const signin = async (
 
     return user
   } catch (error: unknown) {
-    console.error(error)
-    if (axios.isAxiosError(error) && isApiError(error.response?.data)) {
-      const message = error.response.data.reason
-      showNotification('error', message)
-    }
+    showNotification('error', erroInfo(error))
   }
 }
 
-export const signup = async (data: ICreateUser): Promise<void> => {
-  const response: AxiosResponse<ISignUpResponse | IAPIError> =
+export const signup = async (
+  data: ICreateUser
+): Promise<IUserInfo | undefined> => {
+  try {
     await authApi.create(data)
-  const responseData: ISignUpResponse = response.data
+    const user = await getUser()
 
-  if (isApiError(responseData)) {
-    throw new Error(responseData.reason)
-  }
-
-  if (responseData.id) {
-    await getUser()
+    return user
+  } catch (error) {
+    showNotification('error', erroInfo(error))
   }
 }
 
-export const logout = async (): Promise<void> => {
-  await authApi.logout()
+export const logout = async (): Promise<boolean> => {
+  try {
+    await authApi.logout()
+    return true
+  } catch (error) {
+    showNotification('error', erroInfo(error))
+    return false
+  }
 }

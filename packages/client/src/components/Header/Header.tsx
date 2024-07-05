@@ -10,10 +10,15 @@ import { Menu } from '@/components/Menu'
 import { Logo } from '@/components/Logo'
 import { MenuMobile } from '@/components/MenuMobile'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { useLogoutMutation } from '@/state/auth/authApiSlice'
+import { useAppDispatch } from '@/lib/hooks/redux'
+import { userReset } from '@/state/user/userSlice'
 import styles from './Header.module.scss'
 
 const Header = () => {
   const [visible, setVisible] = useState(false)
+  const [logout] = useLogoutMutation()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const toggleMenu = () => {
@@ -24,9 +29,14 @@ const Header = () => {
     setVisible(false)
   }
 
-  const handleLogout = () => {
-    //TODO: logout logic
-    navigate(RoutePath.SIGN_IN)
+  const handleLogout = async () => {
+    const success = await logout()
+
+    if (success.data) {
+      // TODO нужно ли сбрасывать весь store, как
+      dispatch(userReset())
+      navigate(RoutePath.SIGN_IN)
+    }
   }
 
   return (
