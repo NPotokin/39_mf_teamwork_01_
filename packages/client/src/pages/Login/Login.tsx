@@ -9,8 +9,8 @@ import { Button } from 'antd'
 import { useNavigate } from 'react-router'
 import { RoutePath } from '@/core/Routes.enum'
 import { useAppDispatch } from '@/lib/hooks/redux'
-import { useSigninMutation } from '@/state/auth/authApiSlice'
-import { userFetched } from '@/state/user/userSlice'
+import { setUser } from '@/state/user/userSlice'
+import { signin } from '@/core/services/auth.service'
 
 const initialValues: LoginForm = {
   login: EMPTY_STRING,
@@ -25,17 +25,16 @@ export type LoginForm = {
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const [signin] = useSigninMutation()
 
   const handleSubmit = async (
     values: Record<string, string>,
     setSubmittingCb: (isSubmitting: boolean) => void
   ): Promise<void> => {
-    const user = await signin(values as LoginForm).unwrap()
+    const user = await signin(values as LoginForm)
 
     setSubmittingCb(false)
     if (user) {
-      dispatch(userFetched(user))
+      dispatch(setUser(user))
       navigate(RoutePath.HOME)
     }
   }

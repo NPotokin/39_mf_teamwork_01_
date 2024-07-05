@@ -10,14 +10,13 @@ import { Menu } from '@/components/Menu'
 import { Logo } from '@/components/Logo'
 import { MenuMobile } from '@/components/MenuMobile'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { useLogoutMutation } from '@/state/auth/authApiSlice'
 import { useAppDispatch } from '@/lib/hooks/redux'
-import { userReset } from '@/state/user/userSlice'
+import { resetUser } from '@/state/user/userSlice'
 import styles from './Header.module.scss'
+import { logout } from '@/core/services/auth.service'
 
 const Header = () => {
   const [visible, setVisible] = useState(false)
-  const [logout] = useLogoutMutation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -32,9 +31,8 @@ const Header = () => {
   const handleLogout = async () => {
     const success = await logout()
 
-    if (success.data) {
-      // TODO нужно ли сбрасывать весь store, как
-      dispatch(userReset())
+    if (success) {
+      dispatch(resetUser())
       navigate(RoutePath.SIGN_IN)
     }
   }
