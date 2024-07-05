@@ -1,9 +1,11 @@
 import { ICreateUser, ILoginRequestData, IUserInfo } from '@/core/api/model'
 import { getUser, signin, logout, signup } from '@/core/services/auth.service'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import axios from 'axios'
-import { baseApi } from '../baseApi'
 
-export const authApiSlice = baseApi.injectEndpoints({
+export const authApiSlice = createApi({
+  reducerPath: 'authApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/ ' }),
   endpoints: build => ({
     signin: build.mutation<IUserInfo | undefined, ILoginRequestData>({
       queryFn: async data => {

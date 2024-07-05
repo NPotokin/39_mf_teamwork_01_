@@ -16,6 +16,7 @@ export const showNotification = (
     description,
     placement,
     showProgress: true,
+    style: { fontFamily: "'Press Start 2P'" },
   }
 
   switch (method) {
