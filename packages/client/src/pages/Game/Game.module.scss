@@ -11,9 +11,16 @@
   
   .canvas {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+	color: var(--white);
+
+	&__score{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
   }
   
  @supports (background-image: url(@images/bg.webp)) {

@@ -13,13 +13,18 @@ import { GameModal, Header, Footer } from '@/components'
 import styles from './Game.module.scss'
 
 import useSound from '@/lib/hooks/useSound'
+import React from 'react'
+import { GameOverModal, WinModal } from './utils/modal'
+import { StartModal } from '../../components/GameModal/StartModal'
+import { useCanvasElements } from './utils/canvasElements'
+import useLoadImages from './utils/useLoadImages'
 
 const Game: React.FC = () => {
   // Канвас и препятствия
   const [level, setLevel] = useState(Constants.levelOne)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
-  const obstacles = useMemo(() => level.obstacles.startPositions, [])
+  const obstacles = level.obstacles.startPositions
   const canvasSize = useMemo(
     () => ({
       width: level.canvas.width,
@@ -34,7 +39,7 @@ const Game: React.FC = () => {
   const { playSound: playGemSound } = useSound('sounds/gem.ogg')
   const { playSound: playGameSound, stopSound: stopGameSound } = useSound(
     'sounds/game.ogg',
-    0.2,
+    0.0,
     true
   )
 
@@ -47,6 +52,7 @@ const Game: React.FC = () => {
   // Стейты скора игры
   const [time, setTime] = useState(0)
   const [steps, setSteps] = useState(0)
+  const [score, setScore] = useState(0)
 
   // Стейты игрока, врагов и кристаллов
   const [playerPosition, setPlayerPosition] = useState(
@@ -55,6 +61,7 @@ const Game: React.FC = () => {
   const [gems, setGems] = useState<{ x: number; y: number }[]>(
     level.gems.startPositions
   )
+
   const [enemies, setEnemies] = useState<{ x: number; y: number }[]>(
     level.enemy.startPositions.hard
   )
@@ -162,7 +169,7 @@ const Game: React.FC = () => {
   )
 
   // Хэндлеры модалок
-  const handleStartModalButton = () => {
+  const resetPositions = () => {
     setIsStartModalVisible(false)
     setIsGameWinVisible(false)
     setIsGameOverVisible(false)
@@ -176,7 +183,34 @@ const Game: React.FC = () => {
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
+      setScore(prevScore => prevScore - 1)
     }, 1000)
+  }
+  // Хэндлеры модалок
+  const handleStartModalButton = (
+    selectedLevel: string,
+    selectedDifficulty: string
+  ) => {
+    resetPositions()
+
+    const levelConfig = Constants[selectedLevel]
+    setLevel(levelConfig)
+    console.log('!!!levelConfig', levelConfig)
+    console.log('!!!selectedDifficulty', selectedDifficulty)
+    setPlayerPosition(levelConfig.player.startPosition)
+    setGems(levelConfig.gems.startPositions)
+    switch (selectedDifficulty) {
+      case 'easy':
+        setEnemies(levelConfig.enemy.startPositions.easy)
+        break
+      case 'moderate':
+        setEnemies(levelConfig.enemy.startPositions.moderate)
+        break
+      case 'hard':
+        setEnemies(levelConfig.enemy.startPositions.hard)
+
+        break
+    }
   }
 
   const handleVictory = () => {
@@ -223,6 +257,7 @@ const Game: React.FC = () => {
   // Хэндлер позиций игрока и врагов
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      event.preventDefault()
       if (!isGameActive) return
       const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
       if (!validKeys.includes(event.key)) return
@@ -286,6 +321,7 @@ const Game: React.FC = () => {
 
         if (newGems.length !== gems.length) {
           playGemSound()
+          setScore(prevScore => prevScore + 100)
         }
 
         setGems(newGems)
@@ -399,8 +435,11 @@ const Game: React.FC = () => {
         <Header />
         {/* Игра */}
         <div className={styles.canvas}>
-          <div>Steps: {steps}</div>
-          <div>Time: {time}</div>
+          <div className={styles.canvas__score}>
+            <div>Steps: {steps}</div>
+            <div>Time: {time}</div>
+            <div>Score: {score}</div>
+          </div>
           <canvas
             ref={canvasRef}
             width={canvasSize.width}
@@ -409,32 +448,23 @@ const Game: React.FC = () => {
         </div>
 
         {/* Модалка старта */}
-        <GameModal
+        <StartModal
           visible={isStartModalVisible}
-          imageSrc={pandaStart}
-          title={'Start the game'}
-          subtitle={'Are you ready?'}
           onYesClick={handleStartModalButton}
         />
 
         {/* Модалка победы */}
-        <GameModal
+        <WinModal
           visible={isGameWinVisible}
-          imageSrc={pandaWin}
-          titleClass={'nes-text is-success'}
-          title={'You Win!'}
-          subtitle={'Play again?'}
-          onYesClick={handleStartModalButton}
+          onYesClick={resetPositions}
+          score={score}
         />
 
         {/* Модалка фиаско */}
-        <GameModal
+        <GameOverModal
           visible={isGameOverVisible}
-          imageSrc={pandaLost}
-          titleClass={'nes-text is-warning'}
-          title={'Game Over'}
-          subtitle={'Play again?'}
-          onYesClick={handleStartModalButton}
+          onYesClick={resetPositions}
+          score={score}
         />
       </div>
       <Footer />

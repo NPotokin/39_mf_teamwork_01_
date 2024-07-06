@@ -6,6 +6,7 @@ import { leaderboardData } from './mockData'
 import { UniversalTable } from '@/components/Table'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import holder from '@images/logo_sm.svg'
 
 export type Comment = {
   key: string
@@ -34,6 +35,8 @@ const LeaderBoard = () => {
     fetchData()
   }, [])
 
+  const avatarSrc = avatar => (avatar ? avatar : holder)
+
   const columns = [
     {
       title: '№',
@@ -48,13 +51,7 @@ const LeaderBoard = () => {
       width: 250,
       render: (text: string, record: LeaderboardEntry) => (
         <div className={styles.columns__name}>
-          <Avatar
-            src={
-              record.avatarUrl
-                ? record.avatarUrl
-                : 'https://c-int-sf.smule.com/rs-s38-int/sing/performance/cover/3b/f8/b352f35f-7c02-4bca-86b0-eafba9cd0a33_1024.png'
-            }
-          />
+          <Avatar src={avatarSrc(record.avatarUrl)} />
           <a className={styles[`columns__name--text`]}>{text}</a>
         </div>
       ),

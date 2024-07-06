@@ -1,4 +1,5 @@
 import { Modal, Image, Flex, Button } from 'antd'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 type GameModalProps = {
@@ -8,6 +9,7 @@ type GameModalProps = {
   titleClass?: string
   subtitle: string
   onYesClick: () => void
+  score: number
 }
 
 const GameModal: React.FC<GameModalProps> = ({
@@ -17,6 +19,7 @@ const GameModal: React.FC<GameModalProps> = ({
   titleClass,
   subtitle,
   onYesClick,
+  score,
 }) => {
   return (
     <Modal open={visible} footer={null} centered={true} closable={false}>
@@ -24,6 +27,7 @@ const GameModal: React.FC<GameModalProps> = ({
         <Image preview={false} src={imageSrc} width={100} />
         <h1 className={titleClass}>{title}</h1>
         <h2>{subtitle}</h2>
+        <span>Score: {score}</span>
         <Flex gap="large">
           <Button className="nes-btn is-primary" onClick={onYesClick}>
             Yes
