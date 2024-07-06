@@ -7,14 +7,15 @@ import { Constants } from './constants'
 import { Header, Footer } from '@/components'
 import styles from './Game.module.scss'
 
-import useSound from '@/lib/hooks/useSound'
 import React from 'react'
 import { GameOverModal, WinModal } from './utils/modal'
 import { StartModal } from '../../components/GameModal/StartModal'
-import { useCanvasElements } from './utils/canvasElements'
-import useLoadImages from './utils/useLoadImages'
+import useLoadImages from './hooks/useLoadImages'
+import { useCanvasElements } from './hooks/useCanvasElements'
+import useGameSounds from './hooks/useGameSounds'
 
 const Game: React.FC = () => {
+  const sounds = useGameSounds()
   // Канвас и препятствия
   const [level, setLevel] = useState(Constants.levelOne)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -28,15 +29,15 @@ const Game: React.FC = () => {
     []
   )
 
-  // Музыкальное сопровождение
-  const { playSound: playDefeatSound } = useSound('sounds/defeat.mp3')
-  const { playSound: playVictorySound } = useSound('sounds/victory.mp3')
-  const { playSound: playGemSound } = useSound('sounds/gem.mp3')
-  const { playSound: playGameSound, stopSound: stopGameSound } = useSound(
-    'sounds/game.mp3',
-    0.0,
-    true
-  )
+  //   // Музыкальное сопровождение
+  //   const { playSound: playDefeatSound } = useSound('sounds/defeat.mp3')
+  //   const { playSound: playVictorySound } = useSound('sounds/victory.mp3')
+  //   const { playSound: playGemSound } = useSound('sounds/gem.mp3')
+  //   const { playSound: playGameSound, stopSound: stopGameSound } = useSound(
+  //     'sounds/game.mp3',
+  //     0.0,
+  //     true
+  //   )
 
   // Стейты модалок
   const [isStartModalVisible, setIsStartModalVisible] = useState(true)
@@ -77,7 +78,7 @@ const Game: React.FC = () => {
     setGems(level.gems.startPositions)
     // setEnemies(Constants.enemy.startPositions.easy)
     setIsGameActive(true)
-    playGameSound()
+    sounds.playGameSound()
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
@@ -114,8 +115,8 @@ const Game: React.FC = () => {
   const handleVictory = () => {
     setIsGameWinVisible(true)
     setIsGameActive(false)
-    stopGameSound()
-    playVictorySound()
+    sounds.stopGameSound()
+    sounds.playVictorySound()
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -124,8 +125,8 @@ const Game: React.FC = () => {
   const handleDefeat = () => {
     setIsGameOverVisible(true)
     setIsGameActive(false)
-    stopGameSound()
-    playDefeatSound()
+    sounds.stopGameSound()
+    sounds.playDefeatSound()
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -197,7 +198,7 @@ const Game: React.FC = () => {
         )
 
         if (newGems.length !== gems.length) {
-          playGemSound()
+          sounds.playGemSound()
           setScore(prevScore => prevScore + 100)
         }
 
