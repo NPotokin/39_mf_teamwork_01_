@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cache-version-v1.0.6'
+const CACHE_NAME = 'cache-version-v1.0.7'
 const urlsToCache = [
   '/',
   'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap',
@@ -60,27 +60,37 @@ self.addEventListener('fetch', async event => {
         return fetch(request)
       } else {
         try {
-          const response = await caches.match(request)
-          if (response) {
-            return response
-          }
-          const fetchRequest = request.clone()
-          const networkResponse = await fetch(fetchRequest)
+          const networkResponse = await fetch(event.request)
           if (
-            !networkResponse ||
-            networkResponse.status !== 200 ||
-            networkResponse.type !== 'basic'
+            networkResponse &&
+            networkResponse.status === 200 &&
+            networkResponse.type === 'basic'
           ) {
-            return networkResponse
+            const cache = await caches.open(CACHE_NAME)
+            cache.put(event.request, networkResponse.clone())
           }
-          const cache = await caches.open(CACHE_NAME)
-          cache.put(request, networkResponse.clone())
           return networkResponse
+          // const response = await caches.match(request)
+          // if (response) {
+          //   return response
+          // }
+          // const fetchRequest = request.clone()
+          // const networkResponse = await fetch(fetchRequest)
+          // if (
+          //   !networkResponse ||
+          //   networkResponse.status !== 200 ||
+          //   networkResponse.type !== 'basic'
+          // ) {
+          //   return networkResponse
+          // }
+          // const cache = await caches.open(CACHE_NAME)
+          // cache.put(request, networkResponse.clone())
+          // return networkResponse
         } catch (error) {
           console.error('Fetch failed; returning offline page instead.', error)
           const cache = await caches.open(CACHE_NAME)
-          const cachedResponse = await cache.match('offline.html')
-          return cachedResponse
+          const cachedResponse = await cache.match(event.request)
+          return cachedResponse || (await cache.match('offline.html'))
         }
       }
     })()
