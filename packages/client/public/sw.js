@@ -1,4 +1,5 @@
 const CACHE_NAME = 'cache-version-v1.0.7'
+
 const urlsToCache = [
   '/',
   'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap',
@@ -70,22 +71,6 @@ self.addEventListener('fetch', async event => {
             cache.put(event.request, networkResponse.clone())
           }
           return networkResponse
-          // const response = await caches.match(request)
-          // if (response) {
-          //   return response
-          // }
-          // const fetchRequest = request.clone()
-          // const networkResponse = await fetch(fetchRequest)
-          // if (
-          //   !networkResponse ||
-          //   networkResponse.status !== 200 ||
-          //   networkResponse.type !== 'basic'
-          // ) {
-          //   return networkResponse
-          // }
-          // const cache = await caches.open(CACHE_NAME)
-          // cache.put(request, networkResponse.clone())
-          // return networkResponse
         } catch (error) {
           console.error('Fetch failed; returning offline page instead.', error)
           const cache = await caches.open(CACHE_NAME)
