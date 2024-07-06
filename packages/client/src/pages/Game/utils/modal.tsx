@@ -4,7 +4,7 @@ import pandaLost from '@images/panda_over.svg'
 
 type IProps = {
   visible: boolean
-  onYesClick: () => void
+  onYesClick: VoidFunction
   score: number
 }
 

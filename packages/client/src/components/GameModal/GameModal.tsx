@@ -8,7 +8,7 @@ type GameModalProps = {
   title: string
   titleClass?: string
   subtitle: string
-  onYesClick: () => void
+  onYesClick: VoidFunction
   score: number
 }
 

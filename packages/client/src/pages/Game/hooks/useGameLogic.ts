@@ -8,21 +8,21 @@ type Modals = {
   isGameOverVisible: boolean
   isGameWinVisible: boolean
   isGameActive: boolean
-  showStartModal: () => void
-  hideStartModal: () => void
-  showGameOverModal: () => void
-  hideGameOverModal: () => void
-  showGameWinModal: () => void
-  hideGameWinModal: () => void
+  showStartModal: VoidFunction
+  hideStartModal: VoidFunction
+  showGameOverModal: VoidFunction
+  hideGameOverModal: VoidFunction
+  showGameWinModal: VoidFunction
+  hideGameWinModal: VoidFunction
   setIsGameActive: (arg0: boolean) => void
 }
 
 type Sound = {
-  playDefeatSound: () => void
-  playVictorySound: () => void
-  playGemSound: () => void
-  playGameSound: () => void
-  stopGameSound: () => void
+  playDefeatSound: VoidFunction
+  playVictorySound: VoidFunction
+  playGemSound: VoidFunction
+  playGameSound: VoidFunction
+  stopGameSound: VoidFunction
 }
 type Props = {
   level: ILevel
@@ -63,12 +63,16 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
     useCanvasElements({ images, level })
 
   const resetPositions = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+    }
     modals.hideStartModal()
     modals.hideGameWinModal()
     modals.hideGameOverModal()
     setPlayerPosition(level.player.startPosition)
     setSteps(1) // хак, чтоб не прогружалось пустое поле
     setTime(0)
+    setScore(0)
     setGems(level.gems.startPositions)
     // setEnemies(Constants.enemy.startPositions.easy)
     modals.setIsGameActive(true)
@@ -80,6 +84,14 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
     }, 1000)
   }, [level, modals, sounds])
 
+  //очищаем интервал при размонтировании компонента
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }, [])
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       event.preventDefault()
@@ -115,6 +127,7 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
 
         if (isCollidingWithEnemies) {
           handleDefeat()
+          return
         }
 
         const isCollidingWithObstaclesOrWalls =

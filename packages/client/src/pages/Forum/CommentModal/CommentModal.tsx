@@ -5,8 +5,8 @@ import { ChangeEvent, FC, useEffect, useState } from 'react'
 type CommentModalProps = {
   visible: boolean
   comment: string
-  onOk: () => void
-  onCancel: () => void
+  onOk: VoidFunction
+  onCancel: VoidFunction
   onCommentChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
 }
 

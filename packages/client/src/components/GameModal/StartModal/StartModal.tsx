@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import pandaWin from '@images/panda_win.svg'
 import styles from './StartModal.module.scss'
 import type { Level } from '@/pages/Game/Game'
+import cn from 'classnames'
 
 type StartModalProps = {
   visible: boolean
@@ -59,8 +60,8 @@ const StartModal: React.FC<StartModalProps> = ({ visible, onYesClick }) => {
     <Modal open={visible} footer={null} centered={true} closable={false}>
       <Flex vertical={true} align="center" gap="large">
         <Image preview={false} src={pandaWin} width={100} />
-        <h1 className={'nes-text is-success'}>{'Start the game'}</h1>
-        <h2>{'Are you ready?'}</h2>
+        <h1 className={cn('nes-text', 'is-success')}>Start the game</h1>
+        <h2>Are you ready?</h2>
         <Form
           form={form}
           onFinish={handleFinish}
