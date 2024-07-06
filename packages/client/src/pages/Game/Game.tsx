@@ -3,13 +3,8 @@ import { Layout } from 'antd'
 import classNames from 'classnames'
 
 import { Constants } from './constants'
-import pandaStart from '@images/panda_start.svg'
-import pandaWin from '@images/panda_win.svg'
-import pandaLost from '@images/panda_over.svg'
-import pumpkin from '@images/pumpkin.png'
-import tiger from '@images/tiger.png'
-import rock from '@images/rock.png'
-import { GameModal, Header, Footer } from '@/components'
+
+import { Header, Footer } from '@/components'
 import styles from './Game.module.scss'
 
 import useSound from '@/lib/hooks/useSound'
@@ -34,11 +29,11 @@ const Game: React.FC = () => {
   )
 
   // Музыкальное сопровождение
-  const { playSound: playDefeatSound } = useSound('sounds/defeat.ogg')
-  const { playSound: playVictorySound } = useSound('sounds/victory.ogg')
-  const { playSound: playGemSound } = useSound('sounds/gem.ogg')
+  const { playSound: playDefeatSound } = useSound('sounds/defeat.mp3')
+  const { playSound: playVictorySound } = useSound('sounds/victory.mp3')
+  const { playSound: playGemSound } = useSound('sounds/gem.mp3')
   const { playSound: playGameSound, stopSound: stopGameSound } = useSound(
-    'sounds/game.ogg',
+    'sounds/game.mp3',
     0.0,
     true
   )
@@ -67,106 +62,9 @@ const Game: React.FC = () => {
   )
 
   // Пре-прогружаем картинки - иначе RAF не отрабатывает
-  const [imagesLoaded, setImagesLoaded] = useState(false)
-  const [images, setImages] = useState({
-    rock: new Image(),
-    pumpkin: new Image(),
-    pandaWin: new Image(),
-    tiger: new Image(),
-  })
-
-  useEffect(() => {
-    const rockImg = new Image()
-    const pumpkinImg = new Image()
-    const pandaWinImg = new Image()
-    const tigerImg = new Image()
-
-    let loaded = 0
-    const total = 4
-
-    const onLoad = () => {
-      loaded += 1
-      if (loaded === total) {
-        setImagesLoaded(true)
-      }
-    }
-
-    rockImg.src = rock
-    pumpkinImg.src = pumpkin
-    pandaWinImg.src = pandaWin
-    tigerImg.src = tiger
-
-    rockImg.onload = onLoad
-    pumpkinImg.onload = onLoad
-    pandaWinImg.onload = onLoad
-    tigerImg.onload = onLoad
-
-    setImages({
-      rock: rockImg,
-      pumpkin: pumpkinImg,
-      pandaWin: pandaWinImg,
-      tiger: tigerImg,
-    })
-  }, [])
-
-  // Отрисовываем
-  const drawObstacles = useCallback(
-    (ctx: CanvasRenderingContext2D) => {
-      obstacles.forEach(obstacle => {
-        ctx.drawImage(
-          images.rock,
-          obstacle.x,
-          obstacle.y,
-          level.obstacles.width,
-          level.obstacles.height
-        )
-      })
-    },
-    [obstacles, images.rock]
-  )
-
-  const drawGems = useCallback(
-    (ctx: CanvasRenderingContext2D) => {
-      gems.forEach(gem => {
-        ctx.drawImage(
-          images.pumpkin,
-          gem.x,
-          gem.y,
-          level.gems.width,
-          level.gems.height
-        )
-      })
-    },
-    [gems, images.pumpkin]
-  )
-
-  const drawPlayer = useCallback(
-    (ctx: CanvasRenderingContext2D) => {
-      ctx.drawImage(
-        images.pandaWin,
-        playerPosition.x,
-        playerPosition.y,
-        level.player.width,
-        level.player.height
-      )
-    },
-    [playerPosition, images.pandaWin]
-  )
-
-  const drawEnemies = useCallback(
-    (ctx: CanvasRenderingContext2D) => {
-      enemies.forEach(enemy => {
-        ctx.drawImage(
-          images.tiger,
-          enemy.x,
-          enemy.y,
-          level.enemy.width,
-          level.enemy.height
-        )
-      })
-    },
-    [enemies, images.tiger]
-  )
+  const { imagesLoaded, images } = useLoadImages()
+  const { drawObstacles, drawGems, drawPlayer, drawEnemies } =
+    useCanvasElements(images, level)
 
   // Хэндлеры модалок
   const resetPositions = () => {
@@ -231,27 +129,6 @@ const Game: React.FC = () => {
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
-  }
-  // Хэндлеры уровня сложности
-  const handleEasyModeOn = () => {
-    setEnemies(level.enemy.startPositions.easy)
-  }
-  const handleModerateModeOn = () => {
-    setEnemies(level.enemy.startPositions.moderate)
-  }
-  const handleHardModeOn = () => {
-    setEnemies(level.enemy.startPositions.hard)
-  }
-
-  // Хэндлеры уровня игры
-  const handlelevelOne = () => {
-    setLevel(Constants.levelOne)
-  }
-  const handlelevelTwo = () => {
-    setLevel(Constants.levelTwo)
-  }
-  const handlelevelThree = () => {
-    setLevel(Constants.levelThree)
   }
 
   // Хэндлер позиций игрока и врагов
@@ -413,10 +290,10 @@ const Game: React.FC = () => {
     const draw = () => {
       if (context) {
         context.clearRect(0, 0, canvasSize.width, canvasSize.height)
-        drawObstacles(context)
-        drawGems(context)
-        drawPlayer(context)
-        drawEnemies(context)
+        drawObstacles(context, obstacles)
+        drawGems(context, gems)
+        drawPlayer(context, playerPosition)
+        drawEnemies(context, enemies)
         window.requestAnimationFrame(draw)
       }
     }
@@ -427,7 +304,18 @@ const Game: React.FC = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [handleKeyDown])
+  }, [
+    handleKeyDown,
+    drawObstacles,
+    drawGems,
+    drawPlayer,
+    drawEnemies,
+    obstacles,
+    gems,
+    playerPosition,
+    enemies,
+    canvasSize,
+  ])
 
   return (
     <Layout>
