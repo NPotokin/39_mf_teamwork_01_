@@ -1,5 +1,5 @@
 import { Modal, Image, Flex, Button } from 'antd'
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 type GameModalProps = {
@@ -21,6 +21,22 @@ const GameModal: React.FC<GameModalProps> = ({
   onYesClick,
   score,
 }) => {
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (!visible) return
+      if (event.key === 'Enter') {
+        onYesClick()
+      }
+    },
+    [visible]
+  )
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [handleKeyDown])
+
   return (
     <Modal open={visible} footer={null} centered={true} closable={false}>
       <Flex vertical={true} align="center" gap="large">

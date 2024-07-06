@@ -20,6 +20,15 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		width: 20%;
+		height: 30%;
+		margin: auto;
+		background-color: var(--component-bg);
+		backdrop-filter: var(--backdrop-filter);
+		border-radius: 8px;
+	}
+	&__play{
+		width: 80%;
 	}
   }
   

@@ -1,4 +1,44 @@
-export const Constants = {
+import { Position } from './hooks/useCanvasElements'
+
+export interface ILevel {
+  canvas: {
+    width: number
+    height: number
+  }
+  player: {
+    width: number
+    height: number
+    step: number
+    startPosition: Position
+  }
+  enemy: {
+    width: number
+    height: number
+    step: number
+    startPositions: {
+      easy: Position[]
+      moderate: Position[]
+      hard: Position[]
+    }
+  }
+  gems: {
+    width: number
+    height: number
+    startPositions: Position[]
+  }
+  obstacles: {
+    width: number
+    height: number
+    startPositions: Position[]
+  }
+}
+
+interface IConstants {
+  levelOne: ILevel
+  levelTwo: ILevel
+  levelThree: ILevel
+}
+export const Constants: IConstants = {
   levelOne: {
     canvas: {
       width: 800,

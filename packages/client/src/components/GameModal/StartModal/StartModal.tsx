@@ -1,17 +1,20 @@
 import { Modal, Image, Flex, Button, Form, Select } from 'antd'
-import React, { useEffect, useCallback, useRef } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import pandaWin from '@images/panda_win.svg'
+import styles from './StartModal.module.scss'
+import type { Level } from '@/pages/Game/Game'
 
 type StartModalProps = {
   visible: boolean
-  onYesClick: (level: string, difficulty: string) => void
+  onYesClick: (level: Level, difficulty: string) => void
 }
 
 const StartModal: React.FC<StartModalProps> = ({ visible, onYesClick }) => {
   const [form] = Form.useForm()
+  const [isFormValid, setIsFormValid] = useState(false)
 
-  const handleFinish = (values: Record<string, string>) => {
+  const handleFinish = (values: Record<string, Level>) => {
     onYesClick(values.level, values.difficulty)
   }
 
@@ -37,6 +40,14 @@ const StartModal: React.FC<StartModalProps> = ({ visible, onYesClick }) => {
     [form, visible]
   )
 
+  const onFormatValueChange = (
+    _: unknown,
+    allValues: Record<string, string>
+  ) => {
+    const isValid = !!(allValues.level && allValues.difficulty)
+    setIsFormValid(isValid)
+  }
+
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
     return () => {
@@ -45,12 +56,16 @@ const StartModal: React.FC<StartModalProps> = ({ visible, onYesClick }) => {
   }, [handleKeyDown])
 
   return (
-    <Modal visible={visible} footer={null} centered={true} closable={false}>
+    <Modal open={visible} footer={null} centered={true} closable={false}>
       <Flex vertical={true} align="center" gap="large">
         <Image preview={false} src={pandaWin} width={100} />
         <h1 className={'nes-text is-success'}>{'Start the game'}</h1>
         <h2>{'Are you ready?'}</h2>
-        <Form form={form} onFinish={handleFinish}>
+        <Form
+          form={form}
+          onFinish={handleFinish}
+          onValuesChange={onFormatValueChange}
+          className={styles.form}>
           <Form.Item name="level">
             <Select placeholder="Select Level" className="nes-select">
               {levels.map(level => (
@@ -70,7 +85,10 @@ const StartModal: React.FC<StartModalProps> = ({ visible, onYesClick }) => {
             </Select>
           </Form.Item>
           <Flex gap="large">
-            <Button htmlType="submit" className="nes-btn is-primary">
+            <Button
+              htmlType="submit"
+              className="nes-btn is-primary"
+              disabled={!isFormValid}>
               Yes
             </Button>
             <Link to="/" className="nes-btn">

@@ -35,7 +35,7 @@ const LeaderBoard = () => {
     fetchData()
   }, [])
 
-  const avatarSrc = avatar => (avatar ? avatar : holder)
+  const avatarSrc = (avatar: string) => (avatar ? avatar : holder)
 
   const columns = [
     {

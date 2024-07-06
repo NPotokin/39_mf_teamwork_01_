@@ -1,9 +1,14 @@
-import React from 'react'
 import GameModal from '../../../components/GameModal/GameModal'
 import pandaWin from '@images/panda_win.svg'
 import pandaLost from '@images/panda_over.svg'
 
-export const WinModal = ({ visible, onYesClick, score }) => (
+type IProps = {
+  visible: boolean
+  onYesClick: () => void
+  score: number
+}
+
+export const WinModal = ({ visible, onYesClick, score }: IProps) => (
   <GameModal
     visible={visible}
     imageSrc={pandaWin}
@@ -14,7 +19,7 @@ export const WinModal = ({ visible, onYesClick, score }) => (
     score={score}
   />
 )
-export const GameOverModal = ({ visible, onYesClick, score }) => (
+export const GameOverModal = ({ visible, onYesClick, score }: IProps) => (
   <GameModal
     visible={visible}
     imageSrc={pandaLost}
