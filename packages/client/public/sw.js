@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cache-version-v1.0.5'
+const CACHE_NAME = 'cache-version-v1.0.6'
 const urlsToCache = [
   '/',
   'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap',
