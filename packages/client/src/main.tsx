@@ -5,7 +5,10 @@ import App from '@/core/App'
 import { Provider } from 'react-redux'
 import { store } from './state/store'
 import './index.scss'
+import registerServiceWorker from '@/lib/sw/registerServiceWorker'
 import '@/scss/nes.scss'
+
+window.addEventListener('load', registerServiceWorker)
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

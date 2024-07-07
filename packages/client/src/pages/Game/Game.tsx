@@ -12,17 +12,30 @@ import rock from '@images/rock.png'
 import { GameModal, Header, Footer } from '@/components'
 import styles from './Game.module.scss'
 
+import useSound from '@/lib/hooks/useSound'
+
 const Game: React.FC = () => {
   // Канвас и препятствия
+  const [level, setLevel] = useState(Constants.levelOne)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
-  const obstacles = useMemo(() => Constants.obstacles.startPositions, [])
+  const obstacles = useMemo(() => level.obstacles.startPositions, [])
   const canvasSize = useMemo(
     () => ({
-      width: Constants.canvas.width,
-      height: Constants.canvas.height,
+      width: level.canvas.width,
+      height: level.canvas.height,
     }),
     []
+  )
+
+  // Музыкальное сопровождение
+  const { playSound: playDefeatSound } = useSound('sounds/defeat.mp3')
+  const { playSound: playVictorySound } = useSound('sounds/victory.mp3')
+  const { playSound: playGemSound } = useSound('sounds/gem.mp3')
+  const { playSound: playGameSound, stopSound: stopGameSound } = useSound(
+    'sounds/game.mp3',
+    0.2,
+    true
   )
 
   // Стейты модалок
@@ -37,13 +50,13 @@ const Game: React.FC = () => {
 
   // Стейты игрока, врагов и кристаллов
   const [playerPosition, setPlayerPosition] = useState(
-    Constants.player.startPosition
+    level.player.startPosition
   )
   const [gems, setGems] = useState<{ x: number; y: number }[]>(
-    Constants.gems.startPositions
+    level.gems.startPositions
   )
   const [enemies, setEnemies] = useState<{ x: number; y: number }[]>(
-    Constants.enemy.startPositions
+    level.enemy.startPositions.hard
   )
 
   // Пре-прогружаем картинки - иначе RAF не отрабатывает
@@ -97,8 +110,8 @@ const Game: React.FC = () => {
           images.rock,
           obstacle.x,
           obstacle.y,
-          Constants.obstacles.width,
-          Constants.obstacles.height
+          level.obstacles.width,
+          level.obstacles.height
         )
       })
     },
@@ -112,8 +125,8 @@ const Game: React.FC = () => {
           images.pumpkin,
           gem.x,
           gem.y,
-          Constants.gems.width,
-          Constants.gems.height
+          level.gems.width,
+          level.gems.height
         )
       })
     },
@@ -126,8 +139,8 @@ const Game: React.FC = () => {
         images.pandaWin,
         playerPosition.x,
         playerPosition.y,
-        Constants.player.width,
-        Constants.player.height
+        level.player.width,
+        level.player.height
       )
     },
     [playerPosition, images.pandaWin]
@@ -140,8 +153,8 @@ const Game: React.FC = () => {
           images.tiger,
           enemy.x,
           enemy.y,
-          Constants.enemy.width,
-          Constants.enemy.height
+          level.enemy.width,
+          level.enemy.height
         )
       })
     },
@@ -153,12 +166,13 @@ const Game: React.FC = () => {
     setIsStartModalVisible(false)
     setIsGameWinVisible(false)
     setIsGameOverVisible(false)
-    setPlayerPosition(Constants.player.startPosition)
+    setPlayerPosition(level.player.startPosition)
     setSteps(1) // хак, чтоб не прогружалось пустое поле
     setTime(0)
-    setGems(Constants.gems.startPositions)
-    setEnemies(Constants.enemy.startPositions)
+    setGems(level.gems.startPositions)
+    // setEnemies(Constants.enemy.startPositions.easy)
     setIsGameActive(true)
+    playGameSound()
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
@@ -168,6 +182,8 @@ const Game: React.FC = () => {
   const handleVictory = () => {
     setIsGameWinVisible(true)
     setIsGameActive(false)
+    stopGameSound()
+    playVictorySound()
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
@@ -176,9 +192,32 @@ const Game: React.FC = () => {
   const handleDefeat = () => {
     setIsGameOverVisible(true)
     setIsGameActive(false)
+    stopGameSound()
+    playDefeatSound()
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
+  }
+  // Хэндлеры уровня сложности
+  const handleEasyModeOn = () => {
+    setEnemies(level.enemy.startPositions.easy)
+  }
+  const handleModerateModeOn = () => {
+    setEnemies(level.enemy.startPositions.moderate)
+  }
+  const handleHardModeOn = () => {
+    setEnemies(level.enemy.startPositions.hard)
+  }
+
+  // Хэндлеры уровня игры
+  const handlelevelOne = () => {
+    setLevel(Constants.levelOne)
+  }
+  const handlelevelTwo = () => {
+    setLevel(Constants.levelTwo)
+  }
+  const handlelevelThree = () => {
+    setLevel(Constants.levelThree)
   }
 
   // Хэндлер позиций игрока и врагов
@@ -189,7 +228,7 @@ const Game: React.FC = () => {
       if (!validKeys.includes(event.key)) return
       setPlayerPosition(prev => {
         let { x, y } = prev
-        const step = Constants.player.step
+        const step = level.player.step
 
         switch (event.key) {
           case 'ArrowUp':
@@ -208,10 +247,10 @@ const Game: React.FC = () => {
 
         const isCollidingWithEnemies = enemies.some(
           enemy =>
-            x < enemy.x + Constants.enemy.width &&
-            x + Constants.player.width > enemy.x &&
-            y < enemy.y + Constants.enemy.height &&
-            y + Constants.player.height > enemy.y
+            x < enemy.x + level.enemy.width &&
+            x + level.player.width > enemy.x &&
+            y < enemy.y + level.enemy.height &&
+            y + level.player.height > enemy.y
         )
 
         if (isCollidingWithEnemies) {
@@ -221,15 +260,15 @@ const Game: React.FC = () => {
         const isCollidingWithObstaclesOrWalls =
           obstacles.some(
             obstacle =>
-              x < obstacle.x + Constants.obstacles.width &&
-              x + Constants.player.width > obstacle.x &&
-              y < obstacle.y + Constants.obstacles.height &&
-              y + Constants.player.height > obstacle.y
+              x < obstacle.x + level.obstacles.width &&
+              x + level.player.width > obstacle.x &&
+              y < obstacle.y + level.obstacles.height &&
+              y + level.player.height > obstacle.y
           ) ||
           x < 0 ||
-          x + Constants.player.width > canvasSize.width ||
+          x + level.player.width > canvasSize.width ||
           y < 0 ||
-          y + Constants.player.height > canvasSize.height
+          y + level.player.height > canvasSize.height
 
         if (isCollidingWithObstaclesOrWalls) {
           return prev
@@ -238,12 +277,17 @@ const Game: React.FC = () => {
         const newGems = gems.filter(
           gem =>
             !(
-              x < gem.x + Constants.gems.width &&
-              x + Constants.player.width > gem.x &&
-              y < gem.y + Constants.gems.height &&
-              y + Constants.player.height > gem.y
+              x < gem.x + level.gems.width &&
+              x + level.player.width > gem.x &&
+              y < gem.y + level.gems.height &&
+              y + level.player.height > gem.y
             )
         )
+
+        if (newGems.length !== gems.length) {
+          playGemSound()
+        }
+
         setGems(newGems)
 
         if (newGems.length === 0) {
@@ -258,7 +302,7 @@ const Game: React.FC = () => {
       setEnemies(prev =>
         prev.map(enemy => {
           let { x: enemyX, y: enemyY } = enemy
-          const step = Constants.enemy.step
+          const step = level.enemy.step
           const directions = ['up', 'down', 'left', 'right']
           const randomDirection =
             directions[Math.floor(Math.random() * directions.length)]
@@ -280,31 +324,31 @@ const Game: React.FC = () => {
 
           const isCollidingWithWalls =
             enemyX < 0 ||
-            enemyX + Constants.enemy.width > canvasSize.width ||
+            enemyX + level.enemy.width > canvasSize.width ||
             enemyY < 0 ||
-            enemyY + Constants.enemy.height > canvasSize.height
+            enemyY + level.enemy.height > canvasSize.height
 
           const isCollidingWithGems = gems.some(
             gem =>
-              enemyX < gem.x + Constants.gems.width &&
-              enemyX + Constants.enemy.width > gem.x &&
-              enemyY < gem.y + Constants.gems.height &&
-              enemyY + Constants.enemy.height > gem.y
+              enemyX < gem.x + level.gems.width &&
+              enemyX + level.enemy.width > gem.x &&
+              enemyY < gem.y + level.gems.height &&
+              enemyY + level.enemy.height > gem.y
           )
 
           const isCollidingWithObstacles = obstacles.some(
             obstacle =>
-              enemyX < obstacle.x + Constants.obstacles.width &&
-              enemyX + Constants.enemy.width > obstacle.x &&
-              enemyY < obstacle.y + Constants.obstacles.height &&
-              enemyY + Constants.enemy.height > obstacle.y
+              enemyX < obstacle.x + level.obstacles.width &&
+              enemyX + level.enemy.width > obstacle.x &&
+              enemyY < obstacle.y + level.obstacles.height &&
+              enemyY + level.enemy.height > obstacle.y
           )
 
           const isCollidingWithPlayer =
-            playerPosition.x < enemyX + Constants.enemy.width &&
-            playerPosition.x + Constants.player.width > enemyX &&
-            playerPosition.y < enemyY + Constants.enemy.height &&
-            playerPosition.y + Constants.player.height > enemyY
+            playerPosition.x < enemyX + level.enemy.width &&
+            playerPosition.x + level.player.width > enemyX &&
+            playerPosition.y < enemyY + level.enemy.height &&
+            playerPosition.y + level.player.height > enemyY
 
           if (
             isCollidingWithWalls ||
