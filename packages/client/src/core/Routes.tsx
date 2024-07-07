@@ -77,6 +77,10 @@ const routes: RouteObject[] = [
         path: RoutePath.SERVER_ERROR,
         element: <ServerErrorPage />,
       },
+      {
+        path: RoutePath.ERROR,
+        element: <NotFoundPage />,
+      },
     ],
   },
 ]
