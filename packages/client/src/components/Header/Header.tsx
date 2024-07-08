@@ -15,7 +15,11 @@ import { resetUser } from '@/state/user/userSlice'
 import styles from './Header.module.scss'
 import { logout } from '@/core/services/auth.service'
 
-const Header = () => {
+type Props = {
+  isGamePage?: boolean
+}
+const Header = (props: Props) => {
+  const { isGamePage } = props
   const [visible, setVisible] = useState(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -43,13 +47,15 @@ const Header = () => {
         <Logo className={styles.logo} title="Panda" />
       </Link>
       <Menu className={styles.menu} />
-      <div className={styles.action}>
-        <Link
-          className={classNames('nes-btn is-primary', styles.button)}
-          to={RoutePath.GAME}>
-          Play now
-        </Link>
-      </div>
+      {!isGamePage && (
+        <div className={styles.action}>
+          <Link
+            className={classNames('nes-btn is-primary', styles.button)}
+            to={RoutePath.GAME}>
+            Play now
+          </Link>
+        </div>
+      )}
       <ThemeToggle className={styles.theme} />
       <Button
         type="link"

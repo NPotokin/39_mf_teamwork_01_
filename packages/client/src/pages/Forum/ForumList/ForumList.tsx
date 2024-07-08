@@ -9,7 +9,7 @@ import { UniversalTable } from '@/components/Table'
 type ForumListProps = {
   dataSource: Topic[]
   columns: ColumnsType
-  showModal: () => void
+  showModal: VoidFunction
 }
 const ForumList: FC<ForumListProps> = ({ dataSource, columns, showModal }) => {
   return (

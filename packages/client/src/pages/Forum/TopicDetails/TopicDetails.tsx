@@ -11,8 +11,8 @@ type TopicDetailsProps = {
   selectedTopic: Topic
   selectedComments: Comment[]
   commentsColumns: ColumnsType
-  onBack: () => void
-  showCommentModal: () => void
+  onBack: VoidFunction
+  showCommentModal: VoidFunction
 }
 export const TopicDetails: FC<TopicDetailsProps> = ({
   selectedTopic,

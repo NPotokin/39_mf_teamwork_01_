@@ -11,9 +11,25 @@
   
   .canvas {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+	color: var(--white);
+
+	&__score{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 20%;
+		height: 30%;
+		margin: auto;
+		background-color: var(--component-bg);
+		backdrop-filter: var(--backdrop-filter);
+		border-radius: 8px;
+	}
+	&__play{
+		width: 80%;
+	}
   }
   
  @supports (background-image: url(@images/bg.webp)) {

@@ -6,8 +6,8 @@ type TopicModalProps = {
   visible: boolean
   topicName: string
   topicContent: string
-  onOk: () => void
-  onCancel: () => void
+  onOk: VoidFunction
+  onCancel: VoidFunction
   onTopicNameChange: (e: ChangeEvent<HTMLInputElement>) => void
   onTopicContentChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
 }
