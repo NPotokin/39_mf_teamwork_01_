@@ -6,6 +6,8 @@ import { Navigate } from 'react-router-dom'
 const ProtectedRoute: FC<PropsWithChildren> = ({ children }) => {
   const isAuthenticated = useIsAuth()
 
+  if (isAuthenticated === undefined) return null
+
   return isAuthenticated && isValidElement(children) ? (
     children
   ) : (

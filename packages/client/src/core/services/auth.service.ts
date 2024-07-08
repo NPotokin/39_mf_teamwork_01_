@@ -2,7 +2,7 @@ import AuthApi from '../api/auth.api'
 import { ICreateUser, ILoginRequestData, IUserInfo } from '../api/model'
 import { isApiError } from '@/lib/utils/type-check'
 import { showNotification } from './notification.service'
-import { erroInfo } from '@/lib/utils/errorInfo'
+import { errorInfo } from '@/lib/utils/errorInfo'
 
 const authApi = new AuthApi()
 
@@ -24,7 +24,7 @@ export const signin = async (
 
     return user
   } catch (error: unknown) {
-    showNotification('error', erroInfo(error))
+    showNotification('error', errorInfo(error))
   }
 }
 
@@ -37,7 +37,7 @@ export const signup = async (
 
     return user
   } catch (error) {
-    showNotification('error', erroInfo(error))
+    showNotification('error', errorInfo(error))
   }
 }
 
@@ -46,7 +46,7 @@ export const logout = async (): Promise<boolean> => {
     await authApi.logout()
     return true
   } catch (error) {
-    showNotification('error', erroInfo(error))
+    showNotification('error', errorInfo(error))
     return false
   }
 }

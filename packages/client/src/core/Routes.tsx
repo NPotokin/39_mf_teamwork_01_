@@ -25,7 +25,11 @@ const routes: RouteObject[] = [
     children: [
       {
         path: RoutePath.HOME,
-        element: <Home />,
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ),
       },
       {
         path: RoutePath.GAME,
