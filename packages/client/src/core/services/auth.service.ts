@@ -1,50 +1,52 @@
-import { AxiosResponse } from 'axios'
 import AuthApi from '../api/auth.api'
-import {
-  IAPIError,
-  ICreateUser,
-  ILoginRequestData,
-  ISignUpResponse,
-  IUserInfo,
-} from '../api/model'
+import { ICreateUser, ILoginRequestData, IUserInfo } from '../api/model'
 import { isApiError } from '@/lib/utils/type-check'
+import { showNotification } from './notification.service'
+import { erroInfo } from '@/lib/utils/errorInfo'
 
 const authApi = new AuthApi()
 
-export const getUser = async (): Promise<void> => {
-  const userResponse: AxiosResponse<IUserInfo | IAPIError> =
-    await authApi.user()
-  const data: IUserInfo | IAPIError = userResponse.data
+export const getUser = async (): Promise<IUserInfo> => {
+  const userResponse = await authApi.user()
 
-  if (isApiError(data)) {
-    throw new Error(data.reason)
+  if (isApiError(userResponse.data)) {
+    throw new Error(userResponse.data.reason)
   }
-
-  // TODO сохранить данные пользователя в store
+  return userResponse.data
 }
 
-export const login = async (data: ILoginRequestData): Promise<void> => {
+export const signin = async (
+  data: ILoginRequestData
+): Promise<IUserInfo | undefined> => {
   try {
     await authApi.login(data)
-    await getUser()
+    const user = await getUser()
+
+    return user
   } catch (error: unknown) {
-    console.error(error)
+    showNotification('error', erroInfo(error))
   }
 }
 
-export const createUser = async (data: ICreateUser): Promise<void> => {
-  const response: AxiosResponse<ISignUpResponse> = await authApi.create(data)
-  const responseData: ISignUpResponse = response.data
+export const signup = async (
+  data: ICreateUser
+): Promise<IUserInfo | undefined> => {
+  try {
+    await authApi.create(data)
+    const user = await getUser()
 
-  if (isApiError(responseData)) {
-    throw new Error(responseData.reason)
-  }
-
-  if (responseData.id) {
-    await getUser()
+    return user
+  } catch (error) {
+    showNotification('error', erroInfo(error))
   }
 }
 
-export const logout = async (): Promise<void> => {
-  await authApi.logout()
+export const logout = async (): Promise<boolean> => {
+  try {
+    await authApi.logout()
+    return true
+  } catch (error) {
+    showNotification('error', erroInfo(error))
+    return false
+  }
 }

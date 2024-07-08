@@ -8,6 +8,14 @@ import logo from '@images/logo_md.svg'
 import { Button } from 'antd'
 import { useNavigate } from 'react-router'
 import { RoutePath } from '@/core/Routes.enum'
+import { useAppDispatch } from '@/lib/hooks/redux'
+import { setUser } from '@/state/user/userSlice'
+import { signin } from '@/core/services/auth.service'
+
+const initialValues: LoginForm = {
+  login: EMPTY_STRING,
+  password: EMPTY_STRING,
+}
 
 export type LoginForm = {
   login: string
@@ -15,23 +23,20 @@ export type LoginForm = {
 }
 
 const Login = () => {
-  const initialValues: LoginForm = {
-    login: EMPTY_STRING,
-    password: EMPTY_STRING,
-  }
-  const pageClass = cn('page', styles.page)
-  const buttonClass = cn('nes-btn', styles.button)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: Record<string, string>,
     setSubmittingCb: (isSubmitting: boolean) => void
-  ): void => {
-    // TODO заменить на api запрос, добавлено для демонстрации спинера
-    setTimeout(() => {
-      console.log(values)
-      setSubmittingCb(false)
-    }, 2000)
+  ): Promise<void> => {
+    const user = await signin(values as LoginForm)
+
+    setSubmittingCb(false)
+    if (user) {
+      dispatch(setUser(user))
+      navigate(RoutePath.HOME)
+    }
   }
 
   const handleSignUpClick = (): void => {
@@ -39,7 +44,7 @@ const Login = () => {
   }
 
   return (
-    <div className={pageClass}>
+    <div className={cn('page', styles.page)}>
       <div className={styles.card}>
         <header className={styles.header}>
           <div className={styles.logo}>
@@ -57,7 +62,9 @@ const Login = () => {
         </div>
         <footer className={styles.footer}>
           <span>Don't have an account?</span>
-          <Button className={buttonClass} onClick={handleSignUpClick}>
+          <Button
+            className={cn('nes-btn', styles.button)}
+            onClick={handleSignUpClick}>
             Sign Up
           </Button>
         </footer>

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import Routes from './Routes'
 import { ThemeProvider } from './contexts'
+import { notification } from 'antd'
 
 const App = () => {
   useEffect(() => {

@@ -10,10 +10,14 @@ import { Menu } from '@/components/Menu'
 import { Logo } from '@/components/Logo'
 import { MenuMobile } from '@/components/MenuMobile'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { useAppDispatch } from '@/lib/hooks/redux'
+import { resetUser } from '@/state/user/userSlice'
 import styles from './Header.module.scss'
+import { logout } from '@/core/services/auth.service'
 
 const Header = () => {
   const [visible, setVisible] = useState(false)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const toggleMenu = () => {
@@ -24,9 +28,13 @@ const Header = () => {
     setVisible(false)
   }
 
-  const handleLogout = () => {
-    //TODO: logout logic
-    navigate(RoutePath.SIGN_IN)
+  const handleLogout = async () => {
+    const success = await logout()
+
+    if (success) {
+      dispatch(resetUser())
+      navigate(RoutePath.SIGN_IN)
+    }
   }
 
   return (
