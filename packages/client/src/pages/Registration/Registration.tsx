@@ -7,6 +7,9 @@ import { titles } from './Registration.const'
 import { Button } from 'antd'
 import { useNavigate } from 'react-router'
 import { RoutePath } from '@/core/Routes.enum'
+import { signup } from '@/core/services/auth.service'
+import { useAppDispatch } from '@/lib/hooks/redux'
+import { setUser } from '@/state/user/userSlice'
 
 export type Registration = {
   first_name: string
@@ -28,17 +31,20 @@ const Registration = () => {
     password: EMPTY_STRING,
     confirmPassword: EMPTY_STRING,
   }
-  const pageClass = cn('page', styles.page)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: Record<string, string>,
     setSubmittingCb: (isSubmitting: boolean) => void
-  ): void => {
-    setTimeout(() => {
-      console.log(values)
-      setSubmittingCb(false)
-    }, 2000)
+  ): Promise<void> => {
+    const user = await signup(values as Registration)
+
+    setSubmittingCb(false)
+    if (user) {
+      dispatch(setUser(user))
+      navigate(RoutePath.HOME)
+    }
   }
 
   const handleSignInClick = (): void => {
@@ -46,7 +52,7 @@ const Registration = () => {
   }
 
   return (
-    <div className={pageClass}>
+    <div className={cn('page', styles.page)}>
       <div className={styles.card}>
         <header className={styles.header}>
           <div className={styles.title}>Create account</div>
