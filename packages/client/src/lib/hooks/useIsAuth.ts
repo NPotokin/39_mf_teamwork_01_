@@ -1,31 +1,19 @@
-import { empty } from '../utils/empty'
-import { useAppDispatch, useAppSelector } from './redux'
-import { getUser } from '@/core/services/auth.service'
-import { setUser } from '@/state/user/userSlice'
+import { AUTH_KEY } from '@/core/services/auth.service'
 import { useEffect, useState } from 'react'
 
 export const useIsAuth = (): boolean | undefined => {
-  const [authed, setAuthed] = useState<boolean>()
-  const user = useAppSelector(state => state.user)
-  const dispatch = useAppDispatch()
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>()
 
   useEffect(() => {
-    const recieveUser = async () => {
-      try {
-        const user = await getUser()
-        dispatch(setUser(user))
-        setAuthed(true)
-      } catch (error) {
-        setAuthed(false)
-      }
+    const isAuthed = localStorage.getItem(AUTH_KEY)
+
+    if (!isAuthed) {
+      setIsAuthenticated(false)
+      return
     }
 
-    if (empty(user)) {
-      recieveUser()
-    } else {
-      setAuthed(true)
-    }
+    setIsAuthenticated(JSON.parse(isAuthed))
   }, [])
 
-  return authed
+  return isAuthenticated
 }
