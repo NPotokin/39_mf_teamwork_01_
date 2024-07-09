@@ -19,18 +19,5 @@ export const showNotification = (
     style: { fontFamily: "'Press Start 2P'" },
   }
 
-  switch (method) {
-    case 'success':
-      notification.success(props)
-      break
-    case 'info':
-      notification.info(props)
-      break
-    case 'warning':
-      notification.warning(props)
-      break
-    case 'error':
-      notification.error(props)
-      break
-  }
+  notification[method](props)
 }
