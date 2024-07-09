@@ -2,8 +2,10 @@ import { Formik, FormikHelpers } from 'formik'
 import { Form as AntForm, Input, Button } from 'antd'
 import classNames from 'classnames'
 
-import { passwordChangeSchema } from '@/lib/validation/validationSchema'
+import { updatePassword } from '@/core/services/user.service'
 import { EMPTY_STRING } from '@/core/constants'
+import { IUpdatePassword } from '@/core/api/model'
+import { passwordChangeSchema } from '@/lib/validation/validationSchema'
 import styles from './PasswordForm.module.scss'
 
 type PasswordFormValues = {
@@ -24,8 +26,8 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
   }
 
   const handleSubmit = async (values: PasswordFormValues) => {
-    console.log(JSON.stringify(values, null, 2))
-    //TODO: send user data to server
+    const { old_password: oldPassword, password: newPassword } = values
+    await updatePassword({ oldPassword, newPassword })
   }
 
   return (
@@ -55,6 +57,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
         setTouched,
       }) => (
         <AntForm
+          initialValues={initialValues}
           layout="vertical"
           autoComplete="off"
           onFinish={async () => {

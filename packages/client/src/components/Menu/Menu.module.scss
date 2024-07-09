@@ -11,6 +11,7 @@
 
 .link {
   color: var(--light);
+  white-space: nowrap;  
   transition: var(--transition-duration) var(--transition-function);
 
   &:hover {

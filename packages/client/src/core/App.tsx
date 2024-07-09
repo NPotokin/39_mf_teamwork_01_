@@ -1,10 +1,16 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
+import { getUser } from '@/core/services/auth.service'
+import { useAppDispatch } from '@/lib/hooks/redux'
+import { setUser } from '@/state/user/userSlice'
+import { Loader } from '@/components/Loader'
 import Routes from './Routes'
 import { ThemeProvider } from './contexts'
-import { notification } from 'antd'
 
 const App = () => {
+  const [loading, setLoading] = useState(true)
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
@@ -13,23 +19,30 @@ const App = () => {
         const response = await fetch(url)
         const data = await response.json()
         console.log(data)
+
+        const userData = await getUser()
+        dispatch(setUser(userData))
       } catch (error) {
         console.error('Ошибка запроса в БД')
+      } finally {
+        setLoading(false)
       }
     }
 
     fetchServerData()
   }, [])
 
-  {
-    return (
-      <>
-        <ThemeProvider>
-          <Routes />
-        </ThemeProvider>
-      </>
-    )
+  if (loading) {
+    return <Loader />
   }
+
+  return (
+    <>
+      <ThemeProvider>
+        <Routes />
+      </ThemeProvider>
+    </>
+  )
 }
 
 export default App
