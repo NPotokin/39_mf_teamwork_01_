@@ -1,10 +1,9 @@
-import { Formik, FormikHelpers } from 'formik'
+import { Formik } from 'formik'
 import { Form as AntForm, Input, Button } from 'antd'
 import classNames from 'classnames'
 
 import { updatePassword } from '@/core/services/user.service'
 import { EMPTY_STRING } from '@/core/constants'
-import { IUpdatePassword } from '@/core/api/model'
 import { passwordChangeSchema } from '@/lib/validation/validationSchema'
 import styles from './PasswordForm.module.scss'
 
