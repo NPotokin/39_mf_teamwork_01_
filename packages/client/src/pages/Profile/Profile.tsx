@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import { Button } from 'antd'
 
 import { useAppSelector } from '@/lib/hooks/redux'
+import { TITLES } from '@/lib/constants'
+import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { ProfileInfo } from '@/components/ProfileInfo'
@@ -18,6 +20,7 @@ import {
 import styles from './Profile.module.scss'
 
 const Profile = () => {
+  useDocumentTitle(TITLES.PROFILE)
   const [state, dispatch] = useReducer<
     React.Reducer<ProfileState, ProfileAction>
   >(profileReducer, initialState)

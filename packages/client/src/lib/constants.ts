@@ -7,5 +7,4 @@ export const TITLES = {
   PROFILE: 'Pumpkin Panda - Settings and profile',
   LEADER_BOARD: 'Pumpkin Panda - Leader Board',
   FORUM: 'Pumpkin Panda - Forum topics',
-  FORUM_TOPIC: 'Pumpkin Panda - Forum topic',
 } as const

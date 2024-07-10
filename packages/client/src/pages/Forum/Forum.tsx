@@ -11,6 +11,8 @@ import cn from 'classnames'
 import { useForum } from '@/core/contexts'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
+import { TITLES } from '@/lib/constants'
+import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
 
 export type Comment = {
   key: string
@@ -27,6 +29,7 @@ export type Topic = {
 }
 
 const Forum = () => {
+  useDocumentTitle(TITLES.FORUM)
   const {
     dataSource,
     setDataSource,
