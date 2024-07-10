@@ -29,25 +29,27 @@ const Menu: React.FC<MenuProps> = ({ variant, className }) => (
         Leaderboard
       </NavLink>
     </li>
-    <li className={styles.item}>
-      <NavLink
-        to={RoutePath.PROFILE}
-        className={({ isActive }) =>
-          classNames(styles.link, { 'is-active': isActive })
-        }>
-        Profile
-      </NavLink>
-    </li>
     {variant === 'bottom' && (
-      <li className={styles.item}>
-        <NavLink
-          to={RoutePath.GAME}
-          className={({ isActive }) =>
-            classNames(styles.link, { 'is-active': isActive })
-          }>
-          Game
-        </NavLink>
-      </li>
+      <>
+        <li className={styles.item}>
+          <NavLink
+            to={RoutePath.PROFILE}
+            className={({ isActive }) =>
+              classNames(styles.link, { 'is-active': isActive })
+            }>
+            Profile
+          </NavLink>
+        </li>
+        <li className={styles.item}>
+          <NavLink
+            to={RoutePath.GAME}
+            className={({ isActive }) =>
+              classNames(styles.link, { 'is-active': isActive })
+            }>
+            Game
+          </NavLink>
+        </li>
+      </>
     )}
   </ul>
 )

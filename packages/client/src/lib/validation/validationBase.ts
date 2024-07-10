@@ -80,6 +80,13 @@ const baseProfileSchema = {
     })
     .required(errorMessages.required),
 
+  display_name: Yup.string()
+    .matches(nameRegex, {
+      message: errorMessages.display_name,
+      excludeEmptyString: true,
+    })
+    .required(errorMessages.required),
+
   email: Yup.string()
     .matches(emailRegex, {
       message: errorMessages.email,

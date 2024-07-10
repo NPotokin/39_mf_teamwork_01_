@@ -1,7 +1,8 @@
-import { useEffect, useReducer } from 'react'
+import { useReducer } from 'react'
 import classNames from 'classnames'
 import { Button } from 'antd'
 
+import { useAppSelector } from '@/lib/hooks/redux'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { ProfileInfo } from '@/components/ProfileInfo'
@@ -14,17 +15,13 @@ import {
   initialState,
   profileReducer,
 } from './reducer/Profile.reducer'
-import { userData } from './mocks/userData'
 import styles from './Profile.module.scss'
 
 const Profile = () => {
   const [state, dispatch] = useReducer<
     React.Reducer<ProfileState, ProfileAction>
   >(profileReducer, initialState)
-
-  useEffect(() => {
-    //TODO get request for user profile
-  }, [])
+  const user = useAppSelector(state => state.user)
 
   return (
     <div className={classNames(styles.root, 'page')}>
@@ -33,7 +30,7 @@ const Profile = () => {
         <div className={styles.card}>
           {state.view === 'info' && (
             <>
-              <ProfileInfo {...userData} />
+              <ProfileInfo {...user} />
               <div className={styles.footer}>
                 <Button
                   className={classNames(styles.button, 'nes-btn is-primary')}
@@ -55,6 +52,7 @@ const Profile = () => {
           )}
           {state.view === 'editProfile' && (
             <ProfileForm
+              {...user}
               onCancel={() => dispatch({ type: actionTypes.SHOW_INFO })}
             />
           )}
