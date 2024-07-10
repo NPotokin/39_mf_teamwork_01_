@@ -25,6 +25,6 @@ export default class UserApi {
   public updateAvatar(
     data: FormData
   ): Promise<AxiosResponse<IUserInfo | IAPIError>> {
-    return axiosDB.put('/profile/avatar', data)
+    return axiosDB.put('/user/profile/avatar', data)
   }
 }

@@ -14,6 +14,7 @@ import { StartModal } from '../../components/GameModal/StartModal'
 import useGameSounds from './hooks/useGameSounds'
 import useModals from './hooks/useModals'
 import useGameLogic from './hooks/useGameLogic'
+import { useAppSelector } from '@/lib/hooks/redux'
 
 export type Level = 'levelOne' | 'levelTwo' | 'levelThree'
 
@@ -57,13 +58,15 @@ const Game: React.FC = () => {
     modals.showStartModal()
   }
 
+  const userLogin = useAppSelector(state => state.user.login)
+
   return (
     <Layout>
       <div className={classNames(styles.game, 'page')}>
         <Header isGamePage />
-        <div className={styles.canvas}>
+        <div className={classNames(styles.canvas, 'container')}>
           <div className={styles.canvas__score}>
-            <div>User name: </div>
+            <div>{userLogin}</div>
             <div>Steps: {gameLogic.steps}</div>
             <div>Time: {gameLogic.time}</div>
             <div>Score: {gameLogic.score}</div>
@@ -91,8 +94,8 @@ const Game: React.FC = () => {
           onYesClick={handleYesClickGameOverModal}
           score={gameLogic.score}
         />
+        <Footer />
       </div>
-      <Footer />
     </Layout>
   )
 }

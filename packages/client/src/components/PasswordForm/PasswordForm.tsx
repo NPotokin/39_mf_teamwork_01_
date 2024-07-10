@@ -1,9 +1,10 @@
-import { Formik, FormikHelpers } from 'formik'
+import { Formik } from 'formik'
 import { Form as AntForm, Input, Button } from 'antd'
 import classNames from 'classnames'
 
-import { passwordChangeSchema } from '@/lib/validation/validationSchema'
+import { updatePassword } from '@/core/services/user.service'
 import { EMPTY_STRING } from '@/core/constants'
+import { passwordChangeSchema } from '@/lib/validation/validationSchema'
 import styles from './PasswordForm.module.scss'
 
 type PasswordFormValues = {
@@ -23,9 +24,14 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
     confirm_password: '',
   }
 
-  const handleSubmit = async (values: PasswordFormValues) => {
-    console.log(JSON.stringify(values, null, 2))
-    //TODO: send user data to server
+  const handleSubmit = async (
+    values: PasswordFormValues,
+    setSubmittingCb: (isSubmitting: boolean) => void
+  ) => {
+    const { old_password: oldPassword, password: newPassword } = values
+    await updatePassword({ oldPassword, newPassword })
+    setSubmittingCb(false)
+    onCancel()
   }
 
   return (
@@ -34,15 +40,9 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
       validationSchema={passwordChangeSchema}
       validateOnBlur
       validateOnChange
-      onSubmit={(
-        values: PasswordFormValues,
-        { setSubmitting }: FormikHelpers<PasswordFormValues>
-      ) => {
-        setTimeout(() => {
-          handleSubmit(values)
-          setSubmitting(false)
-        }, 500)
-      }}>
+      onSubmit={(values, { setSubmitting }) =>
+        handleSubmit(values, setSubmitting)
+      }>
       {({
         values,
         errors,
@@ -55,6 +55,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
         setTouched,
       }) => (
         <AntForm
+          initialValues={initialValues}
           layout="vertical"
           autoComplete="off"
           onFinish={async () => {
