@@ -10,6 +10,8 @@ import { RoutePath } from '@/core/Routes.enum'
 import { signup } from '@/core/services/auth.service'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
+import { TITLES } from '@/lib/constants'
+import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
 
 export type Registration = {
   first_name: string
@@ -22,6 +24,7 @@ export type Registration = {
 }
 
 const Registration = () => {
+  useDocumentTitle(TITLES.SIGN_UP)
   const initialValues: Registration = {
     first_name: EMPTY_STRING,
     second_name: EMPTY_STRING,

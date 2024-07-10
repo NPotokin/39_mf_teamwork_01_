@@ -11,6 +11,8 @@ import { RoutePath } from '@/core/Routes.enum'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
 import { signin } from '@/core/services/auth.service'
+import { TITLES } from '@/lib/constants'
+import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
 
 const initialValues: LoginForm = {
   login: EMPTY_STRING,
@@ -23,6 +25,7 @@ export type LoginForm = {
 }
 
 const Login = () => {
+  useDocumentTitle(TITLES.SIGN_IN)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 

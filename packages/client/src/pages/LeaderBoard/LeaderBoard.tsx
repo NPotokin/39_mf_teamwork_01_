@@ -7,6 +7,8 @@ import { UniversalTable } from '@/components/Table'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import holder from '@images/logo_sm.svg'
+import { TITLES } from '@/lib/constants'
+import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
 
 export type Comment = {
   key: string
@@ -26,6 +28,7 @@ export type LeaderboardEntry = {
 }
 
 const LeaderBoard = () => {
+  useDocumentTitle(TITLES.LEADER_BOARD)
   const [dataSource, setDataSource] = useState<LeaderboardEntry[]>([])
   useEffect(() => {
     const fetchData = async () => {
