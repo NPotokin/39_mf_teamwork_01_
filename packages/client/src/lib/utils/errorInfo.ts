@@ -2,8 +2,8 @@ import axios from 'axios'
 import { isApiError } from './type-check'
 
 export const errorInfo = (error: unknown): string => {
-  const unknownError = 'Неизвестная ошибка'
-
+  const unknownError = 'Unknown error'
+  
   if (
     axios.isAxiosError(error) &&
     error.response &&

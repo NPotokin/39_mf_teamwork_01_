@@ -1,12 +1,19 @@
 import React from 'react'
+import classNames from 'classnames'
+
 import styles from './UploadAvatar.module.css'
 
 type UploadAvatarProps = {
   preview?: string | ArrayBuffer | null
+  className?: string
   onChange?(file: File): void
 }
 
-const UploadAvatar: React.FC<UploadAvatarProps> = ({ onChange, preview }) => {
+const UploadAvatar: React.FC<UploadAvatarProps> = ({
+  className,
+  preview,
+  onChange,
+}) => {
   const previewStyle = preview
     ? {
         backgroundImage: `url(${preview})`,
@@ -24,7 +31,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ onChange, preview }) => {
 
   return (
     <>
-      <label className={styles.upload} htmlFor="avatar">
+      <label className={classNames(styles.upload, className)} htmlFor="avatar">
         <input
           type="file"
           name="avatar"

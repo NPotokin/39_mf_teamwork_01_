@@ -3,73 +3,95 @@ import { Formik, FormikHelpers } from 'formik'
 import { Form as AntForm, Input, Button, Row, Col } from 'antd'
 import classNames from 'classnames'
 
-import { userProfileSchema } from '@/lib/validation/validationSchema'
+import { updateAvatar, updateProfile } from '@/core/services/user.service'
+import { IUpdateUser, IUserInfo } from '@/core/api/model'
 import { EMPTY_STRING } from '@/core/constants'
+import { USER_DATA_KEY } from '@/core/services/auth.service'
+import { useAppDispatch } from '@/lib/hooks/redux'
+import { userProfileSchema } from '@/lib/validation/validationSchema'
+import { RESOURCE_URL } from '@/lib/constants'
 import { UploadAvatar } from '@/components/UploadAvatar'
+import { updateUser, updateUserAvatar } from '@/state/user/userSlice'
 import styles from './ProfileForm.module.scss'
-
-type ProfileFormValues = {
-  first_name: string
-  second_name: string
-  email: string
-  password: string
-  phone: string
-}
 
 type ProfileFormProps = {
   onCancel(): void
-}
+} & IUserInfo
 
-const ProfileForm: React.FC<ProfileFormProps> = ({ onCancel }) => {
-  const initialValues: ProfileFormValues = {
-    first_name: '',
-    second_name: '',
-    email: '',
-    password: '',
-    phone: '',
-  }
+const ProfileForm: React.FC<ProfileFormProps> = ({
+  first_name,
+  second_name,
+  display_name,
+  login,
+  phone,
+  email,
+  avatar,
+  onCancel,
+}) => {
   const [uploadPreview, setUploadPreview] = useState<
     string | ArrayBuffer | null
   >(null)
-
-  const [file, setFile] = useState<File | null>(null)
-
-  const onChangeAvatar = (file: File) => {
+  const avatarSrc = avatar ? `${RESOURCE_URL}${avatar}` : EMPTY_STRING
+  const initialValues: IUpdateUser = {
+    first_name,
+    second_name,
+    email,
+    phone,
+    login,
+    display_name,
+  }
+  const dispatch = useAppDispatch()
+  const onChangeAvatar = async (file: File) => {
     const reader = new FileReader()
     reader.onloadend = () => {
       setUploadPreview(reader.result as string)
     }
     reader.readAsDataURL(file)
-    setFile(file)
+    const formData = new FormData()
+    formData.append('avatar', file)
+    const updateUserData = await updateAvatar(formData)
+
+    if (updateUserData) {
+      localStorage.setItem(USER_DATA_KEY, JSON.stringify(updateUserData))
+      dispatch(updateUserAvatar(updateUserData.avatar))
+    }
   }
 
-  const handleSubmit = async (values: ProfileFormValues) => {
-    console.log(JSON.stringify(values, null, 2))
-    const formData = new FormData()
-    if (file) {
-      formData.append('avatar', file)
-      //TODO: upload file to server
+  const handleSubmit = async (
+    values: IUpdateUser,
+    setSubmittingCb: (isSubmitting: boolean) => void
+  ) => {
+    const updateUserData = await updateProfile(values)
+
+    if (updateUserData) {
+      localStorage.setItem(USER_DATA_KEY, JSON.stringify(updateUserData))
+      dispatch(updateUser(updateUserData))
     }
-    //TODO: send user data to server
+
+    setSubmittingCb(false)
+    onCancel()
   }
 
   return (
     <>
-      <UploadAvatar onChange={onChangeAvatar} preview={uploadPreview} />
+      <div className={styles.card}>
+        {avatarSrc && (
+          <img className={styles.avatar} src={avatarSrc} alt="avatar" />
+        )}
+        <UploadAvatar
+          className={styles.upload}
+          onChange={onChangeAvatar}
+          preview={uploadPreview}
+        />
+      </div>
       <Formik
         initialValues={initialValues}
         validationSchema={userProfileSchema}
         validateOnBlur
         validateOnChange
-        onSubmit={(
-          values: ProfileFormValues,
-          { setSubmitting }: FormikHelpers<ProfileFormValues>
-        ) => {
-          setTimeout(() => {
-            handleSubmit(values)
-            setSubmitting(false)
-          }, 500)
-        }}>
+        onSubmit={(values, { setSubmitting }) =>
+          handleSubmit(values, setSubmitting)
+        }>
         {({
           values,
           errors,
@@ -82,6 +104,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onCancel }) => {
           setTouched,
         }) => (
           <AntForm
+            initialValues={initialValues}
             layout="vertical"
             autoComplete="off"
             onFinish={async () => {
@@ -90,8 +113,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onCancel }) => {
                   first_name: true,
                   second_name: true,
                   email: true,
-                  password: true,
                   phone: true,
+                  login: true,
+                  display_name: true,
                 },
                 false
               )
@@ -170,6 +194,42 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onCancel }) => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.phone}
+                  />
+                </AntForm.Item>
+              </Col>
+              <Col xs={24} lg={12}>
+                <AntForm.Item
+                  name="login"
+                  label="Login"
+                  validateStatus={touched.login && errors.login ? 'error' : ''}
+                  help={touched.login && errors.login ? errors.login : ''}>
+                  <Input
+                    className="nes-input"
+                    name="login"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.login}
+                  />
+                </AntForm.Item>
+              </Col>
+              <Col xs={24} lg={12}>
+                <AntForm.Item
+                  name="display_name"
+                  label="Display Name"
+                  validateStatus={
+                    touched.display_name && errors.display_name ? 'error' : ''
+                  }
+                  help={
+                    touched.display_name && errors.display_name
+                      ? errors.display_name
+                      : ''
+                  }>
+                  <Input
+                    className="nes-input"
+                    name="display_name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.display_name}
                   />
                 </AntForm.Item>
               </Col>

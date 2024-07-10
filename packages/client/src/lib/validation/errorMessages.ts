@@ -4,6 +4,8 @@ export const errorMessages = {
     'First name must start with an uppercase letter, and may include a hyphen',
   second_name:
     'Last name must start with an uppercase letter, and may include a hyphen',
+  display_name:
+    'Display name must start with an uppercase letter, and may include a hyphen',
   userNameFirstLetter: 'Name must start with uppercase',
   email: 'Must be a valid email address with letters before the dot',
   password: 'Must contain capital and number',
