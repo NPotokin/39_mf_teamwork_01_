@@ -22,12 +22,18 @@ describe('login page', () => {
     cy.get('#password').clear().type('Password1')
 
     cy.get('form').submit()
-    cy.get('#password_help').should('have.text', '')
+    cy.get('#password_help').should(
+      'have.text',
+      ''
+    )
   })
 
   it('should navigate to sign up', () => {
     cy.contains('Sign Up').click()
 
-    cy.location('pathname').should('eq', '/signup')
+    cy.location('pathname').should(
+      'eq',
+      '/signup'
+    )
   })
 })

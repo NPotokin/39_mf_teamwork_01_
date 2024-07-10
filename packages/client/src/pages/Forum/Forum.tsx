@@ -1,6 +1,10 @@
 import { LikeOutlined } from '@ant-design/icons'
 import { Button, Popover, Space } from 'antd'
-import { ChangeEvent, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  useEffect,
+  useState,
+} from 'react'
 import { mockData } from './mockData'
 import TopicModal from './TopicModal/TopicModal'
 import CommentModal from './CommentModal/CommentModal'
@@ -38,10 +42,16 @@ const Forum = () => {
     selectedTopic,
     setSelectedTopic,
   } = useForum()
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isCommentModalVisible, setIsCommentModalVisible] = useState(false)
-  const [newTopicName, setNewTopicName] = useState('')
-  const [newTopicContent, setNewTopicContent] = useState('')
+  const [isModalVisible, setIsModalVisible] =
+    useState(false)
+  const [
+    isCommentModalVisible,
+    setIsCommentModalVisible,
+  ] = useState(false)
+  const [newTopicName, setNewTopicName] =
+    useState('')
+  const [newTopicContent, setNewTopicContent] =
+    useState('')
   const [newComment, setNewComment] = useState('')
 
   useEffect(() => {
@@ -61,7 +71,9 @@ const Forum = () => {
   }
 
   const handleOk = () => {
-    const newKey = (dataSource.length + 1).toString()
+    const newKey = (
+      dataSource.length + 1
+    ).toString()
     const newTopic = {
       key: newKey,
       name: newTopicName,
@@ -81,19 +93,35 @@ const Forum = () => {
 
   const handleCommentOk = () => {
     if (!selectedTopic) return
-    const newKey = (selectedComments.length + 1).toString()
-    const newCommentEntry = { key: newKey, comment: newComment, emoji: '' }
-    const updatedDataSource = dataSource.map(item => {
-      return item.key === selectedTopic.key
-        ? {
-            ...item,
-            comments: [...item.comments, newCommentEntry],
-            commentsCount: (parseInt(item.commentsCount) + 1).toString(),
-          }
-        : item
-    })
+    const newKey = (
+      selectedComments.length + 1
+    ).toString()
+    const newCommentEntry = {
+      key: newKey,
+      comment: newComment,
+      emoji: '',
+    }
+    const updatedDataSource = dataSource.map(
+      item => {
+        return item.key === selectedTopic.key
+          ? {
+              ...item,
+              comments: [
+                ...item.comments,
+                newCommentEntry,
+              ],
+              commentsCount: (
+                parseInt(item.commentsCount) + 1
+              ).toString(),
+            }
+          : item
+      }
+    )
     setDataSource(updatedDataSource)
-    setSelectedComments([...selectedComments, newCommentEntry])
+    setSelectedComments([
+      ...selectedComments,
+      newCommentEntry,
+    ])
     setIsCommentModalVisible(false)
     setNewComment('')
   }
@@ -102,15 +130,21 @@ const Forum = () => {
     setIsCommentModalVisible(false)
   }
 
-  const handleTopicNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleTopicNameChange = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     setNewTopicName(e.target.value)
   }
 
-  const handleTopicContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTopicContentChange = (
+    e: ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setNewTopicContent(e.target.value)
   }
 
-  const handleCommentInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommentInputChange = (
+    e: ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setNewComment(e.target.value)
   }
 
@@ -119,38 +153,69 @@ const Forum = () => {
     setSelectedComments(record.comments)
   }
 
-  const handleEmojiSelect = (commentKey: string, emoji: string) => {
+  const handleEmojiSelect = (
+    commentKey: string,
+    emoji: string
+  ) => {
     if (!selectedTopic) return
-    const updatedComments = selectedComments.map(comment =>
-      comment.key === commentKey ? { ...comment, emoji } : comment
+    const updatedComments = selectedComments.map(
+      comment =>
+        comment.key === commentKey
+          ? { ...comment, emoji }
+          : comment
     )
     setSelectedComments(updatedComments)
-    const updatedDataSource = dataSource.map(topic =>
-      topic.key === selectedTopic.key
-        ? { ...topic, comments: updatedComments }
-        : topic
+    const updatedDataSource = dataSource.map(
+      topic =>
+        topic.key === selectedTopic.key
+          ? {
+              ...topic,
+              comments: updatedComments,
+            }
+          : topic
     )
     setDataSource(updatedDataSource)
   }
 
-  const renderEmojiPopover = (commentKey: string) => {
-    const emojis = ['😀', '😅', '😂', '😎', '😍', '😢', '😡', '👍']
+  const renderEmojiPopover = (
+    commentKey: string
+  ) => {
+    const emojis = [
+      '😀',
+      '😅',
+      '😂',
+      '😎',
+      '😍',
+      '😢',
+      '😡',
+      '👍',
+    ]
     return (
       <Popover
         content={
           <Space>
             {emojis.map(emoji => (
               <Button
-                className={styles[`popover__emoji-btn`]}
+                className={
+                  styles[`popover__emoji-btn`]
+                }
                 key={emoji}
-                onClick={() => handleEmojiSelect(commentKey, emoji)}>
+                onClick={() =>
+                  handleEmojiSelect(
+                    commentKey,
+                    emoji
+                  )
+                }>
                 {emoji}
               </Button>
             ))}
           </Space>
         }
         trigger="click">
-        <Button className={styles.popover__btn} icon={<LikeOutlined />} />
+        <Button
+          className={styles.popover__btn}
+          icon={<LikeOutlined />}
+        />
       </Popover>
     )
   }
@@ -161,7 +226,14 @@ const Forum = () => {
       dataIndex: 'name',
       key: 'name',
       render: (text: string, record: Topic) => {
-        return <a onClick={() => handleNameClick(record)}>{text}</a>
+        return (
+          <a
+            onClick={() =>
+              handleNameClick(record)
+            }>
+            {text}
+          </a>
+        )
       },
     },
     {
@@ -181,7 +253,9 @@ const Forum = () => {
           <div>{record.comment}</div>
           <div>
             {renderEmojiPopover(record.key)}
-            {record.emoji && <span>{record.emoji}</span>}
+            {record.emoji && (
+              <span>{record.emoji}</span>
+            )}
           </div>
         </div>
       ),
@@ -191,7 +265,11 @@ const Forum = () => {
   return (
     <div className={cn(styles.wrapper, 'page')}>
       <Header />
-      <div className={cn(styles.forums, 'container')}>
+      <div
+        className={cn(
+          styles.forums,
+          'container'
+        )}>
         {!selectedTopic ? (
           <ForumList
             dataSource={dataSource}
@@ -216,15 +294,21 @@ const Forum = () => {
           topicContent={newTopicContent}
           onOk={handleOk}
           onCancel={handleCancel}
-          onTopicNameChange={handleTopicNameChange}
-          onTopicContentChange={handleTopicContentChange}
+          onTopicNameChange={
+            handleTopicNameChange
+          }
+          onTopicContentChange={
+            handleTopicContentChange
+          }
         />
         <CommentModal
           visible={isCommentModalVisible}
           comment={newComment}
           onOk={handleCommentOk}
           onCancel={handleCommentCancel}
-          onCommentChange={handleCommentInputChange}
+          onCommentChange={
+            handleCommentInputChange
+          }
         />
       </div>
       <Footer />

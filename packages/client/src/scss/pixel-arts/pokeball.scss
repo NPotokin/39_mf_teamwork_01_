@@ -1,5 +1,10 @@
 .nes-pokeball {
-  $pokeball-colors: (#060606, #ff001d, #fff, #9fa1a1);
+  $pokeball-colors: (
+    #060606,
+    #ff001d,
+    #fff,
+    #9fa1a1
+  );
   // prettier-ignore
   $pokeball: (
     (0,0,0,0,0,1,1,1,1,0,0,0,0,0),
@@ -28,10 +33,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $pokeball, $pokeball-colors);
+    @include pixelize(
+      $size,
+      $pokeball,
+      $pokeball-colors
+    );
     @include fill-gaps();
   }
 }

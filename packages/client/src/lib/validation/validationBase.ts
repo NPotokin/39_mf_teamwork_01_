@@ -5,7 +5,8 @@ import { errorMessages } from './errorMessages'
  * Regular expression for validating login.
  * Requires the login to be 3 to 20 characters long, allowing letters, numbers, underscores, and hyphens.
  */
-const loginRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9-_]{3,20}$/
+const loginRegex =
+  /^(?=.*[a-zA-Z])[a-zA-Z0-9-_]{3,20}$/
 
 /**
  * Regular expression for checking if the string consists only of digits.
@@ -17,7 +18,8 @@ const notOnlyDigitsRegex = /^\d+$/
  * Regular expression for validating passwords.
  * Requires at least 8 characters, max 40, including at least one uppercase letter and one number.
  */
-export const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/
+export const passwordRegex =
+  /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/
 
 /**
  * Regular expression for validating first and last names.
@@ -45,9 +47,15 @@ const baseLoginSchema = {
       message: errorMessages.loginSymbols,
       excludeEmptyString: true,
     })
-    .test('not-only-digits', errorMessages.loginSymbols, value => {
-      return !notOnlyDigitsRegex.test(value || '')
-    })
+    .test(
+      'not-only-digits',
+      errorMessages.loginSymbols,
+      value => {
+        return !notOnlyDigitsRegex.test(
+          value || ''
+        )
+      }
+    )
     .required(errorMessages.required),
 
   password: Yup.string()
@@ -60,7 +68,9 @@ const baseLoginSchema = {
     .test(
       'no-leading-trailing-spaces',
       errorMessages.passwordNonSpace,
-      value => value === undefined || value.trim() === value
+      value =>
+        value === undefined ||
+        value.trim() === value
     )
     .required(errorMessages.required),
 }

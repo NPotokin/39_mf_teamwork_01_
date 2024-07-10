@@ -8,7 +8,10 @@ import { Header, Footer } from '@/components'
 import styles from './Game.module.scss'
 
 import React from 'react'
-import { GameOverModal, WinModal } from './utils/modal'
+import {
+  GameOverModal,
+  WinModal,
+} from './utils/modal'
 import { StartModal } from '../../components/GameModal/StartModal'
 
 import useGameSounds from './hooks/useGameSounds'
@@ -16,13 +19,22 @@ import useModals from './hooks/useModals'
 import useGameLogic from './hooks/useGameLogic'
 import { useAppSelector } from '@/lib/hooks/redux'
 
-export type Level = 'levelOne' | 'levelTwo' | 'levelThree'
+export type Level =
+  | 'levelOne'
+  | 'levelTwo'
+  | 'levelThree'
 
 const Game: React.FC = () => {
   const sounds = useGameSounds()
   const modals = useModals()
-  const [level, setLevel] = useState(Constants.levelOne)
-  const gameLogic = useGameLogic({ level, sounds, modals })
+  const [level, setLevel] = useState(
+    Constants.levelOne
+  )
+  const gameLogic = useGameLogic({
+    level,
+    sounds,
+    modals,
+  })
 
   const handleStartModalButton = (
     selectedLevel: Level,
@@ -33,17 +45,28 @@ const Game: React.FC = () => {
     const levelConfig = Constants[selectedLevel]
     setLevel(levelConfig)
 
-    gameLogic.setPlayerPosition(levelConfig.player.startPosition)
-    gameLogic.setGems(levelConfig.gems.startPositions)
+    gameLogic.setPlayerPosition(
+      levelConfig.player.startPosition
+    )
+    gameLogic.setGems(
+      levelConfig.gems.startPositions
+    )
     switch (selectedDifficulty) {
       case 'easy':
-        gameLogic.setEnemies(levelConfig.enemy.startPositions.easy)
+        gameLogic.setEnemies(
+          levelConfig.enemy.startPositions.easy
+        )
         break
       case 'moderate':
-        gameLogic.setEnemies(levelConfig.enemy.startPositions.moderate)
+        gameLogic.setEnemies(
+          levelConfig.enemy.startPositions
+            .moderate
+        )
         break
       case 'hard':
-        gameLogic.setEnemies(levelConfig.enemy.startPositions.hard)
+        gameLogic.setEnemies(
+          levelConfig.enemy.startPositions.hard
+        )
 
         break
     }
@@ -58,13 +81,23 @@ const Game: React.FC = () => {
     modals.showStartModal()
   }
 
-  const userLogin = useAppSelector(state => state.user.login)
+  const userLogin = useAppSelector(
+    state => state.user.login
+  )
 
   return (
     <Layout>
-      <div className={classNames(styles.game, 'page')}>
+      <div
+        className={classNames(
+          styles.game,
+          'page'
+        )}>
         <Header isGamePage />
-        <div className={classNames(styles.canvas, 'container')}>
+        <div
+          className={classNames(
+            styles.canvas,
+            'container'
+          )}>
           <div className={styles.canvas__score}>
             <div>{userLogin}</div>
             <div>Steps: {gameLogic.steps}</div>

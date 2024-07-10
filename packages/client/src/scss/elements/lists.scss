@@ -1,15 +1,22 @@
 @mixin list-before(
   $class,
   $disc-or-circle,
-  $colors: ($base-color, map-get($default-colors, "shadow"))
+  $colors: (
+    $base-color,
+    map-get($default-colors, 'shadow')
+  )
 ) {
   &.is-#{$class} li::before {
     position: absolute;
     top: calc(50% - 8px);
     left: -22px;
-    content: "";
+    content: '';
 
-    @include pixelize(2px, $disc-or-circle, $colors);
+    @include pixelize(
+      2px,
+      $disc-or-circle,
+      $colors
+    );
   }
 }
 
@@ -40,13 +47,24 @@
     position: relative;
   }
 
-  @include list-before("disc", $disc);
-  @include list-before("circle", $circle);
+  @include list-before('disc', $disc);
+  @include list-before('circle', $circle);
 
   &.is-dark {
-    $dark-colors: ($background-color, $base-color);
-    @include list-before("disc", $disc, $dark-colors);
-    @include list-before("circle", $circle, $dark-colors);
+    $dark-colors: (
+      $background-color,
+      $base-color
+    );
+    @include list-before(
+      'disc',
+      $disc,
+      $dark-colors
+    );
+    @include list-before(
+      'circle',
+      $circle,
+      $dark-colors
+    );
 
     li {
       color: $color-white;

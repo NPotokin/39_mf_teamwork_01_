@@ -3,7 +3,8 @@ import { ServerErrorPage } from '@/pages'
 import { Outlet } from 'react-router'
 
 const ErrorBoundaryLayout = () => (
-  <ErrorBoundary FallbackComponent={ServerErrorPage}>
+  <ErrorBoundary
+    FallbackComponent={ServerErrorPage}>
     <Outlet />
   </ErrorBoundary>
 )

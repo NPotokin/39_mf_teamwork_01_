@@ -1,5 +1,12 @@
 .nes-charmander {
-  $charmander-colors: (#000202, #f77702, #eb2010, #fdfcff, #e5d70a, #e7d70e);
+  $charmander-colors: (
+    #000202,
+    #f77702,
+    #eb2010,
+    #fdfcff,
+    #e5d70a,
+    #e7d70e
+  );
   // prettier-ignore
   $charmander: (
     (0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0),
@@ -32,10 +39,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $charmander, $charmander-colors);
+    @include pixelize(
+      $size,
+      $charmander,
+      $charmander-colors
+    );
     @include fill-gaps();
   }
 }

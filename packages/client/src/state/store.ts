@@ -5,8 +5,11 @@ export const store = configureStore({
   reducer: {
     user: userReducer,
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware(),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware(),
 })
 
 export type AppDispatch = typeof store.dispatch
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<
+  typeof store.getState
+>

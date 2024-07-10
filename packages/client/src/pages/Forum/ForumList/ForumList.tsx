@@ -11,7 +11,11 @@ type ForumListProps = {
   columns: ColumnsType
   showModal: VoidFunction
 }
-const ForumList: FC<ForumListProps> = ({ dataSource, columns, showModal }) => {
+const ForumList: FC<ForumListProps> = ({
+  dataSource,
+  columns,
+  showModal,
+}) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.forums__table}>

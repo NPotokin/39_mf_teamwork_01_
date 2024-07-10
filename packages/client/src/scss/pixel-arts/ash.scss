@@ -1,5 +1,13 @@
 .nes-ash {
-  $ash-colors: (#f8f8ff, #ff614e, #007f7f, #181818, #ffe3c5, #426adb, #4169e1);
+  $ash-colors: (
+    #f8f8ff,
+    #ff614e,
+    #007f7f,
+    #181818,
+    #ffe3c5,
+    #426adb,
+    #4169e1
+  );
   // prettier-ignore
   $ash: (
     (0,0,0,0,4,4,4,4,4,4,0,0,0,0),
@@ -29,7 +37,7 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
     @include pixelize($size, $ash, $ash-colors);

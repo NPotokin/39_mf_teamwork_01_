@@ -17,13 +17,22 @@ export interface IUserInfo {
   email: string
 }
 export interface ICreateUser
-  extends Omit<IUserInfo, 'avatar' | 'display_name' | 'id'> {
+  extends Omit<
+    IUserInfo,
+    'avatar' | 'display_name' | 'id'
+  > {
   password: string
 }
 
-export type IUpdateUser = Omit<IUserInfo, 'avatar' | 'id'>
+export type IUpdateUser = Omit<
+  IUserInfo,
+  'avatar' | 'id'
+>
 
-export type IUpdateUserResponse = Omit<IUserInfo, 'avatar'>
+export type IUpdateUserResponse = Omit<
+  IUserInfo,
+  'avatar'
+>
 
 export interface IUpdatePassword {
   oldPassword: string

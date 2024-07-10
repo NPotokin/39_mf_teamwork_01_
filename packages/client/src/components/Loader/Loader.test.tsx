@@ -10,7 +10,11 @@ describe('Testing loader', () => {
 
   it('displays CircularProgress', () => {
     const { getByRole } = render(<Loader />)
-    const circularProgressElement = getByRole('progressbar')
-    expect(circularProgressElement).toBeInTheDocument()
+    const circularProgressElement = getByRole(
+      'progressbar'
+    )
+    expect(
+      circularProgressElement
+    ).toBeInTheDocument()
   })
 })

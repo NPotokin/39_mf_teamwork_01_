@@ -1,5 +1,13 @@
 .nes-squirtle {
-  $squirtle-colors: (#000, #9cf, #cb6633, #9fa1a1, #fff, #f89934, #ff3);
+  $squirtle-colors: (
+    #000,
+    #9cf,
+    #cb6633,
+    #9fa1a1,
+    #fff,
+    #f89934,
+    #ff3
+  );
   // prettier-ignore
   $squirtle: (
     (0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,0,0),
@@ -31,10 +39,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $squirtle, $squirtle-colors);
+    @include pixelize(
+      $size,
+      $squirtle,
+      $squirtle-colors
+    );
     @include fill-gaps();
   }
 }

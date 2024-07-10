@@ -1,5 +1,10 @@
 .nes-logo {
-  $logo-colors: (#3e3634, #c3c3c3, #787973, #bf1710);
+  $logo-colors: (
+    #3e3634,
+    #c3c3c3,
+    #787973,
+    #bf1710
+  );
 
   // prettier-ignore
   $logo: (
@@ -25,7 +30,7 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
     @include pixelize($size, $logo, $logo-colors);

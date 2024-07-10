@@ -1,5 +1,13 @@
 .nes-mario {
-  $mario-colors: (#f81c2f, #65352b, #ffbb8e, #000, #1560ad, #aeaeac, #fef102);
+  $mario-colors: (
+    #f81c2f,
+    #65352b,
+    #ffbb8e,
+    #000,
+    #1560ad,
+    #aeaeac,
+    #fef102
+  );
   // prettier-ignore
   $mario: (
     (0,0,0,0,1,1,1,1,1,0,0,0,0,0),
@@ -30,10 +38,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $mario, $mario-colors);
+    @include pixelize(
+      $size,
+      $mario,
+      $mario-colors
+    );
     @include fill-gaps();
   }
 }

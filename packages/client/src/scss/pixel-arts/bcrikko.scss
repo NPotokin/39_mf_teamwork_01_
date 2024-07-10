@@ -31,10 +31,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $bcrikko, $bcrikko-colors);
+    @include pixelize(
+      $size,
+      $bcrikko,
+      $bcrikko-colors
+    );
     @include fill-gaps();
   }
 }

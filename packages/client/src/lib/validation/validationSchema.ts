@@ -6,13 +6,18 @@ import {
   passwordRegex,
 } from './validationBase'
 
-const loginSchema = Yup.object().shape(baseLoginSchema)
+const loginSchema = Yup.object().shape(
+  baseLoginSchema
+)
 
 const registrationSchema = Yup.object().shape({
   ...baseLoginSchema,
   ...baseProfileSchema,
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], errorMessages.passwordMatches)
+    .oneOf(
+      [Yup.ref('password')],
+      errorMessages.passwordMatches
+    )
     .required(errorMessages.required),
 })
 
@@ -21,7 +26,9 @@ const userProfileSchema = Yup.object().shape({
 })
 
 const passwordChangeSchema = Yup.object().shape({
-  old_password: Yup.string().required(errorMessages.required),
+  old_password: Yup.string().required(
+    errorMessages.required
+  ),
   password: Yup.string()
     .min(8, errorMessages.passwordMinMax)
     .max(40, errorMessages.passwordMinMax)
@@ -32,11 +39,16 @@ const passwordChangeSchema = Yup.object().shape({
     .test(
       'no-leading-trailing-spaces',
       errorMessages.passwordNonSpace,
-      value => value === undefined || value.trim() === value
+      value =>
+        value === undefined ||
+        value.trim() === value
     )
     .required(errorMessages.required),
   confirm_password: Yup.string()
-    .oneOf([Yup.ref('password')], errorMessages.passwordMatches)
+    .oneOf(
+      [Yup.ref('password')],
+      errorMessages.passwordMatches
+    )
     .required(errorMessages.required),
 })
 

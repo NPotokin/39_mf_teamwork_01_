@@ -6,7 +6,8 @@ import rock from '@images/rock.png'
 
 const useLoadImages = () => {
   // Пре-прогружаем картинки - иначе RAF не отрабатывает
-  const [imagesLoaded, setImagesLoaded] = useState(false)
+  const [imagesLoaded, setImagesLoaded] =
+    useState(false)
   const [images, setImages] = useState({
     rock: new Image(),
     pumpkin: new Image(),

@@ -7,7 +7,10 @@ import {
 } from 'react'
 import { ConfigProvider } from 'antd'
 
-import { darkTheme, lightTheme } from '@/core/theme'
+import {
+  darkTheme,
+  lightTheme,
+} from '@/core/theme'
 
 type ThemeType = 'light' | 'dark'
 
@@ -21,30 +24,45 @@ const themeMap = {
   dark: darkTheme,
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+const ThemeContext = createContext<
+  ThemeContextType | undefined
+>(undefined)
 
 export const useTheme = () => {
   const context = useContext(ThemeContext)
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider')
+    throw new Error(
+      'useTheme must be used within a ThemeProvider'
+    )
   }
   return context
 }
 
-export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [theme, setTheme] = useState<ThemeType>('light')
+export const ThemeProvider: React.FC<
+  PropsWithChildren
+> = ({ children }) => {
+  const [theme, setTheme] =
+    useState<ThemeType>('light')
   useEffect(() => {
-    document.body.setAttribute('data-theme', theme)
+    document.body.setAttribute(
+      'data-theme',
+      theme
+    )
     //TODO: send newTheme to the server
   }, [theme])
 
   const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'))
+    setTheme(prevTheme =>
+      prevTheme === 'light' ? 'dark' : 'light'
+    )
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <ConfigProvider theme={themeMap[theme]}>{children}</ConfigProvider>
+    <ThemeContext.Provider
+      value={{ theme, toggleTheme }}>
+      <ConfigProvider theme={themeMap[theme]}>
+        {children}
+      </ConfigProvider>
     </ThemeContext.Provider>
   )
 }

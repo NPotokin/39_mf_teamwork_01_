@@ -19,9 +19,12 @@ export const updateProfile = async (
   data: IUpdateUser
 ): Promise<IUpdateUserResponse | undefined> => {
   try {
-    const response: AxiosResponse<IUpdateUserResponse | IAPIError> =
-      await userApi.updateProfile(data)
-    const responseData: IUpdateUserResponse | IAPIError = response.data
+    const response: AxiosResponse<
+      IUpdateUserResponse | IAPIError
+    > = await userApi.updateProfile(data)
+    const responseData:
+      | IUpdateUserResponse
+      | IAPIError = response.data
 
     if (isApiError(responseData)) {
       throw new Error(responseData.reason)
@@ -33,11 +36,14 @@ export const updateProfile = async (
   }
 }
 
-export const updatePassword = async (data: IUpdatePassword): Promise<void> => {
+export const updatePassword = async (
+  data: IUpdatePassword
+): Promise<void> => {
   try {
     const response: AxiosResponse<void | IAPIError> =
       await userApi.updatePassword(data)
-    const responseData: void | IAPIError = response.data
+    const responseData: void | IAPIError =
+      response.data
 
     if (isApiError(responseData)) {
       throw new Error(responseData.reason)
@@ -51,9 +57,11 @@ export const updateAvatar = async (
   file: FormData
 ): Promise<IUserInfo | undefined> => {
   try {
-    const response: AxiosResponse<IUserInfo | IAPIError> =
-      await userApi.updateAvatar(file)
-    const data: IUserInfo | IAPIError = response.data
+    const response: AxiosResponse<
+      IUserInfo | IAPIError
+    > = await userApi.updateAvatar(file)
+    const data: IUserInfo | IAPIError =
+      response.data
 
     if (isApiError(data)) {
       throw new Error(data.reason)

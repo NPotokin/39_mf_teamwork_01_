@@ -31,7 +31,9 @@ const Login = () => {
 
   const handleSubmit = async (
     values: Record<string, string>,
-    setSubmittingCb: (isSubmitting: boolean) => void
+    setSubmittingCb: (
+      isSubmitting: boolean
+    ) => void
   ): Promise<void> => {
     const user = await signin(values as LoginForm)
 
@@ -53,7 +55,9 @@ const Login = () => {
           <div className={styles.logo}>
             <img src={logo} alt="Panda logo" />
           </div>
-          <div className={styles.title}>Welcome back!</div>
+          <div className={styles.title}>
+            Welcome back!
+          </div>
         </header>
         <div className={styles.form}>
           <CustomForm
@@ -61,12 +65,17 @@ const Login = () => {
             titles={titles}
             schema={loginSchema}
             buttonTitle="Sign In"
-            handleSubmit={handleSubmit}></CustomForm>
+            handleSubmit={
+              handleSubmit
+            }></CustomForm>
         </div>
         <footer className={styles.footer}>
           <span>Don't have an account?</span>
           <Button
-            className={cn('nes-btn', styles.button)}
+            className={cn(
+              'nes-btn',
+              styles.button
+            )}
             onClick={handleSignUpClick}>
             Sign Up
           </Button>

@@ -21,7 +21,6 @@ body {
   color: var(--color-text);
 }
 
-
 label {
   cursor: inherit;
 }
@@ -32,15 +31,15 @@ button {
 }
 
 button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
+[type='button'],
+[type='reset'],
+[type='submit'] {
   -webkit-appearance: none;
 }
 
 // Prevent stray pixels on focused inputs such as checkboxes and radios
-input[type="radio"],
-input[type="checkbox"] {
+input[type='radio'],
+input[type='checkbox'] {
   outline: 0;
 }
 

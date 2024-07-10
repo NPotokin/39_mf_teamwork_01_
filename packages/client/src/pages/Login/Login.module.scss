@@ -9,7 +9,7 @@
   width: 95%;
   margin: auto;
   background-color: var(--component-bg);
-  backdrop-filter: var(--ba) ;
+  backdrop-filter: var(--ba);
   border-radius: 8px;
   padding: 40px 24px 50px;
 
@@ -43,7 +43,9 @@
   margin-top: 20px !important;
 }
 
-@supports (background-image: url(@images/bg.webp)) {
+@supports (
+  background-image: url(@images/bg.webp)
+) {
   .page {
     background-image: url(@images/bg.webp);
   }
