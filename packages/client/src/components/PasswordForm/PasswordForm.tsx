@@ -25,9 +25,14 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
     confirm_password: '',
   }
 
-  const handleSubmit = async (values: PasswordFormValues) => {
+  const handleSubmit = async (
+    values: PasswordFormValues,
+    setSubmittingCb: (isSubmitting: boolean) => void
+  ) => {
     const { old_password: oldPassword, password: newPassword } = values
     await updatePassword({ oldPassword, newPassword })
+    setSubmittingCb(false)
+    onCancel()
   }
 
   return (
@@ -36,15 +41,9 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
       validationSchema={passwordChangeSchema}
       validateOnBlur
       validateOnChange
-      onSubmit={(
-        values: PasswordFormValues,
-        { setSubmitting }: FormikHelpers<PasswordFormValues>
-      ) => {
-        setTimeout(() => {
-          handleSubmit(values)
-          setSubmitting(false)
-        }, 500)
-      }}>
+      onSubmit={(values, { setSubmitting }) =>
+        handleSubmit(values, setSubmitting)
+      }>
       {({
         values,
         errors,

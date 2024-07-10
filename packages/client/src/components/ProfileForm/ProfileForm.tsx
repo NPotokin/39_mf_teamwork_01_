@@ -3,13 +3,14 @@ import { Formik, FormikHelpers } from 'formik'
 import { Form as AntForm, Input, Button, Row, Col } from 'antd'
 import classNames from 'classnames'
 
-import { userProfileSchema } from '@/lib/validation/validationSchema'
 import { updateAvatar, updateProfile } from '@/core/services/user.service'
 import { IUpdateUser, IUserInfo } from '@/core/api/model'
 import { EMPTY_STRING } from '@/core/constants'
-import { UploadAvatar } from '@/components/UploadAvatar'
+import { USER_DATA_KEY } from '@/core/services/auth.service'
 import { useAppDispatch } from '@/lib/hooks/redux'
+import { userProfileSchema } from '@/lib/validation/validationSchema'
 import { RESOURCE_URL } from '@/lib/constants'
+import { UploadAvatar } from '@/components/UploadAvatar'
 import { updateUser, updateUserAvatar } from '@/state/user/userSlice'
 import styles from './ProfileForm.module.scss'
 
@@ -30,8 +31,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   const [uploadPreview, setUploadPreview] = useState<
     string | ArrayBuffer | null
   >(null)
-
-  const [file, setFile] = useState<File | null>(null)
   const avatarSrc = avatar ? `${RESOURCE_URL}${avatar}` : EMPTY_STRING
   const initialValues: IUpdateUser = {
     first_name,
@@ -42,37 +41,35 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     display_name,
   }
   const dispatch = useAppDispatch()
-  const onChangeAvatar = (file: File) => {
+  const onChangeAvatar = async (file: File) => {
     const reader = new FileReader()
     reader.onloadend = () => {
       setUploadPreview(reader.result as string)
     }
     reader.readAsDataURL(file)
-    setFile(file)
+    const formData = new FormData()
+    formData.append('avatar', file)
+    const updateUserData = await updateAvatar(formData)
+
+    if (updateUserData) {
+      localStorage.setItem(USER_DATA_KEY, JSON.stringify(updateUserData))
+      dispatch(updateUserAvatar(updateUserData.avatar))
+    }
   }
 
   const handleSubmit = async (
     values: IUpdateUser,
     setSubmittingCb: (isSubmitting: boolean) => void
   ) => {
-    const formData = new FormData()
-
-    if (file) {
-      formData.append('avatar', file)
-      const updateAvatarData = await updateAvatar(formData)
-
-      if (updateAvatarData) {
-        dispatch(updateUserAvatar(updateAvatarData.avatar))
-      }
-    }
-
     const updateUserData = await updateProfile(values)
 
     if (updateUserData) {
+      localStorage.setItem(USER_DATA_KEY, JSON.stringify(updateUserData))
       dispatch(updateUser(updateUserData))
     }
 
     setSubmittingCb(false)
+    onCancel()
   }
 
   return (
