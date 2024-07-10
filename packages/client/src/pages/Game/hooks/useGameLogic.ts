@@ -92,153 +92,152 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
       }
     }
   }, [])
+
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       event.preventDefault()
       if (!modals.isGameActive) return
+
       const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
       if (!validKeys.includes(event.key)) return
-      setPlayerPosition(prev => {
-        let { x, y } = prev
-        const step = level.player.step
 
-        switch (event.key) {
-          case 'ArrowUp':
-            y -= step
+      let newX = playerPosition.x
+      let newY = playerPosition.y
+      const step = level.player.step
+
+      switch (event.key) {
+        case 'ArrowUp':
+          newY -= step
+          break
+        case 'ArrowDown':
+          newY += step
+          break
+        case 'ArrowLeft':
+          newX -= step
+          break
+        case 'ArrowRight':
+          newX += step
+          break
+      }
+
+      const isCollidingWithEnemies = enemies.some(
+        enemy =>
+          newX < enemy.x + level.enemy.width &&
+          newX + level.player.width > enemy.x &&
+          newY < enemy.y + level.enemy.height &&
+          newY + level.player.height > enemy.y
+      )
+
+      if (isCollidingWithEnemies) {
+        handleDefeat()
+      }
+
+      const isCollidingWithObstaclesOrWalls =
+        obstacles.some(
+          obstacle =>
+            newX < obstacle.x + level.obstacles.width &&
+            newX + level.player.width > obstacle.x &&
+            newY < obstacle.y + level.obstacles.height &&
+            newY + level.player.height > obstacle.y
+        ) ||
+        newX < 0 ||
+        newX + level.player.width > canvasSize.width ||
+        newY < 0 ||
+        newY + level.player.height > canvasSize.height
+
+      if (isCollidingWithObstaclesOrWalls) {
+        return
+      }
+
+      const newGems = gems.filter(
+        gem =>
+          !(
+            newX < gem.x + level.gems.width &&
+            newX + level.player.width > gem.x &&
+            newY < gem.y + level.gems.height &&
+            newY + level.player.height > gem.y
+          )
+      )
+
+      if (newGems.length !== gems.length) {
+        sounds.playGemSound()
+        setScore(prevScore => prevScore + 100)
+      }
+
+      setGems(newGems)
+
+      if (newGems.length === 0) {
+        handleVictory()
+        return
+      }
+
+      setPlayerPosition({ x: newX, y: newY })
+
+      const updatedEnemies = enemies.map(enemy => {
+        let enemyX = enemy.x
+        let enemyY = enemy.y
+        const directions = ['up', 'down', 'left', 'right']
+        const randomDirection =
+          directions[Math.floor(Math.random() * directions.length)]
+
+        switch (randomDirection) {
+          case 'up':
+            enemyY -= level.enemy.step
             break
-          case 'ArrowDown':
-            y += step
+          case 'down':
+            enemyY += level.enemy.step
             break
-          case 'ArrowLeft':
-            x -= step
+          case 'left':
+            enemyX -= level.enemy.step
             break
-          case 'ArrowRight':
-            x += step
+          case 'right':
+            enemyX += level.enemy.step
             break
         }
 
-        const isCollidingWithEnemies = enemies.some(
-          enemy =>
-            x < enemy.x + level.enemy.width &&
-            x + level.player.width > enemy.x &&
-            y < enemy.y + level.enemy.height &&
-            y + level.player.height > enemy.y
-        )
+        const isCollidingWithWalls =
+          enemyX < 0 ||
+          enemyX + level.enemy.width > canvasSize.width ||
+          enemyY < 0 ||
+          enemyY + level.enemy.height > canvasSize.height
 
-        if (isCollidingWithEnemies) {
-          handleDefeat()
-          return
-        }
-
-        const isCollidingWithObstaclesOrWalls =
-          obstacles.some(
-            obstacle =>
-              x < obstacle.x + level.obstacles.width &&
-              x + level.player.width > obstacle.x &&
-              y < obstacle.y + level.obstacles.height &&
-              y + level.player.height > obstacle.y
-          ) ||
-          x < 0 ||
-          x + level.player.width > canvasSize.width ||
-          y < 0 ||
-          y + level.player.height > canvasSize.height
-
-        if (isCollidingWithObstaclesOrWalls) {
-          return prev
-        }
-
-        const newGems = gems.filter(
+        const isCollidingWithGems = newGems.some(
           gem =>
-            !(
-              x < gem.x + level.gems.width &&
-              x + level.player.width > gem.x &&
-              y < gem.y + level.gems.height &&
-              y + level.player.height > gem.y
-            )
+            enemyX < gem.x + level.gems.width &&
+            enemyX + level.enemy.width > gem.x &&
+            enemyY < gem.y + level.gems.height &&
+            enemyY + level.enemy.height > gem.y
         )
 
-        if (newGems.length !== gems.length) {
-          sounds.playGemSound()
-          setScore(prevScore => prevScore + 100)
+        const isCollidingWithObstacles = obstacles.some(
+          obstacle =>
+            enemyX < obstacle.x + level.obstacles.width &&
+            enemyX + level.enemy.width > obstacle.x &&
+            enemyY < obstacle.y + level.obstacles.height &&
+            enemyY + level.enemy.height > obstacle.y
+        )
+
+        const isCollidingWithPlayer =
+          newX < enemyX + level.enemy.width &&
+          newX + level.player.width > enemyX &&
+          newY < enemyY + level.enemy.height &&
+          newY + level.player.height > enemyY
+
+        if (
+          isCollidingWithWalls ||
+          isCollidingWithObstacles ||
+          isCollidingWithGems
+        ) {
+          return enemy
         }
 
-        setGems(newGems)
-
-        if (newGems.length === 0) {
-          handleVictory()
+        if (isCollidingWithPlayer) {
+          handleDefeat()
         }
-
-        setSteps(steps + 1)
-
-        return { x, y }
+        return { x: enemyX, y: enemyY }
       })
 
-      setEnemies(prev =>
-        prev.map(enemy => {
-          let { x: enemyX, y: enemyY } = enemy
-          const step = level.enemy.step
-          const directions = ['up', 'down', 'left', 'right']
-          const randomDirection =
-            directions[Math.floor(Math.random() * directions.length)]
-
-          switch (randomDirection) {
-            case 'up':
-              enemyY -= step
-              break
-            case 'down':
-              enemyY += step
-              break
-            case 'left':
-              enemyX -= step
-              break
-            case 'right':
-              enemyX += step
-              break
-          }
-
-          const isCollidingWithWalls =
-            enemyX < 0 ||
-            enemyX + level.enemy.width > canvasSize.width ||
-            enemyY < 0 ||
-            enemyY + level.enemy.height > canvasSize.height
-
-          const isCollidingWithGems = gems.some(
-            gem =>
-              enemyX < gem.x + level.gems.width &&
-              enemyX + level.enemy.width > gem.x &&
-              enemyY < gem.y + level.gems.height &&
-              enemyY + level.enemy.height > gem.y
-          )
-
-          const isCollidingWithObstacles = obstacles.some(
-            obstacle =>
-              enemyX < obstacle.x + level.obstacles.width &&
-              enemyX + level.enemy.width > obstacle.x &&
-              enemyY < obstacle.y + level.obstacles.height &&
-              enemyY + level.enemy.height > obstacle.y
-          )
-
-          const isCollidingWithPlayer =
-            playerPosition.x < enemyX + level.enemy.width &&
-            playerPosition.x + level.player.width > enemyX &&
-            playerPosition.y < enemyY + level.enemy.height &&
-            playerPosition.y + level.player.height > enemyY
-
-          if (
-            isCollidingWithWalls ||
-            isCollidingWithObstacles ||
-            isCollidingWithGems
-          ) {
-            return enemy
-          }
-
-          if (isCollidingWithPlayer) {
-            handleDefeat()
-          }
-
-          return { x: enemyX, y: enemyY }
-        })
-      )
+      setEnemies(updatedEnemies)
     },
     [
       steps,
