@@ -8,8 +8,15 @@ type LogoProps = {
   className?: string
 }
 
-const Logo: React.FC<LogoProps> = ({ title, className }) => (
-  <span className={classNames(styles.root, className || '')}>
+const Logo: React.FC<LogoProps> = ({
+  title,
+  className,
+}) => (
+  <span
+    className={classNames(
+      styles.root,
+      className || ''
+    )}>
     <img
       className={styles.image}
       src={logo}

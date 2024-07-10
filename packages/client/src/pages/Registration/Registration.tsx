@@ -10,6 +10,8 @@ import { RoutePath } from '@/core/Routes.enum'
 import { signup } from '@/core/services/auth.service'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
+import { TITLES } from '@/lib/constants'
+import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
 
 export type Registration = {
   first_name: string
@@ -22,6 +24,7 @@ export type Registration = {
 }
 
 const Registration = () => {
+  useDocumentTitle(TITLES.SIGN_UP)
   const initialValues: Registration = {
     first_name: EMPTY_STRING,
     second_name: EMPTY_STRING,
@@ -36,9 +39,13 @@ const Registration = () => {
 
   const handleSubmit = async (
     values: Record<string, string>,
-    setSubmittingCb: (isSubmitting: boolean) => void
+    setSubmittingCb: (
+      isSubmitting: boolean
+    ) => void
   ): Promise<void> => {
-    const user = await signup(values as Registration)
+    const user = await signup(
+      values as Registration
+    )
 
     setSubmittingCb(false)
     if (user) {
@@ -55,7 +62,9 @@ const Registration = () => {
     <div className={cn('page', styles.page)}>
       <div className={styles.card}>
         <header className={styles.header}>
-          <div className={styles.title}>Create account</div>
+          <div className={styles.title}>
+            Create account
+          </div>
         </header>
         <div className={styles['form-wrapper']}>
           <CustomForm
@@ -64,11 +73,17 @@ const Registration = () => {
             titles={titles}
             schema={registrationSchema}
             buttonTitle="Sign Up"
-            handleSubmit={handleSubmit}></CustomForm>
+            handleSubmit={
+              handleSubmit
+            }></CustomForm>
         </div>
         <footer className={styles.footer}>
-          <span className={styles.text}>Already have an account?</span>
-          <Button className="nes-btn" onClick={handleSignInClick}>
+          <span className={styles.text}>
+            Already have an account?
+          </span>
+          <Button
+            className="nes-btn"
+            onClick={handleSignInClick}>
             Sign In
           </Button>
         </footer>

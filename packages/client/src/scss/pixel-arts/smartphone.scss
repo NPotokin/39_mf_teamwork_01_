@@ -41,10 +41,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $smartphone, $smartphone-colors);
+    @include pixelize(
+      $size,
+      $smartphone,
+      $smartphone-colors
+    );
     @include fill-gaps();
   }
 }

@@ -5,7 +5,10 @@ import {
 } from 'react-router-dom'
 
 import { RoutePath } from './Routes.enum'
-import { ErrorBoundaryLayout, ProtectedRoute } from '@/components'
+import {
+  ErrorBoundaryLayout,
+  ProtectedRoute,
+} from '@/components'
 import {
   Home,
   Game,
@@ -91,6 +94,8 @@ const routes: RouteObject[] = [
 
 const router = createBrowserRouter(routes)
 
-const Routes = () => <RouterProvider router={router} />
+const Routes = () => (
+  <RouterProvider router={router} />
+)
 
 export default Routes

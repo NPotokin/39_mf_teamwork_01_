@@ -1,4 +1,7 @@
-import { fireEvent, render } from '@testing-library/react'
+import {
+  fireEvent,
+  render,
+} from '@testing-library/react'
 
 import '@testing-library/jest-dom'
 import TopicDetails from '../TopicDetails'
@@ -34,7 +37,9 @@ describe('TopicDetails', () => {
       </ThemeProvider>
     )
 
-    expect(getByText(selectedTopic.name)).toBeInTheDocument()
+    expect(
+      getByText(selectedTopic.name)
+    ).toBeInTheDocument()
   })
   it('renders Back button,  Add Comment button and navigates on click', () => {
     const { getByText } = render(

@@ -1,6 +1,12 @@
-import { IAPIError, ICreateUser, IUpdatePassword } from '@/core/api/model'
+import {
+  IAPIError,
+  ICreateUser,
+  IUpdatePassword,
+} from '@/core/api/model'
 
-export function isApiError(data: unknown): data is IAPIError {
+export function isApiError(
+  data: unknown
+): data is IAPIError {
   if (!data || typeof data !== 'object') {
     return false
   }
@@ -8,7 +14,9 @@ export function isApiError(data: unknown): data is IAPIError {
   return 'reason' in data
 }
 
-export function isCreateUser(data: unknown): data is ICreateUser {
+export function isCreateUser(
+  data: unknown
+): data is ICreateUser {
   if (!data || typeof data !== 'object') {
     return false
   }
@@ -22,10 +30,14 @@ export function isCreateUser(data: unknown): data is ICreateUser {
   )
 }
 
-export function isUpdatePassword(data: unknown): data is IUpdatePassword {
+export function isUpdatePassword(
+  data: unknown
+): data is IUpdatePassword {
   if (!data || typeof data !== 'object') {
     return false
   }
 
-  return 'oldPassword' in data && 'newPassword' in data
+  return (
+    'oldPassword' in data && 'newPassword' in data
+  )
 }

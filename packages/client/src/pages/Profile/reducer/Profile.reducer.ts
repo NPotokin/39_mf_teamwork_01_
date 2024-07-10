@@ -13,7 +13,9 @@ export const actionTypes = {
   EDIT_PASSWORD: 'EDIT_PASSWORD',
 } as const
 
-export const initialState: ProfileState = { view: 'info' }
+export const initialState: ProfileState = {
+  view: 'info',
+}
 
 export const profileReducer = (
   state: ProfileState,

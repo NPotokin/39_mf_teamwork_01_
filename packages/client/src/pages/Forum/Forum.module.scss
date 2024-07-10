@@ -3,8 +3,8 @@
 }
 
 .forums {
-	padding-top: 100px;
-	padding-bottom: 50px;
+  padding-top: 100px;
+  padding-bottom: 50px;
 }
 
 .popover {
@@ -17,7 +17,9 @@
     border: 0;
   }
 }
-@supports (background-image: url(@images/bg.webp)) {
+@supports (
+  background-image: url(@images/bg.webp)
+) {
   .wrapper {
     background-image: url(@images/bg.webp);
   }

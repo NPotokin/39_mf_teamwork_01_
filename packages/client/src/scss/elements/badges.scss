@@ -1,4 +1,10 @@
-@mixin span-style-is-icon($color, $background-color, $display, $width, $font-size) {
+@mixin span-style-is-icon(
+  $color,
+  $background-color,
+  $display,
+  $width,
+  $font-size
+) {
   display: $display;
   align-items: center;
   justify-content: center;
@@ -9,7 +15,12 @@
   background-color: $background-color;
 }
 
-@mixin span-style($color, $background, $option, $width: 50%) {
+@mixin span-style(
+  $color,
+  $background,
+  $option,
+  $width: 50%
+) {
   position: absolute;
   top: 0;
   width: $width;
@@ -24,23 +35,44 @@
   }
 }
 
-@mixin badge-style($color, $background, $option: is-default) {
-  $box-shadow-first-two: 0 0.5em $background, 0 -0.5em $background;
+@mixin badge-style(
+  $color,
+  $background,
+  $option: is-default
+) {
+  $box-shadow-first-two: 0 0.5em $background,
+    0 -0.5em $background;
 
   @if $option == is-split {
     &:first-child {
-      @include span-style($color, $background, left);
+      @include span-style(
+        $color,
+        $background,
+        left
+      );
 
-      box-shadow: $box-shadow-first-two, 0 0 $background, -0.5em 0 $background;
+      box-shadow: $box-shadow-first-two,
+        0 0 $background, -0.5em 0 $background;
     }
     &:last-child {
-      @include span-style($color, $background, right);
+      @include span-style(
+        $color,
+        $background,
+        right
+      );
 
-      box-shadow: $box-shadow-first-two, 0.5em 0 $background, 0 0 $background;
+      box-shadow: $box-shadow-first-two,
+        0.5em 0 $background, 0 0 $background;
     }
   } @else if $option == is-icon {
     &:first-child {
-      @include span-style-is-icon($color, $background, flex, 2.7em, 0.5em);
+      @include span-style-is-icon(
+        $color,
+        $background,
+        flex,
+        2.7em,
+        0.5em
+      );
 
       position: absolute;
       top: -2.8em;
@@ -48,15 +80,28 @@
       height: 2.7em;
     }
     &:last-child {
-      @include span-style-is-icon($color, $background, inline-block, 6em, 0.88em);
+      @include span-style-is-icon(
+        $color,
+        $background,
+        inline-block,
+        6em,
+        0.88em
+      );
 
-      box-shadow: $box-shadow-first-two, 0.5em 0 $background, -0.5em 0 $background;
+      box-shadow: $box-shadow-first-two,
+        0.5em 0 $background, -0.5em 0 $background;
     }
   } @else {
     &:first-child {
-      @include span-style($color, $background, 0, 100%);
+      @include span-style(
+        $color,
+        $background,
+        0,
+        100%
+      );
 
-      box-shadow: $box-shadow-first-two, 0.5em 0 $background, -0.5em 0 $background;
+      box-shadow: $box-shadow-first-two,
+        0.5em 0 $background, -0.5em 0 $background;
     }
   }
 }
@@ -88,19 +133,30 @@
     &.is-splited, // deprecated. Please use .is-split
     &.is-split {
       & span.is-#{nth($type, 1)} {
-        @include badge-style(nth($type, 2), nth($type, 3), is-split);
+        @include badge-style(
+          nth($type, 2),
+          nth($type, 3),
+          is-split
+        );
       }
     }
 
     &.is-icon {
       width: $em * 7;
       & span.is-#{nth($type, 1)} {
-        @include badge-style(nth($type, 2), nth($type, 3), is-icon);
+        @include badge-style(
+          nth($type, 2),
+          nth($type, 3),
+          is-icon
+        );
       }
     }
 
     & span.is-#{nth($type, 1)} {
-      @include badge-style(nth($type, 2), nth($type, 3));
+      @include badge-style(
+        nth($type, 2),
+        nth($type, 3)
+      );
     }
   }
 }

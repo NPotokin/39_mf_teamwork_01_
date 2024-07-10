@@ -4,7 +4,8 @@ import vitePreprocessor from 'cypress-vite'
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000/',
-    specPattern: './cypress/integration/**/*.spec.{ts,tsx}',
+    specPattern:
+      './cypress/integration/**/*.spec.{ts,tsx}',
     setupNodeEvents(on) {
       on('file:preprocessor', vitePreprocessor())
     },

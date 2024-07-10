@@ -45,8 +45,14 @@
     (2,0,0,1,0,0,0,2,0,0),
     (2,2,2,2,2,2,2,2,0,0)
   );
-  $colors: ($base-color, map-get($default-colors, "shadow"));
-  $colors-checkbox-dark: ($color-white, map-get($default-colors, "shadow"));
+  $colors: (
+    $base-color,
+    map-get($default-colors, 'shadow')
+  );
+  $colors-checkbox-dark: (
+    $color-white,
+    map-get($default-colors, 'shadow')
+  );
 
   margin-left: 28px;
   -webkit-appearance: none;
@@ -65,7 +71,7 @@
     position: absolute;
     top: -3px;
     left: -28px;
-    content: "";
+    content: '';
   }
 
   // prettier-ignore
@@ -78,10 +84,18 @@
   }
 
   &:checked + span::before {
-    @include pixelize(2px, $checkbox-checked, $colors);
+    @include pixelize(
+      2px,
+      $checkbox-checked,
+      $colors
+    );
   }
   &:checked:focus + span::before {
-    @include pixelize(2px, $checkbox-checked-focus, $colors);
+    @include pixelize(
+      2px,
+      $checkbox-checked-focus,
+      $colors
+    );
   }
   &.is-dark {
     + span {
@@ -93,19 +107,30 @@
     }
 
     &:checked + span::before {
-      @include pixelize(2px, $checkbox-checked-focus, $colors-checkbox-dark);
+      @include pixelize(
+        2px,
+        $checkbox-checked-focus,
+        $colors-checkbox-dark
+      );
 
       color: $color-white;
     }
     &:checked:focus + span::before {
-      @include pixelize(2px, $checkbox-checked-focus, $colors-checkbox-dark);
+      @include pixelize(
+        2px,
+        $checkbox-checked-focus,
+        $colors-checkbox-dark
+      );
 
       color: $color-white;
     }
   }
   &.is-disabled {
-    $color: map-get($disabled-colors, "normal");
-    $colors-radio-disabled: ($color, map-get($disabled-colors, "shadow"));
+    $color: map-get($disabled-colors, 'normal');
+    $colors-radio-disabled: (
+      $color,
+      map-get($disabled-colors, 'shadow')
+    );
 
     + span {
       color: $color;
@@ -120,13 +145,21 @@
 
     /* stylelint-disable-next-line no-descending-specificity */
     &:checked + span::before {
-      @include pixelize(2px, $checkbox-checked-focus, $colors-radio-disabled);
+      @include pixelize(
+        2px,
+        $checkbox-checked-focus,
+        $colors-radio-disabled
+      );
 
       color: $color;
     }
 
     &:checked:focus + span::before {
-      @include pixelize(2px, $checkbox-checked-focus, $colors-radio-disabled);
+      @include pixelize(
+        2px,
+        $checkbox-checked-focus,
+        $colors-radio-disabled
+      );
 
       color: $color;
     }

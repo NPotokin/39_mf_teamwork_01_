@@ -1,6 +1,13 @@
 .snes-jp-logo {
   $px: 3px;
-  $logo-colors: (#333, #d7d7d7, #7dbb78, #999cf7, #f40500, #f6f504);
+  $logo-colors: (
+    #333,
+    #d7d7d7,
+    #7dbb78,
+    #999cf7,
+    #f40500,
+    #f6f504
+  );
 
   // prettier-ignore
   $logo: (
@@ -26,7 +33,7 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
     @include pixelize($size, $logo, $logo-colors);

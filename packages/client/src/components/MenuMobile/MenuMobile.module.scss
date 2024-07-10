@@ -68,9 +68,10 @@
 }
 
 .link {
-   color: var(--light);
+  color: var(--light);
   text-transform: uppercase;
-  transition: var(--transition-duration) var(--transition-function);
+  transition: var(--transition-duration)
+    var(--transition-function);
 
   &:hover {
     color: var(--white);

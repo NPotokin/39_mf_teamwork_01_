@@ -34,10 +34,13 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (isAuthenticated) {
-        const storedUser = localStorage.getItem('user')
+        const storedUser =
+          localStorage.getItem('user')
 
         if (storedUser) {
-          dispatch(setUser(JSON.parse(storedUser)))
+          dispatch(
+            setUser(JSON.parse(storedUser))
+          )
         } else {
           const userData = await getUser()
           dispatch(setUser(userData))

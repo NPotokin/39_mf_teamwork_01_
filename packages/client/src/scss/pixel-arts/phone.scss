@@ -35,10 +35,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $phone, $phone-colors);
+    @include pixelize(
+      $size,
+      $phone,
+      $phone-colors
+    );
     @include fill-gaps();
   }
 }

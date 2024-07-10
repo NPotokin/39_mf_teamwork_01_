@@ -1,13 +1,20 @@
 import { Modal, Form } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { ChangeEvent, FC, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  FC,
+  useEffect,
+  useState,
+} from 'react'
 
 type CommentModalProps = {
   visible: boolean
   comment: string
   onOk: VoidFunction
   onCancel: VoidFunction
-  onCommentChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  onCommentChange: (
+    e: ChangeEvent<HTMLTextAreaElement>
+  ) => void
 }
 
 const CommentModal: FC<CommentModalProps> = ({
@@ -17,7 +24,8 @@ const CommentModal: FC<CommentModalProps> = ({
   onCancel,
   onCommentChange,
 }) => {
-  const [isFullFields, setIsFullFields] = useState(false)
+  const [isFullFields, setIsFullFields] =
+    useState(false)
   const [form] = Form.useForm()
 
   useEffect(() => {
@@ -56,10 +64,18 @@ const CommentModal: FC<CommentModalProps> = ({
         className: 'nes-btn is-necessary',
       }}
       onCancel={onCancel}>
-      <Form form={form} layout="vertical" initialValues={{ comment }}>
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={{ comment }}>
         <Form.Item
           name="comment"
-          rules={[{ required: true, message: 'Please enter a comment' }]}>
+          rules={[
+            {
+              required: true,
+              message: 'Please enter a comment',
+            },
+          ]}>
           <TextArea
             placeholder="New comment"
             value={comment}

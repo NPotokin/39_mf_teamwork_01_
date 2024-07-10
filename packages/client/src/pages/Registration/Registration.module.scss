@@ -58,7 +58,9 @@
   padding-top: 20px;
 }
 
-@supports (background-image: url(@images/bg.webp)) {
+@supports (
+  background-image: url(@images/bg.webp)
+) {
   .page {
     background-image: url(@images/bg.webp);
   }

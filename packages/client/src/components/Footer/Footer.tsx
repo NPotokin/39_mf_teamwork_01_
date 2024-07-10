@@ -8,8 +8,13 @@ import styles from './Footer.module.scss'
 const Footer = () => (
   <AntFooter className={styles.root}>
     <Logo className={styles.logo} title="Panda" />
-    <Menu className={styles.menu} variant="bottom" />
-    <p className={styles.copyright}>@ 2024 Pumpkin Pandas</p>
+    <Menu
+      className={styles.menu}
+      variant="bottom"
+    />
+    <p className={styles.copyright}>
+      @ 2024 Pumpkin Pandas
+    </p>
   </AntFooter>
 )
 

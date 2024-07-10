@@ -1,35 +1,36 @@
-.wrapper{
-	justify-content: center;
-	background-image: url(@images/bg500.jpg);
+.wrapper {
+  justify-content: center;
+  background-image: url(@images/bg500.jpg);
 }
-.pageError{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	position: relative;
-	text-align: center;
-	margin-top: -380px;
-	&__header{
-		text-align: center;
-		font-size: 40px;
-		color: var(--white);
-		position: relative;
-	
-	}
-	&__500{
-		color: #F7D51D;
-		font-size: 100px;
-		&-img{
-			vertical-align: baseline;
-		}
-	}
-	&__btn{
-		width: 300px;
-	}
+.pageError {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  text-align: center;
+  margin-top: -380px;
+  &__header {
+    text-align: center;
+    font-size: 40px;
+    color: var(--white);
+    position: relative;
+  }
+  &__500 {
+    color: #f7d51d;
+    font-size: 100px;
+    &-img {
+      vertical-align: baseline;
+    }
+  }
+  &__btn {
+    width: 300px;
+  }
 }
 
-@supports (background-image: url(@images/bg500.webp)) {
+@supports (
+  background-image: url(@images/bg500.webp)
+) {
   .wrapper {
     background-image: url(@images/bg500.webp);
   }

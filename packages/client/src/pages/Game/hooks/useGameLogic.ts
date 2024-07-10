@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import useLoadImages from './useLoadImages'
 import { useCanvasElements } from './useCanvasElements'
 import { ILevel } from '../constants'
@@ -29,25 +35,31 @@ type Props = {
   sounds: Sound
   modals: Modals
 }
-const useGameLogic = ({ level, sounds, modals }: Props) => {
+const useGameLogic = ({
+  level,
+  sounds,
+  modals,
+}: Props) => {
   // Стейты игрока, врагов и кристаллов
-  const [playerPosition, setPlayerPosition] = useState(
-    level.player.startPosition
-  )
-  const [gems, setGems] = useState<{ x: number; y: number }[]>(
-    level.gems.startPositions
-  )
+  const [playerPosition, setPlayerPosition] =
+    useState(level.player.startPosition)
+  const [gems, setGems] = useState<
+    { x: number; y: number }[]
+  >(level.gems.startPositions)
 
-  const [enemies, setEnemies] = useState<{ x: number; y: number }[]>(
-    level.enemy.startPositions.hard
-  )
+  const [enemies, setEnemies] = useState<
+    { x: number; y: number }[]
+  >(level.enemy.startPositions.hard)
   // Стейты скора игры
   const [time, setTime] = useState(0)
   const [steps, setSteps] = useState(0)
   const [score, setScore] = useState(0)
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const canvasRef =
+    useRef<HTMLCanvasElement | null>(null)
+  const timerRef = useRef<NodeJS.Timeout | null>(
+    null
+  )
 
   const obstacles = level.obstacles.startPositions
   const canvasSize = useMemo(
@@ -59,8 +71,12 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
   )
 
   const { imagesLoaded, images } = useLoadImages()
-  const { drawObstacles, drawGems, drawPlayer, drawEnemies } =
-    useCanvasElements({ images, level })
+  const {
+    drawObstacles,
+    drawGems,
+    drawPlayer,
+    drawEnemies,
+  } = useCanvasElements({ images, level })
 
   const resetPositions = useCallback(() => {
     if (timerRef.current) {
@@ -96,7 +112,12 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
     (event: KeyboardEvent) => {
       event.preventDefault()
       if (!modals.isGameActive) return
-      const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
+      const validKeys = [
+        'ArrowUp',
+        'ArrowDown',
+        'ArrowLeft',
+        'ArrowRight',
+      ]
       if (!validKeys.includes(event.key)) return
       setPlayerPosition(prev => {
         let { x, y } = prev
@@ -117,13 +138,14 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
             break
         }
 
-        const isCollidingWithEnemies = enemies.some(
-          enemy =>
-            x < enemy.x + level.enemy.width &&
-            x + level.player.width > enemy.x &&
-            y < enemy.y + level.enemy.height &&
-            y + level.player.height > enemy.y
-        )
+        const isCollidingWithEnemies =
+          enemies.some(
+            enemy =>
+              x < enemy.x + level.enemy.width &&
+              x + level.player.width > enemy.x &&
+              y < enemy.y + level.enemy.height &&
+              y + level.player.height > enemy.y
+          )
 
         if (isCollidingWithEnemies) {
           handleDefeat()
@@ -133,15 +155,22 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
         const isCollidingWithObstaclesOrWalls =
           obstacles.some(
             obstacle =>
-              x < obstacle.x + level.obstacles.width &&
-              x + level.player.width > obstacle.x &&
-              y < obstacle.y + level.obstacles.height &&
+              x <
+                obstacle.x +
+                  level.obstacles.width &&
+              x + level.player.width >
+                obstacle.x &&
+              y <
+                obstacle.y +
+                  level.obstacles.height &&
               y + level.player.height > obstacle.y
           ) ||
           x < 0 ||
-          x + level.player.width > canvasSize.width ||
+          x + level.player.width >
+            canvasSize.width ||
           y < 0 ||
-          y + level.player.height > canvasSize.height
+          y + level.player.height >
+            canvasSize.height
 
         if (isCollidingWithObstaclesOrWalls) {
           return prev
@@ -177,9 +206,18 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
         prev.map(enemy => {
           let { x: enemyX, y: enemyY } = enemy
           const step = level.enemy.step
-          const directions = ['up', 'down', 'left', 'right']
+          const directions = [
+            'up',
+            'down',
+            'left',
+            'right',
+          ]
           const randomDirection =
-            directions[Math.floor(Math.random() * directions.length)]
+            directions[
+              Math.floor(
+                Math.random() * directions.length
+              )
+            ]
 
           switch (randomDirection) {
             case 'up':
@@ -198,31 +236,48 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
 
           const isCollidingWithWalls =
             enemyX < 0 ||
-            enemyX + level.enemy.width > canvasSize.width ||
+            enemyX + level.enemy.width >
+              canvasSize.width ||
             enemyY < 0 ||
-            enemyY + level.enemy.height > canvasSize.height
+            enemyY + level.enemy.height >
+              canvasSize.height
 
           const isCollidingWithGems = gems.some(
             gem =>
               enemyX < gem.x + level.gems.width &&
-              enemyX + level.enemy.width > gem.x &&
-              enemyY < gem.y + level.gems.height &&
+              enemyX + level.enemy.width >
+                gem.x &&
+              enemyY <
+                gem.y + level.gems.height &&
               enemyY + level.enemy.height > gem.y
           )
 
-          const isCollidingWithObstacles = obstacles.some(
-            obstacle =>
-              enemyX < obstacle.x + level.obstacles.width &&
-              enemyX + level.enemy.width > obstacle.x &&
-              enemyY < obstacle.y + level.obstacles.height &&
-              enemyY + level.enemy.height > obstacle.y
-          )
+          const isCollidingWithObstacles =
+            obstacles.some(
+              obstacle =>
+                enemyX <
+                  obstacle.x +
+                    level.obstacles.width &&
+                enemyX + level.enemy.width >
+                  obstacle.x &&
+                enemyY <
+                  obstacle.y +
+                    level.obstacles.height &&
+                enemyY + level.enemy.height >
+                  obstacle.y
+            )
 
           const isCollidingWithPlayer =
-            playerPosition.x < enemyX + level.enemy.width &&
-            playerPosition.x + level.player.width > enemyX &&
-            playerPosition.y < enemyY + level.enemy.height &&
-            playerPosition.y + level.player.height > enemyY
+            playerPosition.x <
+              enemyX + level.enemy.width &&
+            playerPosition.x +
+              level.player.width >
+              enemyX &&
+            playerPosition.y <
+              enemyY + level.enemy.height &&
+            playerPosition.y +
+              level.player.height >
+              enemyY
 
           if (
             isCollidingWithWalls ||
@@ -281,7 +336,12 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
 
     const draw = () => {
       if (context) {
-        context.clearRect(0, 0, canvasSize.width, canvasSize.height)
+        context.clearRect(
+          0,
+          0,
+          canvasSize.width,
+          canvasSize.height
+        )
         drawObstacles(context, obstacles)
         drawGems(context, gems)
         drawPlayer(context, playerPosition)
@@ -290,11 +350,17 @@ const useGameLogic = ({ level, sounds, modals }: Props) => {
       }
     }
 
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener(
+      'keydown',
+      handleKeyDown
+    )
     window.requestAnimationFrame(draw)
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener(
+        'keydown',
+        handleKeyDown
+      )
     }
   }, [
     handleKeyDown,
