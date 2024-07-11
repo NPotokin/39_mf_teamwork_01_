@@ -33,7 +33,7 @@ export interface ILevel {
   }
 }
 
-interface IConstants {
+export interface IConstants {
   levelOne: ILevel
   levelTwo: ILevel
   levelThree: ILevel

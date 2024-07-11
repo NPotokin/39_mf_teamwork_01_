@@ -1,4 +1,6 @@
 import { render } from '@testing-library/react'
+import { expect } from '@jest/globals'
+
 import LeaderBoard from '../LeaderBoard'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router'
