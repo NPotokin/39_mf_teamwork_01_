@@ -108,6 +108,7 @@ const useGameLogic = ({
       }
     }
   }, [])
+
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       event.preventDefault()
@@ -119,93 +120,92 @@ const useGameLogic = ({
         'ArrowRight',
       ]
       if (!validKeys.includes(event.key)) return
-      setPlayerPosition(prev => {
-        let { x, y } = prev
-        const step = level.player.step
 
-        switch (event.key) {
-          case 'ArrowUp':
-            y -= step
-            break
-          case 'ArrowDown':
-            y += step
-            break
-          case 'ArrowLeft':
-            x -= step
-            break
-          case 'ArrowRight':
-            x += step
-            break
-        }
+      let newX = playerPosition.x
+      let newY = playerPosition.y
+      const step = level.player.step
 
-        const isCollidingWithEnemies =
-          enemies.some(
-            enemy =>
-              x < enemy.x + level.enemy.width &&
-              x + level.player.width > enemy.x &&
-              y < enemy.y + level.enemy.height &&
-              y + level.player.height > enemy.y
+      switch (event.key) {
+        case 'ArrowUp':
+          newY -= step
+          break
+        case 'ArrowDown':
+          newY += step
+          break
+        case 'ArrowLeft':
+          newX -= step
+          break
+        case 'ArrowRight':
+          newX += step
+          break
+      }
+
+      const isCollidingWithEnemies = enemies.some(
+        enemy =>
+          newX < enemy.x + level.enemy.width &&
+          newX + level.player.width > enemy.x &&
+          newY < enemy.y + level.enemy.height &&
+          newY + level.player.height > enemy.y
+      )
+
+      if (isCollidingWithEnemies) {
+        handleDefeat()
+        return prev
+      }
+
+      const isCollidingWithObstaclesOrWalls =
+        obstacles.some(
+          obstacle =>
+            newX <
+              obstacle.x +
+                level.obstacles.width &&
+            newX + level.player.width >
+              obstacle.x &&
+            newY <
+              obstacle.y +
+                level.obstacles.height &&
+            newY + level.player.height >
+              obstacle.y
+        ) ||
+        newX < 0 ||
+        newX + level.player.width >
+          canvasSize.width ||
+        newY < 0 ||
+        newY + level.player.height >
+          canvasSize.height
+
+      if (isCollidingWithObstaclesOrWalls) {
+        return
+      }
+
+      const newGems = gems.filter(
+        gem =>
+          !(
+            newX < gem.x + level.gems.width &&
+            newX + level.player.width > gem.x &&
+            newY < gem.y + level.gems.height &&
+            newY + level.player.height > gem.y
           )
+      )
 
-        if (isCollidingWithEnemies) {
-          handleDefeat()
-          return prev
-        }
+      if (newGems.length !== gems.length) {
+        sounds.playGemSound()
+        setScore(prevScore => prevScore + 100)
+      }
 
-        const isCollidingWithObstaclesOrWalls =
-          obstacles.some(
-            obstacle =>
-              x <
-                obstacle.x +
-                  level.obstacles.width &&
-              x + level.player.width >
-                obstacle.x &&
-              y <
-                obstacle.y +
-                  level.obstacles.height &&
-              y + level.player.height > obstacle.y
-          ) ||
-          x < 0 ||
-          x + level.player.width >
-            canvasSize.width ||
-          y < 0 ||
-          y + level.player.height >
-            canvasSize.height
+      setGems(newGems)
 
-        if (isCollidingWithObstaclesOrWalls) {
-          return prev
-        }
+      if (newGems.length === 0) {
+        handleVictory()
+        return
+      }
 
-        const newGems = gems.filter(
-          gem =>
-            !(
-              x < gem.x + level.gems.width &&
-              x + level.player.width > gem.x &&
-              y < gem.y + level.gems.height &&
-              y + level.player.height > gem.y
-            )
-        )
+      setPlayerPosition({ x: newX, y: newY })
 
-        if (newGems.length !== gems.length) {
-          sounds.playGemSound()
-          setScore(prevScore => prevScore + 100)
-        }
-
-        setGems(newGems)
-
-        if (newGems.length === 0) {
-          handleVictory()
-        }
-
-        setSteps(steps + 1)
-
-        return { x, y }
-      })
-
-      setEnemies(prev =>
-        prev.map(enemy => {
-          let { x: enemyX, y: enemyY } = enemy
-          const step = level.enemy.step
+      const updatedEnemies = enemies.map(
+        enemy => {
+          let enemyX = enemy.x
+          let enemyY = enemy.y
           const directions = [
             'up',
             'down',
@@ -221,16 +221,16 @@ const useGameLogic = ({
 
           switch (randomDirection) {
             case 'up':
-              enemyY -= step
+              enemyY -= level.enemy.step
               break
             case 'down':
-              enemyY += step
+              enemyY += level.enemy.step
               break
             case 'left':
-              enemyX -= step
+              enemyX -= level.enemy.step
               break
             case 'right':
-              enemyX += step
+              enemyX += level.enemy.step
               break
           }
 
@@ -242,15 +242,18 @@ const useGameLogic = ({
             enemyY + level.enemy.height >
               canvasSize.height
 
-          const isCollidingWithGems = gems.some(
-            gem =>
-              enemyX < gem.x + level.gems.width &&
-              enemyX + level.enemy.width >
-                gem.x &&
-              enemyY <
-                gem.y + level.gems.height &&
-              enemyY + level.enemy.height > gem.y
-          )
+          const isCollidingWithGems =
+            newGems.some(
+              gem =>
+                enemyX <
+                  gem.x + level.gems.width &&
+                enemyX + level.enemy.width >
+                  gem.x &&
+                enemyY <
+                  gem.y + level.gems.height &&
+                enemyY + level.enemy.height >
+                  gem.y
+            )
 
           const isCollidingWithObstacles =
             obstacles.some(
@@ -268,16 +271,10 @@ const useGameLogic = ({
             )
 
           const isCollidingWithPlayer =
-            playerPosition.x <
-              enemyX + level.enemy.width &&
-            playerPosition.x +
-              level.player.width >
-              enemyX &&
-            playerPosition.y <
-              enemyY + level.enemy.height &&
-            playerPosition.y +
-              level.player.height >
-              enemyY
+            newX < enemyX + level.enemy.width &&
+            newX + level.player.width > enemyX &&
+            newY < enemyY + level.enemy.height &&
+            newY + level.player.height > enemyY
 
           if (
             isCollidingWithWalls ||
@@ -290,10 +287,11 @@ const useGameLogic = ({
           if (isCollidingWithPlayer) {
             handleDefeat()
           }
-
           return { x: enemyX, y: enemyY }
-        })
+        }
       )
+
+      setEnemies(updatedEnemies)
     },
     [
       steps,
