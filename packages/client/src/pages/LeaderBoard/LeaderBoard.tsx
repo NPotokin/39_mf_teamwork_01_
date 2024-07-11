@@ -7,6 +7,8 @@ import { UniversalTable } from '@/components/Table'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import holder from '@images/logo_sm.svg'
+import { TITLES } from '@/lib/constants'
+import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
 
 export type Comment = {
   key: string
@@ -26,22 +28,32 @@ export type LeaderboardEntry = {
 }
 
 const LeaderBoard = () => {
-  const [dataSource, setDataSource] = useState<LeaderboardEntry[]>([])
+  useDocumentTitle(TITLES.LEADER_BOARD)
+  const [dataSource, setDataSource] = useState<
+    LeaderboardEntry[]
+  >([])
   useEffect(() => {
     const fetchData = async () => {
-      const data = leaderboardData.sort((a, b) => b.score - a.score)
+      const data = leaderboardData.sort(
+        (a, b) => b.score - a.score
+      )
       setDataSource(data)
     }
     fetchData()
   }, [])
 
-  const avatarSrc = (avatar: string) => (avatar ? avatar : holder)
+  const avatarSrc = (avatar: string) =>
+    avatar ? avatar : holder
 
   const columns = [
     {
       title: '№',
       key: 'index',
-      render: (_: string, __: LeaderboardEntry, index: number) => index + 1,
+      render: (
+        _: string,
+        __: LeaderboardEntry,
+        index: number
+      ) => index + 1,
       width: 60,
     },
     {
@@ -49,10 +61,20 @@ const LeaderBoard = () => {
       dataIndex: 'name',
       key: 'name',
       width: 250,
-      render: (text: string, record: LeaderboardEntry) => (
+      render: (
+        text: string,
+        record: LeaderboardEntry
+      ) => (
         <div className={styles.columns__name}>
-          <Avatar src={avatarSrc(record.avatarUrl)} />
-          <a className={styles[`columns__name--text`]}>{text}</a>
+          <Avatar
+            src={avatarSrc(record.avatarUrl)}
+          />
+          <a
+            className={
+              styles[`columns__name--text`]
+            }>
+            {text}
+          </a>
         </div>
       ),
     },
@@ -66,8 +88,13 @@ const LeaderBoard = () => {
   return (
     <div className={cn(styles.wrapper, 'page')}>
       <Header />
-      <div className={cn(styles.leaderBoard, 'container')}>
-        <div className={styles.leaderBoard__table}>
+      <div
+        className={cn(
+          styles.leaderBoard,
+          'container'
+        )}>
+        <div
+          className={styles.leaderBoard__table}>
           <UniversalTable
             data={dataSource}
             columns={columns}

@@ -1,4 +1,7 @@
-import { fireEvent, render } from '@testing-library/react'
+import {
+  fireEvent,
+  render,
+} from '@testing-library/react'
 
 import '@testing-library/jest-dom'
 import ForumList from '../ForumList'
@@ -32,7 +35,9 @@ describe('ForumList', () => {
       </ThemeProvider>
     )
 
-    expect(getByText('COMMENTS')).toBeInTheDocument()
+    expect(
+      getByText('COMMENTS')
+    ).toBeInTheDocument()
   })
   it('renders Back button and navigates on click', () => {
     const showModalForumList = jest.fn()

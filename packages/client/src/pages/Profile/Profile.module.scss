@@ -6,10 +6,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   height: 100%;
 }
 
-@supports (background-image: url(@images/bg.webp)) {
+@supports (
+  background-image: url(@images/bg.webp)
+) {
   .root {
     background-image: url(@images/bg.webp);
   }
@@ -34,5 +37,7 @@
 }
 
 .button + .button {
-  margin-left: 1.5rem;
+  @media screen and (min-width: 1024px) {
+    margin-left: 1.5rem;
+  }
 }

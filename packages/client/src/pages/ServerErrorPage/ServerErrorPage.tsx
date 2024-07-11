@@ -10,7 +10,9 @@ type Props = {
   resetErrorBoundary?: () => void
 }
 
-const ServerErrorPage: FC<Props> = ({ resetErrorBoundary }) => {
+const ServerErrorPage: FC<Props> = ({
+  resetErrorBoundary,
+}) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -28,13 +30,20 @@ const ServerErrorPage: FC<Props> = ({ resetErrorBoundary }) => {
           <img
             src={panda500}
             alt="panda"
-            className={styles[`pageError__500-img`]}
+            className={
+              styles[`pageError__500-img`]
+            }
           />
           0
         </h1>
-        <h1 className={styles.pageError__header}>we’ll fix it soon</h1>
+        <h1 className={styles.pageError__header}>
+          we’ll fix it soon
+        </h1>
         <Button
-          className={cn(styles['pageError__btn'], 'nes-btn is-warning')}
+          className={cn(
+            styles['pageError__btn'],
+            'nes-btn is-warning'
+          )}
           onClick={handleClick}>
           Go home
         </Button>

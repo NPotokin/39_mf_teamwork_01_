@@ -1,11 +1,17 @@
-export const empty = (variable: unknown): boolean => {
-  if (variable === null || variable === undefined) return true
+export const empty = (
+  variable: unknown
+): boolean => {
+  if (variable === null || variable === undefined)
+    return true
 
   if (typeof variable === 'string') {
     return variable === ''
   }
 
-  if (typeof variable === 'boolean' || typeof variable === 'number') {
+  if (
+    typeof variable === 'boolean' ||
+    typeof variable === 'number'
+  ) {
     return false
   }
 
@@ -21,7 +27,10 @@ export const empty = (variable: unknown): boolean => {
     return false
   }
 
-  if (variable instanceof Map || variable instanceof Set) {
+  if (
+    variable instanceof Map ||
+    variable instanceof Set
+  ) {
     return variable.size > 0
   }
 

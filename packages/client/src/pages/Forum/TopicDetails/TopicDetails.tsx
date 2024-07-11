@@ -14,7 +14,9 @@ type TopicDetailsProps = {
   onBack: VoidFunction
   showCommentModal: VoidFunction
 }
-export const TopicDetails: FC<TopicDetailsProps> = ({
+export const TopicDetails: FC<
+  TopicDetailsProps
+> = ({
   selectedTopic,
   selectedComments,
   commentsColumns,
@@ -31,9 +33,22 @@ export const TopicDetails: FC<TopicDetailsProps> = ({
           showHeader={false}
           scroll={{ y: 450 }}
           title={() => (
-            <div className={styles[`forums__table-title`]}>
-              <h1 className={styles.forums__header}> {selectedTopic.name}</h1>
-              <p className={styles.forums__content}> {selectedTopic.content}</p>
+            <div
+              className={
+                styles[`forums__table-title`]
+              }>
+              <h1
+                className={styles.forums__header}>
+                {' '}
+                {selectedTopic.name}
+              </h1>
+              <p
+                className={
+                  styles.forums__content
+                }>
+                {' '}
+                {selectedTopic.content}
+              </p>
             </div>
           )}
         />

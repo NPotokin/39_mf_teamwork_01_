@@ -12,8 +12,13 @@ import {
 export default class UserApi {
   public updateProfile(
     data: IUpdateUser
-  ): Promise<AxiosResponse<IUpdateUserResponse | IAPIError>> {
-    return axiosDB.put<IUpdateUserResponse>('/user/profile', data)
+  ): Promise<
+    AxiosResponse<IUpdateUserResponse | IAPIError>
+  > {
+    return axiosDB.put<IUpdateUserResponse>(
+      '/user/profile',
+      data
+    )
   }
 
   public updatePassword(
@@ -24,7 +29,12 @@ export default class UserApi {
 
   public updateAvatar(
     data: FormData
-  ): Promise<AxiosResponse<IUserInfo | IAPIError>> {
-    return axiosDB.put('/profile/avatar', data)
+  ): Promise<
+    AxiosResponse<IUserInfo | IAPIError>
+  > {
+    return axiosDB.put(
+      '/user/profile/avatar',
+      data
+    )
   }
 }

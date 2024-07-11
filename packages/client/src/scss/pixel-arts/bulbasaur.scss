@@ -1,5 +1,13 @@
 .nes-bulbasaur {
-  $bulbasaur-colors: (#000, #8beb46, #2d8d22, #5ceee1, #3fc3b5, #fdfdf5, #ca242a);
+  $bulbasaur-colors: (
+    #000,
+    #8beb46,
+    #2d8d22,
+    #5ceee1,
+    #3fc3b5,
+    #fdfdf5,
+    #ca242a
+  );
   // prettier-ignore
   $bulbasaur: (
     (0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0),
@@ -31,10 +39,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $bulbasaur, $bulbasaur-colors);
+    @include pixelize(
+      $size,
+      $bulbasaur,
+      $bulbasaur-colors
+    );
     @include fill-gaps();
   }
 }

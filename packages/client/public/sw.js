@@ -21,7 +21,9 @@ const urlsToCache = [
 async function getFilesFromManifest() {
   try {
     const manifestUrl = '/manifest.json'
-    const manifestResponse = await fetch(manifestUrl)
+    const manifestResponse = await fetch(
+      manifestUrl
+    )
 
     if (!manifestResponse.ok) {
       console.warn(
@@ -32,9 +34,17 @@ async function getFilesFromManifest() {
 
     const manifest = await manifestResponse.json()
 
-    return manifest.assets || Object.values(manifest).map(entry => entry.file)
+    return (
+      manifest.assets ||
+      Object.values(manifest).map(
+        entry => entry.file
+      )
+    )
   } catch (error) {
-    console.error('Failed to fetch manifest:', error)
+    console.error(
+      'Failed to fetch manifest:',
+      error
+    )
     return []
   }
 }
@@ -44,8 +54,12 @@ self.addEventListener('install', async event => {
     (async () => {
       const cache = await caches.open(CACHE_NAME)
       console.log('Opened cache')
-      const filesFromManifest = await getFilesFromManifest()
-      const allUrlsToCache = [...urlsToCache, ...filesFromManifest]
+      const filesFromManifest =
+        await getFilesFromManifest()
+      const allUrlsToCache = [
+        ...urlsToCache,
+        ...filesFromManifest,
+      ]
 
       await cache.addAll(allUrlsToCache)
     })()
@@ -57,25 +71,43 @@ self.addEventListener('fetch', async event => {
     (async () => {
       const { request } = event
 
-      if (request.url.startsWith('chrome-extension')) {
+      if (
+        request.url.startsWith('chrome-extension')
+      ) {
         return fetch(request)
       } else {
         try {
-          const networkResponse = await fetch(event.request)
+          const networkResponse = await fetch(
+            event.request
+          )
           if (
             networkResponse &&
             networkResponse.status === 200 &&
             networkResponse.type === 'basic'
           ) {
-            const cache = await caches.open(CACHE_NAME)
-            cache.put(event.request, networkResponse.clone())
+            const cache = await caches.open(
+              CACHE_NAME
+            )
+            cache.put(
+              event.request,
+              networkResponse.clone()
+            )
           }
           return networkResponse
         } catch (error) {
-          console.error('Fetch failed; returning offline page instead.', error)
-          const cache = await caches.open(CACHE_NAME)
-          const cachedResponse = await cache.match(event.request)
-          return cachedResponse || (await cache.match('offline.html'))
+          console.error(
+            'Fetch failed; returning offline page instead.',
+            error
+          )
+          const cache = await caches.open(
+            CACHE_NAME
+          )
+          const cachedResponse =
+            await cache.match(event.request)
+          return (
+            cachedResponse ||
+            (await cache.match('offline.html'))
+          )
         }
       }
     })()
@@ -89,7 +121,9 @@ self.addEventListener('activate', async event => {
     (async () => {
       const cacheNames = await caches.keys()
       const deletePromises = cacheNames
-        .filter(cacheName => cacheName !== CACHE_NAME)
+        .filter(
+          cacheName => cacheName !== CACHE_NAME
+        )
         .map(async cacheName => {
           await caches.delete(cacheName)
         })

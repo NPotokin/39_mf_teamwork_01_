@@ -35,7 +35,9 @@
   margin-bottom: 2.5rem;
 }
 
-@supports (background-image: url(@images/bg_landing.webp)) {
+@supports (
+  background-image: url(@images/bg_landing.webp)
+) {
   .root {
     background-image: url(@images/bg_landing.webp);
   }

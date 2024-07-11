@@ -11,7 +11,8 @@ export default {
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '\\.(css|scss|svg|png)$': 'identity-obj-proxy',
+    '\\.(css|scss|svg|png)$':
+      'identity-obj-proxy',
     '^antd/es/(.*)$': 'antd/lib/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/setupTest.ts'],

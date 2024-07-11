@@ -1,6 +1,11 @@
 import { Input, Modal, Form } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { ChangeEvent, FC, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  FC,
+  useEffect,
+  useState,
+} from 'react'
 
 type TopicModalProps = {
   visible: boolean
@@ -8,8 +13,12 @@ type TopicModalProps = {
   topicContent: string
   onOk: VoidFunction
   onCancel: VoidFunction
-  onTopicNameChange: (e: ChangeEvent<HTMLInputElement>) => void
-  onTopicContentChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  onTopicNameChange: (
+    e: ChangeEvent<HTMLInputElement>
+  ) => void
+  onTopicContentChange: (
+    e: ChangeEvent<HTMLTextAreaElement>
+  ) => void
 }
 
 const TopicModal: FC<TopicModalProps> = ({
@@ -22,13 +31,20 @@ const TopicModal: FC<TopicModalProps> = ({
   onTopicContentChange,
 }) => {
   const [form] = Form.useForm()
-  const [isFullFields, setIsFullFields] = useState(false)
+  const [isFullFields, setIsFullFields] =
+    useState(false)
   useEffect(() => {
     if (visible) {
-      form.setFieldsValue({ topicContent, topicName })
+      form.setFieldsValue({
+        topicContent,
+        topicName,
+      })
       const values = form.getFieldsValue()
 
-      if (values.topicName.length > 0 && values.topicContent.length > 0) {
+      if (
+        values.topicName.length > 0 &&
+        values.topicContent.length > 0
+      ) {
         setIsFullFields(true)
       } else if (
         values.topicName.length <= 0 ||
@@ -68,10 +84,19 @@ const TopicModal: FC<TopicModalProps> = ({
       <Form
         form={form}
         layout="vertical"
-        initialValues={{ topicName, topicContent }}>
+        initialValues={{
+          topicName,
+          topicContent,
+        }}>
         <Form.Item
           name="topicName"
-          rules={[{ required: true, message: 'Please enter the topic name' }]}>
+          rules={[
+            {
+              required: true,
+              message:
+                'Please enter the topic name',
+            },
+          ]}>
           <Input
             placeholder="Enter new topic name"
             value={topicName}
@@ -82,7 +107,11 @@ const TopicModal: FC<TopicModalProps> = ({
         <Form.Item
           name="topicContent"
           rules={[
-            { required: true, message: 'Please enter the topic content' },
+            {
+              required: true,
+              message:
+                'Please enter the topic content',
+            },
           ]}>
           <TextArea
             placeholder="Enter new topic content"

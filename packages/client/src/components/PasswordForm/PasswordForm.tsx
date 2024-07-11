@@ -1,9 +1,14 @@
-import { Formik, FormikHelpers } from 'formik'
-import { Form as AntForm, Input, Button } from 'antd'
+import { Formik } from 'formik'
+import {
+  Form as AntForm,
+  Input,
+  Button,
+} from 'antd'
 import classNames from 'classnames'
 
-import { passwordChangeSchema } from '@/lib/validation/validationSchema'
+import { updatePassword } from '@/core/services/user.service'
 import { EMPTY_STRING } from '@/core/constants'
+import { passwordChangeSchema } from '@/lib/validation/validationSchema'
 import styles from './PasswordForm.module.scss'
 
 type PasswordFormValues = {
@@ -16,16 +21,31 @@ type PasswordFormProps = {
   onCancel(): void
 }
 
-const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
+const PasswordForm: React.FC<
+  PasswordFormProps
+> = ({ onCancel }) => {
   const initialValues: PasswordFormValues = {
     old_password: '',
     password: '',
     confirm_password: '',
   }
 
-  const handleSubmit = async (values: PasswordFormValues) => {
-    console.log(JSON.stringify(values, null, 2))
-    //TODO: send user data to server
+  const handleSubmit = async (
+    values: PasswordFormValues,
+    setSubmittingCb: (
+      isSubmitting: boolean
+    ) => void
+  ) => {
+    const {
+      old_password: oldPassword,
+      password: newPassword,
+    } = values
+    await updatePassword({
+      oldPassword,
+      newPassword,
+    })
+    setSubmittingCb(false)
+    onCancel()
   }
 
   return (
@@ -34,15 +54,9 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
       validationSchema={passwordChangeSchema}
       validateOnBlur
       validateOnChange
-      onSubmit={(
-        values: PasswordFormValues,
-        { setSubmitting }: FormikHelpers<PasswordFormValues>
-      ) => {
-        setTimeout(() => {
-          handleSubmit(values)
-          setSubmitting(false)
-        }, 500)
-      }}>
+      onSubmit={(values, { setSubmitting }) =>
+        handleSubmit(values, setSubmitting)
+      }>
       {({
         values,
         errors,
@@ -55,6 +69,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
         setTouched,
       }) => (
         <AntForm
+          initialValues={initialValues}
           layout="vertical"
           autoComplete="off"
           onFinish={async () => {
@@ -67,7 +82,9 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
               false
             )
             const errors = await validateForm()
-            if (Object.keys(errors).length === 0) {
+            if (
+              Object.keys(errors).length === 0
+            ) {
               handleSubmit()
             }
           }}>
@@ -75,10 +92,14 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
             name="old_password"
             label="Old Password"
             validateStatus={
-              touched.old_password && errors.old_password ? 'error' : ''
+              touched.old_password &&
+              errors.old_password
+                ? 'error'
+                : ''
             }
             help={
-              touched.old_password && errors.old_password
+              touched.old_password &&
+              errors.old_password
                 ? errors.old_password
                 : ''
             }>
@@ -94,8 +115,16 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
           <AntForm.Item
             name="password"
             label="New Password"
-            validateStatus={touched.password && errors.password ? 'error' : ''}
-            help={touched.password && errors.password ? errors.password : ''}>
+            validateStatus={
+              touched.password && errors.password
+                ? 'error'
+                : ''
+            }
+            help={
+              touched.password && errors.password
+                ? errors.password
+                : ''
+            }>
             <Input.Password
               className="nes-input"
               name="password"
@@ -109,10 +138,14 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
             name="confirm_password"
             label="Confirm Password"
             validateStatus={
-              touched.confirm_password && errors.confirm_password ? 'error' : ''
+              touched.confirm_password &&
+              errors.confirm_password
+                ? 'error'
+                : ''
             }
             help={
-              touched.confirm_password && errors.confirm_password
+              touched.confirm_password &&
+              errors.confirm_password
                 ? errors.confirm_password
                 : ''
             }>
@@ -127,14 +160,22 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ onCancel }) => {
           </AntForm.Item>
           <div className={styles.footer}>
             <Button
-              className={classNames(styles.button, 'nes-btn is-secondary1')}
+              className={classNames(
+                styles.button,
+                'nes-btn is-secondary1'
+              )}
               htmlType="submit"
               loading={isSubmitting}
               disabled={isSubmitting}>
-              {isSubmitting ? EMPTY_STRING : 'Save'}
+              {isSubmitting
+                ? EMPTY_STRING
+                : 'Save'}
             </Button>
             <Button
-              className={classNames(styles.button, 'nes-btn')}
+              className={classNames(
+                styles.button,
+                'nes-btn'
+              )}
               onClick={onCancel}>
               Cancel
             </Button>

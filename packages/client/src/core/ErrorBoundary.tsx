@@ -1,4 +1,9 @@
-import { Component, ComponentType, ReactNode, createElement } from 'react'
+import {
+  Component,
+  ComponentType,
+  ReactNode,
+  createElement,
+} from 'react'
 
 type FallbackProps = {
   resetErrorBoundary?: () => void
@@ -19,20 +24,32 @@ type State = {
   hasError: boolean
 } & ErrorInfo
 
-const initialState = { hasError: false, error: null, errorInfo: null }
+const initialState = {
+  hasError: false,
+  error: null,
+  errorInfo: null,
+}
 
-class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundary extends Component<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props)
     this.state = initialState
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public static getDerivedStateFromError(_: Error): State {
+  public static getDerivedStateFromError(
+    _: Error
+  ): State {
     return { hasError: true }
   }
 
-  componentDidCatch(error: unknown, errorInfo: unknown) {
+  componentDidCatch(
+    error: unknown,
+    errorInfo: unknown
+  ) {
     const onError = this.props.onError
 
     if (onError) {
@@ -46,10 +63,14 @@ class ErrorBoundary extends Component<Props, State> {
 
   render() {
     const fallbackProps: FallbackProps = {
-      resetErrorBoundary: this.resetErrorBoundary.bind(this),
+      resetErrorBoundary:
+        this.resetErrorBoundary.bind(this),
     }
     if (this.state.hasError) {
-      return createElement(this.props.FallbackComponent, fallbackProps)
+      return createElement(
+        this.props.FallbackComponent,
+        fallbackProps
+      )
     }
 
     return this.props.children

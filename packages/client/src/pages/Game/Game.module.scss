@@ -1,52 +1,49 @@
 .game {
-    background-image: url('@images/bg.jpg');
-    padding-top: 64px;
-    justify-content: center;
-  }
+  background-image: url('@images/bg.jpg');
+  padding-top: 84px;
+  overflow-x: auto;
+}
 
-  canvas {
-    border: 40px solid transparent;
-    border-image: url('@images/rock.png') 80;
-  }
-  
-  .canvas {
+canvas {
+  border: 40px solid transparent;
+  border-image: url('@images/rock.png') 80;
+}
+
+.canvas {
+  color: var(--white);
+  padding-bottom: 50px;
+
+  @media screen and (min-width: 1200px) {
     display: flex;
     justify-content: space-around;
     align-items: center;
-	color: var(--white);
-
-	&__score{
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: 20%;
-		height: 30%;
-		margin: auto;
-		background-color: var(--component-bg);
-		backdrop-filter: var(--backdrop-filter);
-		border-radius: 8px;
-	}
-	&__play{
-		width: 80%;
-	}
   }
-  
- @supports (background-image: url(@images/bg.webp)) {
+
+  &__score {
+    width: 250px;
+    padding: 30px 20px;
+    margin: 15px auto;
+    background-color: var(--component-bg);
+    backdrop-filter: var(--backdrop-filter);
+    border-radius: 8px;
+    text-align: center;
+
+    @media screen and (min-width: 1200px) {
+      margin: auto 15px;
+    }
+  }
+
+  &__play {
+    @media screen and (min-width: 1200px) {
+      width: calc(100% - 230px);
+    }
+  }
+}
+
+@supports (
+  background-image: url(@images/bg.webp)
+) {
   .game {
     background-image: url(@images/bg.webp);
   }
 }
-
-
-
-  
-
-  
-
- 
-  
- 
-  
-  
-  

@@ -8,7 +8,10 @@
     (0,0,1,1,1,0,0),
     (0,0,0,1,0,0,0),
   );
-  $colors: ($base-color, map-get($default-colors, "shadow"));
+  $colors: (
+    $base-color,
+    map-get($default-colors, 'shadow')
+  );
 
   position: relative;
   width: calc(100% - #{2 * $border-size});
@@ -21,7 +24,10 @@
     padding: 0.5rem 2.5rem 0.5rem 1rem;
     cursor: $cursor-click-url, pointer;
     border-radius: 0;
-    outline-color: map-get($default-colors, "hover");
+    outline-color: map-get(
+      $default-colors,
+      'hover'
+    );
     -webkit-appearance: none;
     appearance: none;
 
@@ -42,7 +48,7 @@
     top: calc(50% - 11px);
     right: 36px;
     pointer-events: none;
-    content: "";
+    content: '';
   }
 
   // prettier-ignore
@@ -70,7 +76,7 @@
   &.is-disabled {
     @extend .is-disable;
     select {
-      color: map-get($disabled-colors, "normal");
+      color: map-get($disabled-colors, 'normal');
       cursor: not-allowed;
     }
   }

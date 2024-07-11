@@ -1,6 +1,11 @@
-@mixin pixelize($size, $matrix, $colors, $default-color: null) {
-  $ret: "";
-  $moz: "";
+@mixin pixelize(
+  $size,
+  $matrix,
+  $colors,
+  $default-color: null
+) {
+  $ret: '';
+  $moz: '';
   @if ($default-color == null) {
     // count number of each color in matrix and decide main color by highest count
     $matrix-colors: ();
@@ -10,17 +15,30 @@
         @if $item != 0 {
           $index: index($matrix-colors, $item);
           @if not $index {
-            $matrix-colors: append($matrix-colors, $item);
+            $matrix-colors: append(
+              $matrix-colors,
+              $item
+            );
             $counts: append($counts, 1);
           } @else {
             $count: nth($counts, $index) + 1;
-            $counts: set-nth($counts, $index, $count);
+            $counts: set-nth(
+              $counts,
+              $index,
+              $count
+            );
           }
         }
       }
     }
     // use index of the highest count to get the corresponding matrix color
-    $default-color: nth($colors, nth($matrix-colors, index($counts, max($counts...))));
+    $default-color: nth(
+      $colors,
+      nth(
+        $matrix-colors,
+        index($counts, max($counts...))
+      )
+    );
   }
 
   @for $i from 1 through length($matrix) {
@@ -30,18 +48,35 @@
       $dot: nth($row, $j);
 
       @if $dot != 0 {
-        @if $ret != "" {
-          $ret: $ret + ",";
-          $moz: $moz + ",";
+        @if $ret != '' {
+          $ret: $ret + ',';
+          $moz: $moz + ',';
         }
 
         $color: nth($colors, $dot);
         @if $color == $default-color {
-          $ret: $ret + ($j * $size) + " " + ($i * $size);
-          $moz: $moz + ($j * $size) + " " + ($i * $size) + " 0 0.020em";
+          $ret: $ret +
+            ($j * $size) +
+            ' ' +
+            ($i * $size);
+          $moz: $moz +
+            ($j * $size) +
+            ' ' +
+            ($i * $size) +
+            ' 0 0.020em';
         } @else {
-          $ret: $ret + ($j * $size) + " " + ($i * $size) + " " + $color;
-          $moz: $moz + ($j * $size) + " " + ($i * $size) + " 0 0.020em " + $color;
+          $ret: $ret +
+            ($j * $size) +
+            ' ' +
+            ($i * $size) +
+            ' ' +
+            $color;
+          $moz: $moz +
+            ($j * $size) +
+            ' ' +
+            ($i * $size) +
+            ' 0 0.020em ' +
+            $color;
         }
       }
     }
