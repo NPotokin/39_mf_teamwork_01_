@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react'
+import { expect, jest } from '@jest/globals'
 
 import '@testing-library/jest-dom'
 import TopicDetails from '../TopicDetails'
