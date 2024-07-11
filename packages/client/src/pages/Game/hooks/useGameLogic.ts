@@ -24,12 +24,12 @@ export type Sound = {
   playGameSound: VoidFunction
   stopGameSound: VoidFunction
 }
-export type GameProps = {
+export type GameLogicProps = {
   level: ILevel
   sounds: Sound
   modals: Modals
 }
-const useGameLogic = ({ level, sounds, modals }: GameProps) => {
+const useGameLogic = ({ level, sounds, modals }: GameLogicProps) => {
   // Стейты игрока, врагов и кристаллов
   const [playerPosition, setPlayerPosition] = useState(
     level.player.startPosition

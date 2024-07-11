@@ -1,15 +1,17 @@
-import { act, renderHook } from '@testing-library/react'
+import { act, fireEvent, renderHook } from '@testing-library/react'
+
 import useGameLogic, {
-  GameProps,
+  GameLogicProps,
   Modals,
   Sound,
   type UseGameType,
 } from '../hooks/useGameLogic'
-import { Constants, ILevel } from '../constants'
+import { ILevel } from '../constants'
 import { useSoundsMock, useModalsMock } from './mocks/gameHooks'
+import { mockLevelConstants } from './mocks/levelData'
 
-const initial: GameProps = {
-  level: Constants.levelOne,
+const initial: GameLogicProps = {
+  level: mockLevelConstants.levelOne,
   sounds: useSoundsMock(),
   modals: useModalsMock(),
 }
@@ -38,9 +40,121 @@ describe('useGameLogic', () => {
     it('should set enemy level to hard by default', () => {
       expect(gameLogic.enemies).toEqual(level.enemy.startPositions.hard)
     })
+
+    it('should set the canvas size to 800x600', () => {
+      expect(gameLogic.canvasSize).toEqual({ width: 800, height: 600 })
+    })
+
+    it('should set time, steps and score to zero', () => {
+      expect(gameLogic.time).toBe(0)
+      expect(gameLogic.steps).toBe(0)
+      expect(gameLogic.score).toBe(0)
+    })
   })
 
-  describe('Game end scenarios', () => {
+  describe('Keyboard control', () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should register a keydown handler to the global object window', () => {
+      const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
+
+      renderHook(() => useGameLogic(initial))
+
+      expect(addEventListenerSpy).toBeCalledWith(
+        'keydown',
+        expect.any(Function)
+      )
+    })
+
+    it('should remove the keydown handler in the global object window on unmount', () => {
+      const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener')
+
+      const { unmount } = renderHook(() => useGameLogic(initial))
+      unmount()
+
+      expect(removeEventListenerSpy).toBeCalledWith(
+        'keydown',
+        expect.any(Function)
+      )
+    })
+
+    it('should move to the right on arrowRight push from start position', () => {
+      const { result } = renderHook(() => useGameLogic(initial))
+
+      act(() => {
+        mockModals.isGameActive = true
+        fireEvent(window, new KeyboardEvent('keydown', { key: 'ArrowRight' }))
+      })
+
+      expect(result.current.playerPosition).toEqual({ x: 20, y: 0 })
+    })
+
+    it('should move down on arrowDown push from start position', () => {
+      const { result } = renderHook(() => useGameLogic(initial))
+
+      act(() => {
+        mockModals.isGameActive = true
+        fireEvent(window, new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+      })
+
+      expect(result.current.playerPosition).toEqual({ x: 0, y: 20 })
+    })
+
+    it('should move to the left on arrowLeft push', () => {
+      const { result } = renderHook(() => useGameLogic(initial))
+
+      act(() => {
+        mockModals.isGameActive = true
+        result.current.setPlayerPosition({ x: 40, y: 0 })
+        fireEvent(window, new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
+      })
+
+      expect(result.current.playerPosition).toEqual({ x: 20, y: 0 })
+    })
+
+    it('should move up on arrowUp push', () => {
+      const { result } = renderHook(() => useGameLogic(initial))
+
+      act(() => {
+        mockModals.isGameActive = true
+        result.current.setPlayerPosition({ x: 0, y: 40 })
+        fireEvent(window, new KeyboardEvent('keydown', { key: 'ArrowUp' }))
+      })
+
+      expect(result.current.playerPosition).toEqual({ x: 0, y: 20 })
+    })
+  })
+
+  describe('Gameplay and game end scenarios', () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should increase points by 100 when picking up gems', () => {
+      const { result } = renderHook(() => useGameLogic(initial))
+
+      act(() => {
+        mockModals.isGameActive = true
+        // сходить вправо, чтобы взять gem ({ x: 20, y: 0 })
+        fireEvent(window, new KeyboardEvent('keydown', { key: 'ArrowRight' }))
+      })
+
+      expect(result.current.score).toBe(100)
+    })
+
+    it('should increase steps by 1 when moving', () => {
+      const { result } = renderHook(() => useGameLogic(initial))
+
+      act(() => {
+        mockModals.isGameActive = true
+        fireEvent(window, new KeyboardEvent('keydown', { key: 'ArrowRight' }))
+      })
+
+      expect(result.current.steps).toBe(1)
+    })
+
     describe('Victory', () => {
       beforeEach(() => {
         gameLogic.handleVictory()
@@ -151,16 +265,4 @@ describe('useGameLogic', () => {
       expect(playGameSoundSpy).toHaveBeenCalledTimes(1)
     })
   })
-
-  // describe.only('Keyboard control', () => {
-  //   it('should move to the right after pressing the ArrowRight', () => {
-  //     const { result } = renderHook(() => useGameLogic(initial))
-  //     const event = new KeyboardEvent('keypress', { key: 'ArrowRight' })
-
-  //     expect(result.current.playerPosition).toEqual(level.player.startPosition)
-  //     window.dispatchEvent(event)
-
-  //     expect(result.current.playerPosition).toEqual({ x: 20, y: 0 })
-  //   })
-  // })
 })
