@@ -221,8 +221,7 @@ describe('useGameLogic', () => {
       expect(result.current.score).toBe(100)
     })
 
-    // TODO функционал удален в обновлении, намеренно?
-    it.skip('should increase steps by 1 when moving', () => {
+    it('should increase steps by 1 when moving', () => {
       const { result } = renderHook(() =>
         useGameLogic(initial)
       )
