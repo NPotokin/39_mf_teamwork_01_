@@ -200,6 +200,7 @@ const useGameLogic = ({
       }
 
       setPlayerPosition({ x: newX, y: newY })
+      setSteps(step => step + 1)
 
       const updatedEnemies = enemies.map(
         enemy => {
