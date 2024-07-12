@@ -14,14 +14,23 @@ const NotFoundPage = () => {
           <img
             src={panda404}
             alt="panda"
-            className={styles[`pageError__404-img`]}
+            className={
+              styles[`pageError__404-img`]
+            }
           />
           4
         </h1>
-        <h1 className={styles.pageError__header}>page not found</h1>
+        <h1 className={styles.pageError__header}>
+          page not found
+        </h1>
         <Button
-          className={cn(styles['pageError__btn'], 'nes-btn is-warning')}
-          onClick={() => navigate(RoutePath.HOME)}>
+          className={cn(
+            styles['pageError__btn'],
+            'nes-btn is-warning'
+          )}
+          onClick={() =>
+            navigate(RoutePath.HOME)
+          }>
           Go home
         </Button>
       </div>

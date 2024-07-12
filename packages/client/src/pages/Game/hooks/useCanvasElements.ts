@@ -16,9 +16,15 @@ export interface Position {
   y: number
 }
 
-export const useCanvasElements = ({ images, level }: Props) => {
+export const useCanvasElements = ({
+  images,
+  level,
+}: Props) => {
   const drawObstacles = useCallback(
-    (ctx: CanvasRenderingContext2D, obstacles: Position[]) => {
+    (
+      ctx: CanvasRenderingContext2D,
+      obstacles: Position[]
+    ) => {
       obstacles.forEach(obstacle => {
         ctx.drawImage(
           images.rock,
@@ -29,10 +35,17 @@ export const useCanvasElements = ({ images, level }: Props) => {
         )
       })
     },
-    [images.rock, level.obstacles.width, level.obstacles.height]
+    [
+      images.rock,
+      level.obstacles.width,
+      level.obstacles.height,
+    ]
   )
   const drawGems = useCallback(
-    (ctx: CanvasRenderingContext2D, gems: Position[]) => {
+    (
+      ctx: CanvasRenderingContext2D,
+      gems: Position[]
+    ) => {
       gems.forEach(gem => {
         ctx.drawImage(
           images.pumpkin,
@@ -43,10 +56,17 @@ export const useCanvasElements = ({ images, level }: Props) => {
         )
       })
     },
-    [images.pumpkin, level.gems.width, level.gems.height]
+    [
+      images.pumpkin,
+      level.gems.width,
+      level.gems.height,
+    ]
   )
   const drawPlayer = useCallback(
-    (ctx: CanvasRenderingContext2D, playerPosition: Position) => {
+    (
+      ctx: CanvasRenderingContext2D,
+      playerPosition: Position
+    ) => {
       ctx.drawImage(
         images.pandaWin,
         playerPosition.x,
@@ -55,10 +75,17 @@ export const useCanvasElements = ({ images, level }: Props) => {
         level.player.height
       )
     },
-    [images.pandaWin, level.player.width, level.player.height]
+    [
+      images.pandaWin,
+      level.player.width,
+      level.player.height,
+    ]
   )
   const drawEnemies = useCallback(
-    (ctx: CanvasRenderingContext2D, enemies: Position[]) => {
+    (
+      ctx: CanvasRenderingContext2D,
+      enemies: Position[]
+    ) => {
       enemies.forEach(enemy => {
         ctx.drawImage(
           images.tiger,
@@ -69,7 +96,16 @@ export const useCanvasElements = ({ images, level }: Props) => {
         )
       })
     },
-    [images.tiger, level.enemy.width, level.enemy.height]
+    [
+      images.tiger,
+      level.enemy.width,
+      level.enemy.height,
+    ]
   )
-  return { drawObstacles, drawGems, drawPlayer, drawEnemies }
+  return {
+    drawObstacles,
+    drawGems,
+    drawPlayer,
+    drawEnemies,
+  }
 }

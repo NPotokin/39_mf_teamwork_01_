@@ -1,9 +1,17 @@
-import { notification, type NotificationArgsProps } from 'antd'
+import {
+  notification,
+  type NotificationArgsProps,
+} from 'antd'
 import { ArgsProps } from 'antd/es/notification'
 
-type NotificationPlacement = NotificationArgsProps['placement']
+type NotificationPlacement =
+  NotificationArgsProps['placement']
 
-type NoticeMethods = 'success' | 'info' | 'warning' | 'error'
+type NoticeMethods =
+  | 'success'
+  | 'info'
+  | 'warning'
+  | 'error'
 
 export const showNotification = (
   method: NoticeMethods,

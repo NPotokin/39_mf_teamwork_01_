@@ -8,9 +8,14 @@ import registerServiceWorker from '@/lib/sw/registerServiceWorker'
 import './index.scss'
 import '@/scss/nes.scss'
 
-window.addEventListener('load', registerServiceWorker)
+window.addEventListener(
+  'load',
+  registerServiceWorker
+)
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+).render(
   <React.StrictMode>
     <Provider store={store}>
       <App />

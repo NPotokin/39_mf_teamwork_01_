@@ -47,10 +47,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $octocat-1, $octocat-colors);
+    @include pixelize(
+      $size,
+      $octocat-1,
+      $octocat-colors
+    );
     @include fill-gaps();
   }
 
@@ -60,7 +64,11 @@
 
   @keyframes wave {
     50% {
-      @include pixelize($size, $octocat-2, $octocat-colors);
+      @include pixelize(
+        $size,
+        $octocat-2,
+        $octocat-colors
+      );
     }
   }
 }

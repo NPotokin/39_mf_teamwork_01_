@@ -11,8 +11,6 @@
     margin: 20px auto;
     position: relative;
   }
-
- 
 }
 .columns__name {
   display: flex;
@@ -21,7 +19,9 @@
     margin-left: 8px;
   }
 }
-@supports (background-image: url(@images/bg.webp)) {
+@supports (
+  background-image: url(@images/bg.webp)
+) {
   .wrapper {
     background-image: url(@images/bg.webp);
   }

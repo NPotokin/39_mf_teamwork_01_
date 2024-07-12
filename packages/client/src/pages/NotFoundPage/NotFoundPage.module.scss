@@ -27,7 +27,9 @@
   }
 }
 
-@supports (background-image: url(@images/bg404.webp)) {
+@supports (
+  background-image: url(@images/bg404.webp)
+) {
   .wrapper {
     background-image: url(@images/bg404.webp);
   }

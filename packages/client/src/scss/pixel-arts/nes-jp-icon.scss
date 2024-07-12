@@ -25,7 +25,7 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
     @include pixelize($size, $logo, $logo-colors);

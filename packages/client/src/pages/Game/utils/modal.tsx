@@ -8,7 +8,11 @@ type IProps = {
   score: number
 }
 
-export const WinModal = ({ visible, onYesClick, score }: IProps) => (
+export const WinModal = ({
+  visible,
+  onYesClick,
+  score,
+}: IProps) => (
   <GameModal
     visible={visible}
     imageSrc={pandaWin}
@@ -19,7 +23,11 @@ export const WinModal = ({ visible, onYesClick, score }: IProps) => (
     score={score}
   />
 )
-export const GameOverModal = ({ visible, onYesClick, score }: IProps) => (
+export const GameOverModal = ({
+  visible,
+  onYesClick,
+  score,
+}: IProps) => (
   <GameModal
     visible={visible}
     imageSrc={pandaLost}

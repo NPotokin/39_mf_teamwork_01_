@@ -1,6 +1,6 @@
 .game {
   background-image: url('@images/bg.jpg');
-  padding-top: 84px; 
+  padding-top: 84px;
   overflow-x: auto;
 }
 
@@ -40,7 +40,9 @@ canvas {
   }
 }
 
-@supports (background-image: url(@images/bg.webp)) {
+@supports (
+  background-image: url(@images/bg.webp)
+) {
   .game {
     background-image: url(@images/bg.webp);
   }

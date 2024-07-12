@@ -6,12 +6,15 @@ import styles from './MenuMobile.module.scss'
 
 const Menu = () => (
   <div className={styles.root}>
-    <ul className={classNames(styles.menu, 'list')}>
+    <ul
+      className={classNames(styles.menu, 'list')}>
       <li className={styles.item}>
         <NavLink
           to={RoutePath.FORUM}
           className={({ isActive }) =>
-            classNames(styles.link, { 'is-active': isActive })
+            classNames(styles.link, {
+              'is-active': isActive,
+            })
           }>
           Forum page
         </NavLink>
@@ -20,7 +23,9 @@ const Menu = () => (
         <NavLink
           to={RoutePath.LEADER_BOARD}
           className={({ isActive }) =>
-            classNames(styles.link, { 'is-active': isActive })
+            classNames(styles.link, {
+              'is-active': isActive,
+            })
           }>
           Leaderboard
         </NavLink>
@@ -29,7 +34,9 @@ const Menu = () => (
         <NavLink
           to={RoutePath.PROFILE}
           className={({ isActive }) =>
-            classNames(styles.link, { 'is-active': isActive })
+            classNames(styles.link, {
+              'is-active': isActive,
+            })
           }>
           Profile
         </NavLink>
@@ -38,7 +45,9 @@ const Menu = () => (
         <NavLink
           to={RoutePath.GAME}
           className={({ isActive }) =>
-            classNames(styles.link, { 'is-active': isActive })
+            classNames(styles.link, {
+              'is-active': isActive,
+            })
           }>
           Game
         </NavLink>

@@ -6,9 +6,17 @@ export const mockData = [
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     comments: [
-      { key: '1', comment: 'interesting', emoji: '' },
+      {
+        key: '1',
+        comment: 'interesting',
+        emoji: '',
+      },
       { key: '2', comment: 'no bad', emoji: '' },
-      { key: '3', comment: 'i like it', emoji: '' },
+      {
+        key: '3',
+        comment: 'i like it',
+        emoji: '',
+      },
     ],
   },
   {
@@ -19,7 +27,11 @@ export const mockData = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     comments: [
       { key: '1', comment: 'ok', emoji: '' },
-      { key: '2', comment: 'chudesno', emoji: '' },
+      {
+        key: '2',
+        comment: 'chudesno',
+        emoji: '',
+      },
       { key: '3', comment: 'super', emoji: '' },
     ],
   },
@@ -30,7 +42,11 @@ export const mockData = [
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     comments: [
-      { key: '1', comment: 'i love it', emoji: '' },
+      {
+        key: '1',
+        comment: 'i love it',
+        emoji: '',
+      },
       { key: '2', comment: 'its ok', emoji: '' },
       { key: '3', comment: 'eee', emoji: '' },
     ],
@@ -39,7 +55,8 @@ export const mockData = [
     key: '4',
     name: 'Technologies',
     commentsCount: '3',
-    content: 'This is the content of Technologies topic',
+    content:
+      'This is the content of Technologies topic',
     comments: [
       { key: '1', comment: 'ok', emoji: '' },
       { key: '2', comment: 'eee', emoji: '' },

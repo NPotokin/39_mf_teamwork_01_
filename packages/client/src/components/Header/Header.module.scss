@@ -85,15 +85,15 @@
   }
 }
 
-
 .link {
   display: none;
   margin-left: 1rem;
   color: var(--light);
   max-width: 200px;
   text-overflow: ellipsis;
-  white-space: nowrap;  
-  transition: var(--transition-duration) var(--transition-function);
+  white-space: nowrap;
+  transition: var(--transition-duration)
+    var(--transition-function);
 
   &:hover {
     color: var(--white);
@@ -103,7 +103,6 @@
     display: inline-block;
   }
 }
-
 
 .close {
   position: fixed;

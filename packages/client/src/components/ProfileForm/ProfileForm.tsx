@@ -1,17 +1,32 @@
 import { useState } from 'react'
-import { Formik, FormikHelpers } from 'formik'
-import { Form as AntForm, Input, Button, Row, Col } from 'antd'
+import { Formik } from 'formik'
+import {
+  Form as AntForm,
+  Input,
+  Button,
+  Row,
+  Col,
+} from 'antd'
 import classNames from 'classnames'
 
-import { updateAvatar, updateProfile } from '@/core/services/user.service'
-import { IUpdateUser, IUserInfo } from '@/core/api/model'
+import {
+  updateAvatar,
+  updateProfile,
+} from '@/core/services/user.service'
+import {
+  IUpdateUser,
+  IUserInfo,
+} from '@/core/api/model'
 import { EMPTY_STRING } from '@/core/constants'
 import { USER_DATA_KEY } from '@/core/services/auth.service'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { userProfileSchema } from '@/lib/validation/validationSchema'
 import { RESOURCE_URL } from '@/lib/constants'
 import { UploadAvatar } from '@/components/UploadAvatar'
-import { updateUser, updateUserAvatar } from '@/state/user/userSlice'
+import {
+  updateUser,
+  updateUserAvatar,
+} from '@/state/user/userSlice'
 import styles from './ProfileForm.module.scss'
 
 type ProfileFormProps = {
@@ -28,10 +43,11 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   avatar,
   onCancel,
 }) => {
-  const [uploadPreview, setUploadPreview] = useState<
-    string | ArrayBuffer | null
-  >(null)
-  const avatarSrc = avatar ? `${RESOURCE_URL}${avatar}` : EMPTY_STRING
+  const [uploadPreview, setUploadPreview] =
+    useState<string | ArrayBuffer | null>(null)
+  const avatarSrc = avatar
+    ? `${RESOURCE_URL}${avatar}`
+    : EMPTY_STRING
   const initialValues: IUpdateUser = {
     first_name,
     second_name,
@@ -49,22 +65,36 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     reader.readAsDataURL(file)
     const formData = new FormData()
     formData.append('avatar', file)
-    const updateUserData = await updateAvatar(formData)
+    const updateUserData = await updateAvatar(
+      formData
+    )
 
     if (updateUserData) {
-      localStorage.setItem(USER_DATA_KEY, JSON.stringify(updateUserData))
-      dispatch(updateUserAvatar(updateUserData.avatar))
+      localStorage.setItem(
+        USER_DATA_KEY,
+        JSON.stringify(updateUserData)
+      )
+      dispatch(
+        updateUserAvatar(updateUserData.avatar)
+      )
     }
   }
 
   const handleSubmit = async (
     values: IUpdateUser,
-    setSubmittingCb: (isSubmitting: boolean) => void
+    setSubmittingCb: (
+      isSubmitting: boolean
+    ) => void
   ) => {
-    const updateUserData = await updateProfile(values)
+    const updateUserData = await updateProfile(
+      values
+    )
 
     if (updateUserData) {
-      localStorage.setItem(USER_DATA_KEY, JSON.stringify(updateUserData))
+      localStorage.setItem(
+        USER_DATA_KEY,
+        JSON.stringify(updateUserData)
+      )
       dispatch(updateUser(updateUserData))
     }
 
@@ -76,7 +106,11 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     <>
       <div className={styles.card}>
         {avatarSrc && (
-          <img className={styles.avatar} src={avatarSrc} alt="avatar" />
+          <img
+            className={styles.avatar}
+            src={avatarSrc}
+            alt="avatar"
+          />
         )}
         <UploadAvatar
           className={styles.upload}
@@ -120,7 +154,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                 false
               )
               const errors = await validateForm()
-              if (Object.keys(errors).length === 0) {
+              if (
+                Object.keys(errors).length === 0
+              ) {
                 handleSubmit()
               }
             }}>
@@ -130,10 +166,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                   name="first_name"
                   label="First Name"
                   validateStatus={
-                    touched.first_name && errors.first_name ? 'error' : ''
+                    touched.first_name &&
+                    errors.first_name
+                      ? 'error'
+                      : ''
                   }
                   help={
-                    touched.first_name && errors.first_name
+                    touched.first_name &&
+                    errors.first_name
                       ? errors.first_name
                       : ''
                   }>
@@ -151,10 +191,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                   name="second_name"
                   label="Last Name"
                   validateStatus={
-                    touched.second_name && errors.second_name ? 'error' : ''
+                    touched.second_name &&
+                    errors.second_name
+                      ? 'error'
+                      : ''
                   }
                   help={
-                    touched.second_name && errors.second_name
+                    touched.second_name &&
+                    errors.second_name
                       ? errors.second_name
                       : ''
                   }>
@@ -171,8 +215,16 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                 <AntForm.Item
                   name="email"
                   label="Email"
-                  validateStatus={touched.email && errors.email ? 'error' : ''}
-                  help={touched.email && errors.email ? errors.email : ''}>
+                  validateStatus={
+                    touched.email && errors.email
+                      ? 'error'
+                      : ''
+                  }
+                  help={
+                    touched.email && errors.email
+                      ? errors.email
+                      : ''
+                  }>
                   <Input
                     className="nes-input"
                     name="email"
@@ -186,8 +238,16 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                 <AntForm.Item
                   name="phone"
                   label="Phone"
-                  validateStatus={touched.phone && errors.phone ? 'error' : ''}
-                  help={touched.phone && errors.phone ? errors.phone : ''}>
+                  validateStatus={
+                    touched.phone && errors.phone
+                      ? 'error'
+                      : ''
+                  }
+                  help={
+                    touched.phone && errors.phone
+                      ? errors.phone
+                      : ''
+                  }>
                   <Input
                     className="nes-input"
                     name="phone"
@@ -201,8 +261,16 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                 <AntForm.Item
                   name="login"
                   label="Login"
-                  validateStatus={touched.login && errors.login ? 'error' : ''}
-                  help={touched.login && errors.login ? errors.login : ''}>
+                  validateStatus={
+                    touched.login && errors.login
+                      ? 'error'
+                      : ''
+                  }
+                  help={
+                    touched.login && errors.login
+                      ? errors.login
+                      : ''
+                  }>
                   <Input
                     className="nes-input"
                     name="login"
@@ -217,10 +285,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                   name="display_name"
                   label="Display Name"
                   validateStatus={
-                    touched.display_name && errors.display_name ? 'error' : ''
+                    touched.display_name &&
+                    errors.display_name
+                      ? 'error'
+                      : ''
                   }
                   help={
-                    touched.display_name && errors.display_name
+                    touched.display_name &&
+                    errors.display_name
                       ? errors.display_name
                       : ''
                   }>
@@ -236,14 +308,22 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             </Row>
             <div className={styles.footer}>
               <Button
-                className={classNames(styles.button, 'nes-btn is-secondary1')}
+                className={classNames(
+                  styles.button,
+                  'nes-btn is-secondary1'
+                )}
                 htmlType="submit"
                 loading={isSubmitting}
                 disabled={isSubmitting}>
-                {isSubmitting ? EMPTY_STRING : 'Save'}
+                {isSubmitting
+                  ? EMPTY_STRING
+                  : 'Save'}
               </Button>
               <Button
-                className={classNames(styles.button, 'nes-btn')}
+                className={classNames(
+                  styles.button,
+                  'nes-btn'
+                )}
                 onClick={onCancel}>
                 Cancel
               </Button>

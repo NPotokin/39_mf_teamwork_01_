@@ -31,19 +31,27 @@
     @include rounded-corners();
   }
   &.is-primary {
-    @include progress-style(map-get($primary-colors, "normal"));
+    @include progress-style(
+      map-get($primary-colors, 'normal')
+    );
   }
 
   &.is-success {
-    @include progress-style(map-get($success-colors, "normal"));
+    @include progress-style(
+      map-get($success-colors, 'normal')
+    );
   }
 
   &.is-warning {
-    @include progress-style(map-get($warning-colors, "normal"));
+    @include progress-style(
+      map-get($warning-colors, 'normal')
+    );
   }
 
   &.is-error {
-    @include progress-style(map-get($error-colors, "normal"));
+    @include progress-style(
+      map-get($error-colors, 'normal')
+    );
   }
 
   &.is-pattern {
@@ -79,8 +87,9 @@
           $background-color 75%,
           $background-color
         ),
-        -moz-linear-gradient(45deg, $background-color 25%, transparent 25%, transparent 75%, $background-color
-              75%, $background-color);
+        -moz-linear-gradient(45deg, $background-color
+              25%, transparent 25%, transparent
+              75%, $background-color 75%, $background-color);
       background-position: 0 0, 10px 10px;
       background-size: 20px 20px;
     }

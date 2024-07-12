@@ -12,32 +12,51 @@ const ProfileInfo: React.FC<IUserInfo> = ({
   email,
   avatar,
 }) => {
-  const avatarSrc = avatar ? `${RESOURCE_URL}${avatar}` : holder
+  const avatarSrc = avatar
+    ? `${RESOURCE_URL}${avatar}`
+    : holder
   const userName = `${first_name} ${second_name}`
 
   return (
     <>
       <div className={styles.card}>
         <div className={styles.person}>
-          <img className={styles.avatar} src={avatarSrc} alt="avatar" />
+          <img
+            className={styles.avatar}
+            src={avatarSrc}
+            alt="avatar"
+          />
           <span className={styles.info}>
             <span>{userName}</span>
-            <a className={styles.link} href={`mailto:${email}`}>
+            <a
+              className={styles.link}
+              href={`mailto:${email}`}>
               {email}
             </a>
           </span>
         </div>
         <p>
-          <span className={styles.title}>Login</span>: {login}
+          <span className={styles.title}>
+            Login
+          </span>
+          : {login}
         </p>
         {display_name && (
           <p>
-            <span className={styles.title}>Display name</span>: {display_name}
+            <span className={styles.title}>
+              Display name
+            </span>
+            : {display_name}
           </p>
         )}
         <p>
-          <span className={styles.title}>Phone</span>:{' '}
-          <a className={styles.link} href={`tel:${phone}`}>
+          <span className={styles.title}>
+            Phone
+          </span>
+          :{' '}
+          <a
+            className={styles.link}
+            href={`tel:${phone}`}>
             {phone}
           </a>
         </p>

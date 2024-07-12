@@ -10,7 +10,9 @@
   height: 100%;
 }
 
-@supports (background-image: url(@images/bg.webp)) {
+@supports (
+  background-image: url(@images/bg.webp)
+) {
   .root {
     background-image: url(@images/bg.webp);
   }
@@ -35,8 +37,7 @@
 }
 
 .button + .button {
-  
   @media screen and (min-width: 1024px) {
-     margin-left: 1.5rem;
+    margin-left: 1.5rem;
   }
 }

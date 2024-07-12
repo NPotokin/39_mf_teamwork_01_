@@ -30,10 +30,14 @@
     position: absolute;
     top: -$size;
     left: -$size;
-    content: "";
+    content: '';
     background: transparent;
 
-    @include pixelize($size, $kirby, $kirby-colors);
+    @include pixelize(
+      $size,
+      $kirby,
+      $kirby-colors
+    );
     @include fill-gaps();
   }
 }

@@ -6,14 +6,15 @@ $base-color: $color-black !default;
 $background-color: $color-white !default;
 
 $cursor-url: url(../assets/images/cursor.png) !default;
-$cursor-click-url: url(../assets/images/cursor-click.png) 14 0 !default;
+$cursor-click-url: url(../assets/images/cursor-click.png)
+  14 0 !default;
 
 $border-size: 4px !default;
 
 $default-colors: (
- normal: $background-color,
+  normal: $background-color,
   hover: #e7e7e7,
-  shadow: #adafbc
+  shadow: #adafbc,
 ) !default;
 $disabled-colors: (
   normal: #d3d3d3,

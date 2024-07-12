@@ -13,7 +13,9 @@
   margin: 4px;
   background-clip: padding-box;
   background: var(--input-bg) !important;
-  border-width: var(--input-border-width) !important;
+  border-width: var(
+    --input-border-width
+  ) !important;
 
   &.is-dark {
     @include border-style(

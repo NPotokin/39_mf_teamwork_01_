@@ -12,4 +12,5 @@ export const RoutePath = {
   SERVER_ERROR: '/500',
 } as const
 
-export type RoutePathType = typeof RoutePath[keyof typeof RoutePath]
+export type RoutePathType =
+  typeof RoutePath[keyof typeof RoutePath]
