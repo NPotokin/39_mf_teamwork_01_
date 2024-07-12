@@ -150,7 +150,7 @@ const useGameLogic = ({
 
       if (isCollidingWithEnemies) {
         handleDefeat()
-        return prev
+        return
       }
 
       const isCollidingWithObstaclesOrWalls =

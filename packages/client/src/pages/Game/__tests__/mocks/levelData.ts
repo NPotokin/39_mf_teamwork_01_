@@ -1,6 +1,9 @@
 import { IConstants } from '../../constants'
 
-export const mockLevelConstants: Omit<IConstants, 'levelTwo' | 'levelThree'> = {
+export const mockLevelConstants: Omit<
+  IConstants,
+  'levelTwo' | 'levelThree'
+> = {
   levelOne: {
     canvas: {
       width: 800,
@@ -22,9 +25,9 @@ export const mockLevelConstants: Omit<IConstants, 'levelTwo' | 'levelThree'> = {
       height: 40,
       step: 40,
       startPositions: {
-        easy: [{ x: 120, y: 0 }],
-        moderate: [{ x: 120, y: 0 }],
-        hard: [{ x: 120, y: 0 }],
+        easy: [{ x: 620, y: 0 }],
+        moderate: [{ x: 620, y: 0 }],
+        hard: [{ x: 620, y: 0 }],
       },
     },
 
@@ -34,13 +37,14 @@ export const mockLevelConstants: Omit<IConstants, 'levelTwo' | 'levelThree'> = {
       startPositions: [
         { x: 20, y: 0 },
         { x: 680, y: 40 },
+        { x: 520, y: 100 },
       ],
     },
 
     obstacles: {
       width: 40,
       height: 40,
-      startPositions: [{ x: 160, y: 40 }],
+      startPositions: [{ x: 160, y: 80 }],
     },
   },
 }
