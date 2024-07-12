@@ -1,4 +1,4 @@
-describe('login page', () => {
+describe('sign-up page', () => {
   beforeEach(() => {
     cy.visit('/signup')
   })
@@ -29,15 +29,23 @@ describe('login page', () => {
       'Passwords do not match'
     )
 
-    cy.get('#confirmPassword').clear().type('123passwordR')
+    cy.get('#confirmPassword')
+      .clear()
+      .type('123passwordR')
 
     cy.get('form').submit()
-    cy.get('#confirmPassword_help').should('have.text', '')
+    cy.get('#confirmPassword_help').should(
+      'have.text',
+      ''
+    )
   })
 
   it('should navigate to sign in', () => {
     cy.contains('Sign In').click()
 
-    cy.location('pathname').should('eq', '/signin')
+    cy.location('pathname').should(
+      'eq',
+      '/signin'
+    )
   })
 })
