@@ -2,7 +2,6 @@ import {
   fireEvent,
   render,
 } from '@testing-library/react'
-
 import '@testing-library/jest-dom'
 import ForumList from '../ForumList'
 import { mockData } from '../../mockData'
