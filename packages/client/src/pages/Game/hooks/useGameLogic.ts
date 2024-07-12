@@ -9,7 +9,7 @@ import useLoadImages from './useLoadImages'
 import { useCanvasElements } from './useCanvasElements'
 import { ILevel } from '../constants'
 
-type Modals = {
+export type Modals = {
   isStartModalVisible: boolean
   isGameOverVisible: boolean
   isGameWinVisible: boolean
@@ -23,14 +23,14 @@ type Modals = {
   setIsGameActive: (arg0: boolean) => void
 }
 
-type Sound = {
+export type Sound = {
   playDefeatSound: VoidFunction
   playVictorySound: VoidFunction
   playGemSound: VoidFunction
   playGameSound: VoidFunction
   stopGameSound: VoidFunction
 }
-type Props = {
+export type GameLogicProps = {
   level: ILevel
   sounds: Sound
   modals: Modals
@@ -39,7 +39,7 @@ const useGameLogic = ({
   level,
   sounds,
   modals,
-}: Props) => {
+}: GameLogicProps) => {
   // Стейты игрока, врагов и кристаллов
   const [playerPosition, setPlayerPosition] =
     useState(level.player.startPosition)
@@ -150,6 +150,7 @@ const useGameLogic = ({
 
       if (isCollidingWithEnemies) {
         handleDefeat()
+        return
       }
 
       const isCollidingWithObstaclesOrWalls =
@@ -391,3 +392,7 @@ const useGameLogic = ({
   }
 }
 export default useGameLogic
+
+export type UseGameType = ReturnType<
+  typeof useGameLogic
+>

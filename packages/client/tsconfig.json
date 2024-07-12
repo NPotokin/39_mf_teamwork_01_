@@ -26,7 +26,6 @@
     }
   },
   "include": ["src", "setupTest.ts"],
-  "references": [
-    { "path": "./tsconfig.node.json" }
-  ]
+  "exclude": ["./cypress.config.ts", "cypress", "**/*.spec.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
