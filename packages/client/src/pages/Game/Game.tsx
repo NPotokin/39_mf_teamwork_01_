@@ -19,6 +19,8 @@ import useModals from './hooks/useModals'
 import useGameLogic from './hooks/useGameLogic'
 import { useAppSelector } from '@/lib/hooks/redux'
 
+import { MuteButton } from '@/components'
+
 export type Level =
   | 'levelOne'
   | 'levelTwo'
@@ -30,6 +32,7 @@ const Game: React.FC = () => {
   const [level, setLevel] = useState(
     Constants.levelOne
   )
+  const [muted, setMuted] = useState(true)
   const gameLogic = useGameLogic({
     level,
     sounds,
@@ -74,6 +77,7 @@ const Game: React.FC = () => {
   const handleYesClickGameOverModal = () => {
     modals.hideGameOverModal()
     modals.showStartModal()
+    setMuted(true)
   }
 
   const handleYesClickWinModal = () => {
@@ -99,10 +103,20 @@ const Game: React.FC = () => {
             'container'
           )}>
           <div className={styles.canvas__score}>
-            <div>{userLogin}</div>
-            <div>Steps: {gameLogic.steps}</div>
-            <div>Time: {gameLogic.time}</div>
-            <div>Score: {gameLogic.score}</div>
+            <MuteButton
+              stopGameSound={sounds.stopGameSound}
+              startGameSound={
+                sounds.playGameSound
+              }
+              muted={muted}
+              setMuted={setMuted}
+            />
+            <div>
+              <div>{userLogin}</div>
+              <div>Steps: {gameLogic.steps}</div>
+              <div>Time: {gameLogic.time}</div>
+              <div>Score: {gameLogic.score}</div>
+            </div>
           </div>
           <div className={styles.canvas__play}>
             <canvas
@@ -112,7 +126,6 @@ const Game: React.FC = () => {
             />
           </div>
         </div>
-
         <StartModal
           visible={modals.isStartModalVisible}
           onYesClick={handleStartModalButton}
