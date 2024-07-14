@@ -41,3 +41,17 @@
     margin-left: 1.5rem;
   }
 }
+
+@media screen and (max-width: 767px) {
+  .root {
+    background-image: url(@images/bg-mob.jpg);
+  }
+
+  @supports (
+    background-image: url(@images/bg-mob.webp)
+  ) {
+    .root {
+      background-image: url(@images/bg-mob.webp);
+    }
+  }
+}

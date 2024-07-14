@@ -75,21 +75,27 @@ const Header = (props: Props) => {
             Play now
           </Link>
         )}
-        <NavLink
-          to={RoutePath.PROFILE}
-          className={({ isActive }) =>
-            classNames(styles.link, {
-              'is-active': isActive,
-            })
-          }>
-          {userLogin}
-        </NavLink>
-        <Button
-          type="link"
-          className={classNames(styles.logout)}
-          onClick={handleLogout}>
-          <LogoutOutlined />
-        </Button>
+        {userLogin && (
+          <>
+            <NavLink
+              to={RoutePath.PROFILE}
+              className={({ isActive }) =>
+                classNames(styles.link, {
+                  'is-active': isActive,
+                })
+              }>
+              {userLogin}
+            </NavLink>
+            <Button
+              type="link"
+              className={classNames(
+                styles.logout
+              )}
+              onClick={handleLogout}>
+              <LogoutOutlined />
+            </Button>
+          </>
+        )}
         <ThemeToggle className={styles.theme} />
         <Button
           className={classNames(

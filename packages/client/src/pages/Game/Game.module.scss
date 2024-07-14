@@ -47,3 +47,17 @@ canvas {
     background-image: url(@images/bg.webp);
   }
 }
+
+@media screen and (max-width: 767px) {
+  .game {
+    background-image: url(@images/bg-mob.jpg);
+  }
+
+  @supports (
+    background-image: url(@images/bg-mob.webp)
+  ) {
+    .game {
+      background-image: url(@images/bg-mob.webp);
+    }
+  }
+}
