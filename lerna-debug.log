@@ -1,0 +1,17 @@
+0 silly argv {
+0 silly argv   _: [ 'run' ],
+0 silly argv   scope: 'client',
+0 silly argv   lernaVersion: '5.4.3',
+0 silly argv   '$0': '/Users/nikitapotokin/Desktop/1. Projects/ЯНДЕКС/Sprint2Game/39_mf_teamwork_01_/node_modules/.bin/lerna',
+0 silly argv   script: 'dev'
+0 silly argv }
+1 notice cli v5.4.3
+2 verbose rootPath /Users/nikitapotokin/Desktop/1. Projects/ЯНДЕКС/Sprint2Game/39_mf_teamwork_01_
+3 notice filter including "client"
+4 info filter [ 'client' ]
+5 error SystemError [ERR_TTY_INIT_FAILED]: TTY initialization failed: uv_tty_init returned EINVAL (invalid argument)
+5 error     at new ReadStream (node:tty:56:11)
+5 error     at process.getStdin [as stdin] (node:internal/bootstrap/switches/is_main_thread:198:15)
+5 error     at /Users/nikitapotokin/Desktop/1. Projects/ЯНДЕКС/Sprint2Game/39_mf_teamwork_01_/node_modules/nx/src/tasks-runner/run-command.js:138:21
+5 error     at Generator.next (<anonymous>)
+5 error     at fulfilled (/Users/nikitapotokin/Desktop/1. Projects/ЯНДЕКС/Sprint2Game/39_mf_teamwork_01_/node_modules/tslib/tslib.js:115:62)
