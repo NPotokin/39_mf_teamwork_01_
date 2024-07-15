@@ -15,8 +15,8 @@ git clone https://github.com/NPotokin/39_mf_teamwork_01_.git
 5. Выполните команду `yarn bootstrap` - это обязательный шаг, без него ничего работать не будет
 
 6. Выполните команду `yarn dev`
-Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
-Выполните команду `yarn dev --scope=server` чтобы запустить только server
+- Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
+
 
 
 
