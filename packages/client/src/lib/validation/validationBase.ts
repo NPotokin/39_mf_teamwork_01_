@@ -25,19 +25,20 @@ export const passwordRegex =
  * Regular expression for validating first and last names.
  * Requires the string to start with an uppercase letter followed by lowercase letters or a hyphen.
  */
-const nameRegex = /^[A-ZА-Я][a-zа-я-]*$/
+export const nameRegex = /^[A-ZА-Я][a-zа-я-]*$/
 
 /**
  * Regular expression for validating email addresses.
  * Requires the email to contain characters before the '@', the '@' symbol, characters after the '@', a period, and characters after the period.
  */
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+export const emailRegex =
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 /**
  * Regular expression for validating phone numbers.
  * Allows an optional '+' at the start, followed by 10 to 15 digits.
  */
-const phoneRegex = /^\+?\d{10,15}$/
+export const phoneRegex = /^\+?\d{10,15}$/
 
 const baseLoginSchema = {
   login: Yup.string()
@@ -86,13 +87,6 @@ const baseProfileSchema = {
   second_name: Yup.string()
     .matches(nameRegex, {
       message: errorMessages.second_name,
-      excludeEmptyString: true,
-    })
-    .required(errorMessages.required),
-
-  display_name: Yup.string()
-    .matches(nameRegex, {
-      message: errorMessages.display_name,
       excludeEmptyString: true,
     })
     .required(errorMessages.required),

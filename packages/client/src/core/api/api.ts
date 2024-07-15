@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const HOST = import.meta.env.VITE_API_URL
+const HOST = __API_URL__
 
 const axiosDB = axios.create({
   baseURL: HOST,

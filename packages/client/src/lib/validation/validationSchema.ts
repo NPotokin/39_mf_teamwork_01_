@@ -3,6 +3,7 @@ import { errorMessages } from './errorMessages'
 import {
   baseLoginSchema,
   baseProfileSchema,
+  nameRegex,
   passwordRegex,
 } from './validationBase'
 
@@ -23,6 +24,12 @@ const registrationSchema = Yup.object().shape({
 
 const userProfileSchema = Yup.object().shape({
   ...baseProfileSchema,
+  display_name: Yup.string()
+    .matches(nameRegex, {
+      message: errorMessages.display_name,
+      excludeEmptyString: true,
+    })
+    .required(errorMessages.required),
 })
 
 const passwordChangeSchema = Yup.object().shape({
