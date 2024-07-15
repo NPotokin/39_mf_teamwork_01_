@@ -99,13 +99,13 @@ yarn format
 ```
 
 ### Авторы
-[Никита Потокин](https://github.com/NPotokin)
-[Ольга Жижка](https://github.com/OlgaZhyzhka)
-[Евгения Бурлаченко](https://github.com/evgeniya-burlachenko) 
-[Альберт Габдрахманов](https://github.com/GabdrahmanovAR)
+- [Никита Потокин](https://github.com/NPotokin)
+- [Ольга Жижка](https://github.com/OlgaZhyzhka)
+- [Евгения Бурлаченко](https://github.com/evgeniya-burlachenko) 
+- [Альберт Габдрахманов](https://github.com/GabdrahmanovAR)
 
 ### При наставничестве
-[Константин Качанов](https://github.com/holypower777)
+- [Константин Качанов](https://github.com/holypower777)
 
 
 
