@@ -414,7 +414,7 @@ describe('useGameLogic', () => {
         setGameIsActiveSpy
       ).toHaveBeenCalledWith(true)
     })
-    it('should start playing gameSound', () => {
+    it('should not start playing gameSound by default', () => {
       const playGameSoundSpy = jest.spyOn(
         mockSounds,
         'playGameSound'
@@ -424,7 +424,7 @@ describe('useGameLogic', () => {
 
       expect(
         playGameSoundSpy
-      ).toHaveBeenCalledTimes(1)
+      ).toHaveBeenCalledTimes(0)
     })
   })
 })

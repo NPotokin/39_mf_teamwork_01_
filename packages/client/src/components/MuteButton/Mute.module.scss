@@ -1,0 +1,21 @@
+.button {
+font-size: 2rem;
+margin: auto; 
+background-color: transparent; 
+border: none;
+outline: none;
+box-shadow: none;
+color: var(--light);
+align-items: center;
+justify-content: center;
+
+&:hover {
+  color: var(--state-primary) !important;
+}
+
+&:focus {
+  outline: none;
+  box-shadow: none;
+}
+  }
+

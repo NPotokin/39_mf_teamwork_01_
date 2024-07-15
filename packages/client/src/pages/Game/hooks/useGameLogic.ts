@@ -92,7 +92,7 @@ const useGameLogic = ({
     setGems(level.gems.startPositions)
     // setEnemies(Constants.enemy.startPositions.easy)
     modals.setIsGameActive(true)
-    sounds.playGameSound()
+    // sounds.playGameSound()
 
     timerRef.current = setInterval(() => {
       setTime(prevSeconds => prevSeconds + 1)
