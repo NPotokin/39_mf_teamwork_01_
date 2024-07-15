@@ -7,7 +7,6 @@ export const RoutePath = {
   PROFILE: '/profile',
   LEADER_BOARD: '/leaderboard',
   FORUM: '/forum',
-  FORUM_TOPIC: '/forum:id',
   PAGE_NOT_FOUND: '/404',
   SERVER_ERROR: '/500',
 } as const

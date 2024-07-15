@@ -42,3 +42,18 @@
     background-image: url(@images/bg_landing.webp);
   }
 }
+
+@media screen and (max-width: 767px) {
+  .root {
+    background-image: url(@images/bg_landing-mob.jpg);
+  }
+
+  @supports (
+    background-image:
+      url(@images/bg_landing-mob.webp)
+  ) {
+    .root {
+      background-image: url(@images/bg_landing-mob.webp);
+    }
+  }
+}

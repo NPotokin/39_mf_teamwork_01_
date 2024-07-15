@@ -34,3 +34,17 @@
     background-image: url(@images/bg404.webp);
   }
 }
+
+@media screen and (max-width: 767px) {
+  .wrapper {
+    background-image: url(@images/bg404-mob.jpg);
+  }
+
+  @supports (
+    background-image: url(@images/bg404-mob.webp)
+  ) {
+    .wrapper {
+      background-image: url(@images/bg404-mob.webp);
+    }
+  }
+}

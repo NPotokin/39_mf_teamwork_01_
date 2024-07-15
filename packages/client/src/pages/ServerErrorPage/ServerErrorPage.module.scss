@@ -35,3 +35,17 @@
     background-image: url(@images/bg500.webp);
   }
 }
+
+@media screen and (max-width: 767px) {
+  .wrapper {
+    background-image: url(@images/bg500-mob.jpg);
+  }
+
+  @supports (
+    background-image: url(@images/bg500-mob.webp)
+  ) {
+    .wrapper {
+      background-image: url(@images/bg500-mob.webp);
+    }
+  }
+}

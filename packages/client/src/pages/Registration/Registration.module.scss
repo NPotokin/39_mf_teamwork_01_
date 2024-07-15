@@ -65,3 +65,17 @@
     background-image: url(@images/bg.webp);
   }
 }
+
+@media screen and (max-width: 767px) {
+  .page {
+    background-image: url(@images/bg-mob.jpg);
+  }
+
+  @supports (
+    background-image: url(@images/bg-mob.webp)
+  ) {
+    .page {
+      background-image: url(@images/bg-mob.webp);
+    }
+  }
+}
