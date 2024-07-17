@@ -160,6 +160,7 @@ const PasswordForm: React.FC<
           </AntForm.Item>
           <div className={styles.footer}>
             <Button
+              data-cy="save-profile"
               className={classNames(
                 styles.button,
                 'nes-btn is-secondary1'

@@ -7,10 +7,11 @@
     ],
     "types": [
       "cypress",
-      "node"
+      "node",
+      "./support/types.d.ts"
     ]
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts",
   ]
 }

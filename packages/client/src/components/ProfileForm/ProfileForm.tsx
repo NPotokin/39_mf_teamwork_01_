@@ -308,6 +308,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             </Row>
             <div className={styles.footer}>
               <Button
+                data-cy="save-profile"
                 className={classNames(
                   styles.button,
                   'nes-btn is-secondary1'

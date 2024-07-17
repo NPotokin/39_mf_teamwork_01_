@@ -30,6 +30,7 @@ const ProfileInfo: React.FC<IUserInfo> = ({
             <span>{userName}</span>
             <a
               className={styles.link}
+              data-cy="user-email"
               href={`mailto:${email}`}>
               {email}
             </a>
@@ -39,7 +40,10 @@ const ProfileInfo: React.FC<IUserInfo> = ({
           <span className={styles.title}>
             Login
           </span>
-          : {login}
+          :{' '}
+          <span data-cy="user-login">
+            {login}
+          </span>
         </p>
         {display_name && (
           <p>
