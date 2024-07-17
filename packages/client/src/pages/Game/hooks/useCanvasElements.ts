@@ -5,8 +5,9 @@ type Props = {
   images: {
     rock: HTMLImageElement
     pumpkin: HTMLImageElement
-    pandaWin: HTMLImageElement
-    tiger: HTMLImageElement
+    foxFrames: HTMLImageElement[]
+    pandaFrames: HTMLImageElement[]
+    pandaFramesLeft: HTMLImageElement[]
   }
   level: ILevel
 }
