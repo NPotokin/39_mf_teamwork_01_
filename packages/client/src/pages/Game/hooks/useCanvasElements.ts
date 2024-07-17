@@ -15,18 +15,18 @@ export interface Position {
   x: number
   y: number
 }
-
 export const useCanvasElements = ({
   images,
   level,
 }: Props) => {
   const drawObstacles = useCallback(
     (
-      ctx: CanvasRenderingContext2D,
+      context: CanvasRenderingContext2D,
       obstacles: Position[]
     ) => {
+      context.fillStyle = 'gray'
       obstacles.forEach(obstacle => {
-        ctx.drawImage(
+        context.drawImage(
           images.rock,
           obstacle.x,
           obstacle.y,
@@ -41,13 +41,14 @@ export const useCanvasElements = ({
       level.obstacles.height,
     ]
   )
+
   const drawGems = useCallback(
     (
-      ctx: CanvasRenderingContext2D,
+      context: CanvasRenderingContext2D,
       gems: Position[]
     ) => {
       gems.forEach(gem => {
-        ctx.drawImage(
+        context.drawImage(
           images.pumpkin,
           gem.x,
           gem.y,
@@ -62,33 +63,32 @@ export const useCanvasElements = ({
       level.gems.height,
     ]
   )
+
   const drawPlayer = useCallback(
     (
-      ctx: CanvasRenderingContext2D,
-      playerPosition: Position
+      context: CanvasRenderingContext2D,
+      playerPosition: Position,
+      frame: HTMLImageElement
     ) => {
-      ctx.drawImage(
-        images.pandaWin,
+      context.drawImage(
+        frame,
         playerPosition.x,
         playerPosition.y,
         level.player.width,
         level.player.height
       )
     },
-    [
-      images.pandaWin,
-      level.player.width,
-      level.player.height,
-    ]
+    [level.player.width, level.player.height]
   )
   const drawEnemies = useCallback(
     (
-      ctx: CanvasRenderingContext2D,
-      enemies: Position[]
+      context: CanvasRenderingContext2D,
+      enemies: Position[],
+      frame: HTMLImageElement
     ) => {
       enemies.forEach(enemy => {
-        ctx.drawImage(
-          images.tiger,
+        context.drawImage(
+          frame,
           enemy.x,
           enemy.y,
           level.enemy.width,
@@ -96,11 +96,7 @@ export const useCanvasElements = ({
         )
       })
     },
-    [
-      images.tiger,
-      level.enemy.width,
-      level.enemy.height,
-    ]
+    [level.enemy.width, level.enemy.height]
   )
   return {
     drawObstacles,

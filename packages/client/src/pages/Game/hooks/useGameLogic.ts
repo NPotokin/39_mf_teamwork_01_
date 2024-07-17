@@ -40,6 +40,10 @@ const useGameLogic = ({
   sounds,
   modals,
 }: GameLogicProps) => {
+  // Стейт для позиции главного героя
+  const [direction, setDirection] = useState<
+    'left' | 'right'
+  >('right')
   // Стейты игрока, врагов и кристаллов
   const [playerPosition, setPlayerPosition] =
     useState(level.player.startPosition)
@@ -54,12 +58,14 @@ const useGameLogic = ({
   const [time, setTime] = useState(0)
   const [steps, setSteps] = useState(0)
   const [score, setScore] = useState(0)
+  const [frame, setFrame] = useState(0)
 
   const canvasRef =
     useRef<HTMLCanvasElement | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(
     null
   )
+  const animationRef = useRef<number | null>(null)
 
   const obstacles = level.obstacles.startPositions
   const canvasSize = useMemo(
@@ -100,11 +106,13 @@ const useGameLogic = ({
     }, 1000)
   }, [level, modals, sounds])
 
-  //очищаем интервал при размонтировании компонента
   useEffect(() => {
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current)
+      }
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
       }
     }
   }, [])
@@ -134,9 +142,11 @@ const useGameLogic = ({
           break
         case 'ArrowLeft':
           newX -= step
+          setDirection('left')
           break
         case 'ArrowRight':
           newX += step
+          setDirection('right')
           break
       }
 
@@ -329,6 +339,33 @@ const useGameLogic = ({
     }
   }, [modals, sounds])
 
+  // Добавляем функцию для обновления кадров анимации
+  const updateAnimationFrame = useCallback(() => {
+    setFrame(
+      prevFrame =>
+        (prevFrame + 1) %
+        images.pandaFrames.length
+    )
+    animationRef.current = requestAnimationFrame(
+      updateAnimationFrame
+    )
+  }, [images.pandaFrames.length])
+
+  // Запускаем анимацию при загрузке и очищаем при размонтировании
+  useEffect(() => {
+    if (imagesLoaded) {
+      animationRef.current =
+        requestAnimationFrame(
+          updateAnimationFrame
+        )
+    }
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+  }, [imagesLoaded, updateAnimationFrame])
+
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
@@ -343,8 +380,20 @@ const useGameLogic = ({
         )
         drawObstacles(context, obstacles)
         drawGems(context, gems)
-        drawPlayer(context, playerPosition)
-        drawEnemies(context, enemies)
+        const playerFrames =
+          direction === 'left'
+            ? images.pandaFramesLeft
+            : images.pandaFrames
+        drawPlayer(
+          context,
+          playerPosition,
+          playerFrames[frame]
+        )
+        drawEnemies(
+          context,
+          enemies,
+          images.foxFrames[frame]
+        )
         window.requestAnimationFrame(draw)
       }
     }
@@ -371,7 +420,10 @@ const useGameLogic = ({
     gems,
     playerPosition,
     enemies,
+    frame,
     canvasSize,
+    images.pandaFrames,
+    images.foxFrames,
   ])
 
   return {
