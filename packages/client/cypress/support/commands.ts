@@ -83,25 +83,18 @@ Cypress.Commands.add(
     cy.intercept('GET', `${apiUrl}/auth/user`, {
       fixture: 'user.json',
     }).as('getUser')
-    cy.visit(page)
-      .then(() => {
-        cy.window().then(window => {
-          cy.wait('@getUser').then(() => {
-            window.localStorage.setItem(
-              USER_DATA_KEY,
-              JSON.stringify({
-                fixture: 'user.json',
-              })
-            )
-          })
+    cy.visit(page).then(() => {
+      cy.window().then(window => {
+        cy.wait('@getUser').then(() => {
+          window.localStorage.setItem(
+            USER_DATA_KEY,
+            JSON.stringify({
+              fixture: 'user.json',
+            })
+          )
         })
       })
-      .then(() => {
-        cy.reload()
-      })
-      .then(() => {
-        cy.wait('@getUser')
-      })
+    })
   }
 )
 
