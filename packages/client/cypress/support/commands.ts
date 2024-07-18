@@ -84,9 +84,11 @@ Cypress.Commands.add(
       fixture: 'user.json',
     }).as('getUser')
     cy.window().then(window => {
-      cy.visit(page)
+      cy.visit(page, { timeout: 10000 })
       cy.reload()
-      cy.wait('@getUser').then(() => {
+      cy.wait('@getUser', {
+        timeout: 10000,
+      }).then(() => {
         cy.window().then(window => {
           window.localStorage.setItem(
             USER_DATA_KEY,
