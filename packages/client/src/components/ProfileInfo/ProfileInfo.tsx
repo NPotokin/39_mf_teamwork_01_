@@ -21,11 +21,13 @@ const ProfileInfo: React.FC<IUserInfo> = ({
     <>
       <div className={styles.card}>
         <div className={styles.person}>
-          <img
-            className={styles.avatar}
-            src={avatarSrc}
-            alt="avatar"
-          />
+          {avatar && (
+            <img
+              className={styles.avatar}
+              src={avatarSrc}
+              alt="avatar"
+            />
+          )}
           <span className={styles.info}>
             <span>{userName}</span>
             <a

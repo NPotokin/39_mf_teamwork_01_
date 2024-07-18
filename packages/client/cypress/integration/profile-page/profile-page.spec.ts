@@ -1,9 +1,13 @@
-import { apiUrl } from '../../support/config'
+import {
+  apiUrl,
+  USER_DATA_KEY,
+} from '../../support/config'
 
 describe('profile page', () => {
   beforeEach(() => {
-    cy.login('Login', '123passwordR')
-    cy.getUserAndVisitPage('/profile')
+    cy.login()
+    cy.getUser()
+    cy.visit('/profile')
   })
 
   after(() => {
@@ -34,29 +38,23 @@ describe('profile page', () => {
       'have.value',
       'Firstname'
     )
-    cy.intercept(
-      'PUT',
-      `${apiUrl}/user/profile`,
-      {
-        statusCode: 200,
-        body: {
-          fixture: 'userUpdated.json',
-        },
-      }
-    ).as('saveUser')
-
     cy.get('#login').clear().type('New Login')
     cy.get('#email')
       .clear()
       .type('newtestuser@example.com')
     cy.get('[data-cy=save-profile]').click()
-    cy.wait('@saveUser')
-    cy.intercept('GET', `${apiUrl}/auth/user`, {
-      fixture: 'userUpdated.json',
-    }).as('getUpdatedUser')
+    cy.fixture('userUpdated.json').then(
+      userData => {
+        cy.window().then(window => {
+          window.localStorage.setItem(
+            USER_DATA_KEY,
+            JSON.stringify(userData)
+          )
+        })
+      }
+    )
 
     cy.reload()
-    cy.wait('@getUpdatedUser')
     cy.get('[data-cy=user-login]').should(
       'have.text',
       'New Login'
@@ -69,11 +67,11 @@ describe('profile page', () => {
 
   it('should display error if form password is invalid', () => {
     cy.get('[data-cy=edit-password]').click()
-    cy.get('[data-cy=save-profile]').click()
     cy.get('#password').type('123passwordRR')
     cy.get('#confirm_password').type(
       '123password'
     )
+    cy.get('[data-cy=save-profile]').click()
     cy.get('#confirm_password_help').should(
       'have.text',
       'Passwords do not match'
