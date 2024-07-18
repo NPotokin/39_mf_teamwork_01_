@@ -25,7 +25,18 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "setupTest.ts"],
-  "exclude": ["./cypress.config.ts", "cypress", "**/*.spec.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "src",
+    "setupTest.ts",
+    "client.d.ts",
+    "src/global.d.ts"
+  ],
+  "exclude": [
+    "./cypress.config.ts",
+    "cypress",
+    "**/*.spec.ts"
+  ],
+  "references": [
+    { "path": "./tsconfig.node.json" }
+  ]
 }

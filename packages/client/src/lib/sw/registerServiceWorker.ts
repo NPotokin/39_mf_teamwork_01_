@@ -1,5 +1,9 @@
 const swFileName = 'sw.js'
 
+interface Window {
+  Cypress?: unknown
+}
+
 const registerServiceWorker = async () => {
   if (
     'serviceWorker' in navigator &&
