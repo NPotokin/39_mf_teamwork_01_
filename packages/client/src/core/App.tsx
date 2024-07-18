@@ -49,8 +49,7 @@ const App = () => {
     }
 
     fetchUser()
-  }),
-    [isAuthenticated]
+  }, [isAuthenticated])
 
   if (loading) {
     return <Loader />

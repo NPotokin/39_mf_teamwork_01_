@@ -25,7 +25,6 @@ export const useCanvasElements = ({
       context: CanvasRenderingContext2D,
       obstacles: Position[]
     ) => {
-      context.fillStyle = 'gray'
       obstacles.forEach(obstacle => {
         context.drawImage(
           images.rock,
