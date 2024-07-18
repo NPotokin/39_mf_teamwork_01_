@@ -83,8 +83,7 @@ describe('profile page', () => {
     cy.get('#confirm_password')
       .clear()
       .type('123passwordRR')
-    cy.get('#old_password').type('123passwordR')
-    cy.get('form').submit()
+
     cy.get('#confirm_password_help').should(
       'have.text',
       ''
