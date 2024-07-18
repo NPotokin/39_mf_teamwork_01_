@@ -2,7 +2,8 @@ import { apiUrl } from '../../support/config'
 
 describe('profile page', () => {
   beforeEach(() => {
-    cy.loginAndVisit('/profile')
+    cy.login('Login', '123passwordR')
+    cy.getUserAndVisitPage('/profile')
   })
 
   after(() => {

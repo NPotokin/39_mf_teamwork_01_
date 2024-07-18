@@ -6,8 +6,8 @@ declare namespace Cypress {
       email: string,
       password: string
     ): Chainable<void>
-    loginAndGetUser(): Chainable<void>
-    loginAndVisit(page: string): Chainable<void>
+    getUser(): Chainable<void>
+    getUserAndVisitPage(page): Chainable<void>
     signup(
       login: string,
       first_name: string,

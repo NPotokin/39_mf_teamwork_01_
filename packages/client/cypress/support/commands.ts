@@ -35,7 +35,11 @@
 //     }
 //   }
 // }
-import { apiUrl } from './config'
+import {
+  apiUrl,
+  AUTH_KEY,
+  USER_DATA_KEY,
+} from './config'
 
 Cypress.Commands.add(
   'login',
@@ -62,15 +66,53 @@ Cypress.Commands.add(
       password
     )
     cy.get('button[type="submit"]').click()
-    cy.wait('@login')
+    cy.wait('@login').then(() => {
+      cy.window().then(window => {
+        window.localStorage.setItem(
+          AUTH_KEY,
+          'true'
+        )
+      })
+    })
+  }
+)
+
+Cypress.Commands.add(
+  'getUserAndVisitPage',
+  page => {
+    cy.intercept('GET', `${apiUrl}/auth/user`, {
+      fixture: 'user.json',
+    }).as('getUser')
+    cy.window().then(window => {
+      cy.visit(page)
+      cy.reload()
+      cy.wait('@getUser').then(() => {
+        cy.window().then(window => {
+          window.localStorage.setItem(
+            USER_DATA_KEY,
+            JSON.stringify({
+              fixture: 'user.json',
+            })
+          )
+        })
+      })
+    })
     cy.window().then(window => {
       window.localStorage.setItem(
-        'isAuthed',
-        'true'
+        USER_DATA_KEY,
+        JSON.stringify({
+          fixture: 'user.json',
+        })
       )
     })
   }
 )
+
+Cypress.Commands.add('getUser', () => {
+  cy.intercept('GET', `${apiUrl}/auth/user`, {
+    fixture: 'user.json',
+  }).as('getUser')
+})
 
 Cypress.Commands.add(
   'signup',
@@ -111,24 +153,3 @@ Cypress.Commands.add(
     cy.wait('@signup')
   }
 )
-
-Cypress.Commands.add('loginAndGetUser', () => {
-  cy.login('Login', '123passwordR')
-  cy.intercept('GET', `${apiUrl}/auth/user`, {
-    fixture: 'user.json',
-  }).as('getUser')
-})
-
-Cypress.Commands.add('loginAndVisit', page => {
-  cy.loginAndGetUser()
-  cy.visit(page)
-  cy.wait('@getUser')
-  cy.window().then(window => {
-    window.localStorage.setItem(
-      'userData',
-      JSON.stringify({
-        fixture: 'user.json',
-      })
-    )
-  })
-})
