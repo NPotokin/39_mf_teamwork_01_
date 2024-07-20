@@ -41,6 +41,7 @@ const Profile = () => {
               <ProfileInfo {...user} />
               <div className={styles.footer}>
                 <Button
+                  data-cy="edit-profile"
                   className={classNames(
                     styles.button,
                     'nes-btn is-primary'
@@ -53,6 +54,7 @@ const Profile = () => {
                   Edit
                 </Button>
                 <Button
+                  data-cy="edit-password"
                   className={classNames(
                     styles.button,
                     'nes-btn is-secondary1'

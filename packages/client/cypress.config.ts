@@ -17,4 +17,7 @@ export default defineConfig({
     openMode: 0,
   },
   pageLoadTimeout: 600000,
+  env: {
+    apiUrl: 'https://ya-praktikum.tech/api/v2/',
+  },
 })

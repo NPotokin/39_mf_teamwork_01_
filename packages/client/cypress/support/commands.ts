@@ -35,3 +35,21 @@
 //     }
 //   }
 // }
+import { AUTH_KEY, USER_DATA_KEY } from './config'
+
+Cypress.Commands.add('login', () => {
+  cy.window().then(window => {
+    window.localStorage.setItem(AUTH_KEY, 'true')
+  })
+})
+
+Cypress.Commands.add('getUser', () => {
+  cy.fixture('user.json').then(userData => {
+    cy.window().then(window => {
+      window.localStorage.setItem(
+        USER_DATA_KEY,
+        JSON.stringify(userData)
+      )
+    })
+  })
+})

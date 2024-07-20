@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { getUser } from '@/core/services/auth.service'
+import {
+  getUser,
+  USER_DATA_KEY,
+} from '@/core/services/auth.service'
 import { useIsAuth } from '@/lib/hooks'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
@@ -34,8 +37,9 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (isAuthenticated) {
-        const storedUser =
-          localStorage.getItem('user')
+        const storedUser = localStorage.getItem(
+          USER_DATA_KEY
+        )
 
         if (storedUser) {
           dispatch(

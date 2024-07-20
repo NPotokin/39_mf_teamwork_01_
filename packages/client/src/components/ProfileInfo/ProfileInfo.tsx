@@ -21,15 +21,18 @@ const ProfileInfo: React.FC<IUserInfo> = ({
     <>
       <div className={styles.card}>
         <div className={styles.person}>
-          <img
-            className={styles.avatar}
-            src={avatarSrc}
-            alt="avatar"
-          />
+          {avatar && (
+            <img
+              className={styles.avatar}
+              src={avatarSrc}
+              alt="avatar"
+            />
+          )}
           <span className={styles.info}>
             <span>{userName}</span>
             <a
               className={styles.link}
+              data-cy="user-email"
               href={`mailto:${email}`}>
               {email}
             </a>
@@ -39,7 +42,10 @@ const ProfileInfo: React.FC<IUserInfo> = ({
           <span className={styles.title}>
             Login
           </span>
-          : {login}
+          :{' '}
+          <span data-cy="user-login">
+            {login}
+          </span>
         </p>
         {display_name && (
           <p>

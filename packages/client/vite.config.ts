@@ -1,9 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
 import dotenv from 'dotenv'
+import { dirname, resolve } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(
+  fileURLToPath(import.meta.url)
+)
+
 dotenv.config({
-  path: path.resolve(__dirname, '../../.env'),
+  path: resolve(__dirname, '../../.env'),
 })
 
 // https://vitejs.dev/config/
@@ -19,10 +25,8 @@ export default defineConfig({
   publicDir: 'public',
   resolve: {
     alias: {
-      '@': path.resolve('./src'),
-      '@images': path.resolve(
-        './src/assets/images'
-      ),
+      '@': resolve('./src'),
+      '@images': resolve('./src/assets/images'),
     },
   },
   build: {
