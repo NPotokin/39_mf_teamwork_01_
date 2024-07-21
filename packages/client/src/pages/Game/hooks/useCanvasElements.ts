@@ -4,7 +4,6 @@ import { ILevel } from '../constants'
 type Props = {
   images: {
     rock: HTMLImageElement
-    // pumpkin: HTMLImageElement
     foxFrames: HTMLImageElement[]
     pandaFrames: HTMLImageElement[]
     pandaFramesLeft: HTMLImageElement[]

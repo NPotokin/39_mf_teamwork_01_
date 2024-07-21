@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import rock from '@images/rock.png'
-import pumpkin from '@images/pumpkin.png'
 
 import foxFrame1 from '../../../assets/images/fox/fox_walk1.png'
 import foxFrame2 from '../../../assets/images/fox/fox_walk2.png'

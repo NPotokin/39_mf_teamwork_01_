@@ -35,7 +35,6 @@ export type GameLogicProps = {
   sounds: Sound
   modals: Modals
 }
-
 const useGameLogic = ({
   level,
   sounds,
@@ -69,7 +68,6 @@ const useGameLogic = ({
   const timerRef = useRef<NodeJS.Timeout | null>(
     null
   )
-  const animationRef = useRef<number | null>(null)
   const playerAnimationRef = useRef<
     number | null
   >(null)
@@ -131,12 +129,141 @@ const useGameLogic = ({
       if (timerRef.current) {
         clearInterval(timerRef.current)
       }
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
+      if (playerAnimationRef.current) {
+        cancelAnimationFrame(
+          playerAnimationRef.current
+        )
+        playerAnimationRef.current = null
+      }
+      if (enemyAnimationRef.current) {
+        cancelAnimationFrame(
+          enemyAnimationRef.current
+        )
+        enemyAnimationRef.current = null
+      }
+      if (pumpkinAnimationRef.current) {
+        cancelAnimationFrame(
+          pumpkinAnimationRef.current
+        )
+        pumpkinAnimationRef.current = null
       }
     }
   }, [])
 
+  const updatePlayerAnimation = useCallback(
+    (timestamp: number) => {
+      if (lastPlayerUpdateTimeRef.current === 0) {
+        lastPlayerUpdateTimeRef.current =
+          timestamp
+      }
+
+      const deltaTime = Math.max(
+        timestamp -
+          lastPlayerUpdateTimeRef.current,
+        0
+      )
+      lastPlayerUpdateTimeRef.current = timestamp
+
+      if (deltaTime > 16.7) {
+        // Обновляем каждые ~16.7 (1000/60) мс для 60 FPS
+        const currentFrames =
+          PLAYER_ANIMATION_FRAMES[direction] ||
+          PLAYER_ANIMATION_FRAMES.right
+        setPlayerFrame(
+          prevFrame =>
+            (prevFrame + 1) % currentFrames.length
+        )
+      }
+
+      playerAnimationRef.current =
+        requestAnimationFrame(
+          updatePlayerAnimation
+        )
+    },
+    [images.pandaFrames.length]
+  )
+
+  const updateEnemyAnimation = useCallback(
+    (timestamp: number) => {
+      if (lastEnemyUpdateTimeRef.current === 0) {
+        lastEnemyUpdateTimeRef.current = timestamp
+      }
+
+      const deltaTime = Math.max(
+        timestamp -
+          lastEnemyUpdateTimeRef.current,
+        0
+      )
+      lastEnemyUpdateTimeRef.current = timestamp
+      if (deltaTime > 16.7) {
+        setEnemyFrame(
+          prevFrame =>
+            (prevFrame + 1) %
+            images.foxFrames.length
+        )
+      }
+
+      enemyAnimationRef.current =
+        requestAnimationFrame(
+          updateEnemyAnimation
+        )
+    },
+    [images.foxFrames.length]
+  )
+
+  const updatePumpkinAnimation = useCallback(
+    (timestamp: number) => {
+      if (
+        lastPumpkinUpdateTimeRef.current === 0
+      ) {
+        lastPumpkinUpdateTimeRef.current =
+          timestamp
+      }
+
+      const deltaTime = Math.max(
+        timestamp -
+          lastPumpkinUpdateTimeRef.current,
+        0
+      )
+      lastPumpkinUpdateTimeRef.current = timestamp
+
+      if (deltaTime > 16.7) {
+        setPumpkinFrame(
+          prevFrame =>
+            (prevFrame + 1) %
+            images.pumpkinFrames.length
+        )
+      }
+
+      pumpkinAnimationRef.current =
+        requestAnimationFrame(
+          updatePumpkinAnimation
+        )
+    },
+    [images.pumpkinFrames.length]
+  )
+  // Запускаем анимацию при загрузке и очищаем при размонтировании
+  useEffect(() => {
+    if (imagesLoaded) {
+      playerAnimationRef.current =
+        requestAnimationFrame(
+          updatePlayerAnimation
+        )
+      enemyAnimationRef.current =
+        requestAnimationFrame(
+          updateEnemyAnimation
+        )
+      pumpkinAnimationRef.current =
+        requestAnimationFrame(
+          updatePumpkinAnimation
+        )
+    }
+  }, [
+    imagesLoaded,
+    updatePlayerAnimation,
+    updateEnemyAnimation,
+    updatePumpkinAnimation,
+  ])
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       event.preventDefault()
@@ -336,165 +463,6 @@ const useGameLogic = ({
       sounds,
     ]
   )
-
-  const handleVictory = useCallback(() => {
-    modals.showGameWinModal()
-
-    // setIsGameWinVisible(true)
-    modals.setIsGameActive(false)
-    sounds.stopGameSound()
-    sounds.playVictorySound()
-    if (timerRef.current) {
-      clearInterval(timerRef.current)
-    }
-  }, [modals, sounds])
-
-  const handleDefeat = useCallback(() => {
-    modals.showGameOverModal()
-    modals.setIsGameActive(false)
-    sounds.stopGameSound()
-    sounds.playDefeatSound()
-    if (timerRef.current) {
-      clearInterval(timerRef.current)
-    }
-  }, [modals, sounds])
-
-  const updatePlayerAnimation = useCallback(
-    (timestamp: number) => {
-      if (lastPlayerUpdateTimeRef.current === 0) {
-        lastPlayerUpdateTimeRef.current =
-          timestamp
-      }
-
-      const deltaTime = Math.max(
-        timestamp -
-          lastPlayerUpdateTimeRef.current,
-        0
-      )
-      lastPlayerUpdateTimeRef.current = timestamp
-
-      if (deltaTime > 16.67) {
-        // Обновляем каждые ~16.67 (1000/60) мс для 60 FPS
-        const currentFrames =
-          PLAYER_ANIMATION_FRAMES[direction] ||
-          PLAYER_ANIMATION_FRAMES.right
-        setPlayerFrame(
-          prevFrame =>
-            (prevFrame + 1) % currentFrames.length
-        )
-      }
-
-      playerAnimationRef.current =
-        requestAnimationFrame(
-          updatePlayerAnimation
-        )
-    },
-    [images.pandaFrames.length]
-  )
-
-  const updateEnemyAnimation = useCallback(
-    (timestamp: number) => {
-      if (lastEnemyUpdateTimeRef.current === 0) {
-        lastEnemyUpdateTimeRef.current = timestamp
-      }
-
-      const deltaTime = Math.max(
-        timestamp -
-          lastEnemyUpdateTimeRef.current,
-        0
-      )
-      lastEnemyUpdateTimeRef.current = timestamp
-      console.log('!!!deltaTime', deltaTime)
-      if (deltaTime > 16.67) {
-        setEnemyFrame(
-          prevFrame =>
-            (prevFrame + 1) %
-            images.foxFrames.length
-        )
-      }
-
-      enemyAnimationRef.current =
-        requestAnimationFrame(
-          updateEnemyAnimation
-        )
-    },
-    [images.foxFrames.length]
-  )
-
-  const updatePumpkinAnimation = useCallback(
-    (timestamp: number) => {
-      if (
-        lastPumpkinUpdateTimeRef.current === 0
-      ) {
-        lastPumpkinUpdateTimeRef.current =
-          timestamp
-      }
-
-      const deltaTime = Math.max(
-        timestamp -
-          lastPumpkinUpdateTimeRef.current,
-        0
-      )
-      lastPumpkinUpdateTimeRef.current = timestamp
-
-      if (deltaTime > 40) {
-        setPumpkinFrame(
-          prevFrame =>
-            (prevFrame + 1) %
-            images.pumpkinFrames.length
-        )
-      }
-
-      pumpkinAnimationRef.current =
-        requestAnimationFrame(
-          updatePumpkinAnimation
-        )
-    },
-    [images.pumpkinFrames.length]
-  )
-  // Запускаем анимацию при загрузке и очищаем при размонтировании
-  useEffect(() => {
-    if (imagesLoaded) {
-      playerAnimationRef.current =
-        requestAnimationFrame(
-          updatePlayerAnimation
-        )
-      enemyAnimationRef.current =
-        requestAnimationFrame(
-          updateEnemyAnimation
-        )
-      pumpkinAnimationRef.current =
-        requestAnimationFrame(
-          updatePumpkinAnimation
-        )
-    }
-    return () => {
-      if (playerAnimationRef.current) {
-        cancelAnimationFrame(
-          playerAnimationRef.current
-        )
-        playerAnimationRef.current = null
-      }
-      if (enemyAnimationRef.current) {
-        cancelAnimationFrame(
-          enemyAnimationRef.current
-        )
-        enemyAnimationRef.current = null
-      }
-      if (pumpkinAnimationRef.current) {
-        cancelAnimationFrame(
-          pumpkinAnimationRef.current
-        )
-        pumpkinAnimationRef.current = null
-      }
-    }
-  }, [
-    imagesLoaded,
-    updatePlayerAnimation,
-    updateEnemyAnimation,
-    updatePumpkinAnimation,
-  ])
-
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
@@ -560,6 +528,28 @@ const useGameLogic = ({
     images.foxFrames,
     direction,
   ])
+
+  const handleVictory = useCallback(() => {
+    modals.showGameWinModal()
+
+    // setIsGameWinVisible(true)
+    modals.setIsGameActive(false)
+    sounds.stopGameSound()
+    sounds.playVictorySound()
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+    }
+  }, [modals, sounds])
+
+  const handleDefeat = useCallback(() => {
+    modals.showGameOverModal()
+    modals.setIsGameActive(false)
+    sounds.stopGameSound()
+    sounds.playDefeatSound()
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+    }
+  }, [modals, sounds])
 
   return {
     canvasRef,
