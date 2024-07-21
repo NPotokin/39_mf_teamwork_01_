@@ -17,21 +17,25 @@ import pandaFrameLeft2 from '../../../assets/images/panda_left/panda_walk2.png'
 import pandaFrameLeft3 from '../../../assets/images/panda_left/panda_walk3.png'
 import pandaFrameLeft4 from '../../../assets/images/panda_left/panda_walk4.png'
 
+import pumpkinFrame1 from '../../../assets/images/pumpkin/pumpkin10.png'
+import pumpkinFrame2 from '../../../assets/images/pumpkin/pumpkin11.png'
+import pumpkinFrame3 from '../../../assets/images/pumpkin/pumpkin12.png'
+import pumpkinFrame4 from '../../../assets/images/pumpkin/pumpkin10.png'
+
 const useLoadImages = () => {
   // Пре-прогружаем картинки - иначе RAF не отрабатывает
   const [imagesLoaded, setImagesLoaded] =
     useState(false)
   const [images, setImages] = useState({
     rock: new Image(),
-    pumpkin: new Image(),
     foxFrames: [] as HTMLImageElement[],
     pandaFrames: [] as HTMLImageElement[],
     pandaFramesLeft: [] as HTMLImageElement[],
+    pumpkinFrames: [] as HTMLImageElement[],
   })
 
   useEffect(() => {
     const rockImg = new Image()
-    const pumpkinImg = new Image()
 
     const foxFrames = [
       foxFrame1,
@@ -64,6 +68,17 @@ const useLoadImages = () => {
       return img
     })
 
+    const pumpkinFrames = [
+      pumpkinFrame1,
+      pumpkinFrame2,
+      pumpkinFrame3,
+      pumpkinFrame4,
+    ].map(src => {
+      const img = new Image()
+      img.src = src
+      return img
+    })
+
     let loaded = 0
     const total =
       2 + foxFrames.length + pandaFrames.length
@@ -76,10 +91,8 @@ const useLoadImages = () => {
     }
 
     rockImg.src = rock
-    pumpkinImg.src = pumpkin
 
     rockImg.onload = onLoad
-    pumpkinImg.onload = onLoad
     foxFrames.forEach(
       img => (img.onload = onLoad)
     )
@@ -89,13 +102,16 @@ const useLoadImages = () => {
     pandaFramesLeft.forEach(
       img => (img.onload = onLoad)
     )
+    pumpkinFrames.forEach(
+      img => (img.onload = onLoad)
+    )
 
     setImages({
       rock: rockImg,
-      pumpkin: pumpkinImg,
       foxFrames: foxFrames,
       pandaFrames: pandaFrames,
       pandaFramesLeft: pandaFramesLeft,
+      pumpkinFrames: pumpkinFrames,
     })
   }, [])
   return { imagesLoaded, images }

@@ -35,6 +35,7 @@ export type GameLogicProps = {
   sounds: Sound
   modals: Modals
 }
+
 const useGameLogic = ({
   level,
   sounds,
@@ -50,7 +51,6 @@ const useGameLogic = ({
   const [gems, setGems] = useState<
     { x: number; y: number }[]
   >(level.gems.startPositions)
-
   const [enemies, setEnemies] = useState<
     { x: number; y: number }[]
   >(level.enemy.startPositions.hard)
@@ -58,7 +58,11 @@ const useGameLogic = ({
   const [time, setTime] = useState(0)
   const [steps, setSteps] = useState(0)
   const [score, setScore] = useState(0)
-  const [frame, setFrame] = useState(0)
+  const [playerFrame, setPlayerFrame] =
+    useState(0)
+  const [enemyFrame, setEnemyFrame] = useState(0)
+  const [pumpkinFrame, setPumpkinFrame] =
+    useState(0)
 
   const canvasRef =
     useRef<HTMLCanvasElement | null>(null)
@@ -66,7 +70,20 @@ const useGameLogic = ({
     null
   )
   const animationRef = useRef<number | null>(null)
-
+  const playerAnimationRef = useRef<
+    number | null
+  >(null)
+  const enemyAnimationRef = useRef<number | null>(
+    null
+  )
+  const pumpkinAnimationRef = useRef<
+    number | null
+  >(null)
+  const lastPlayerUpdateTimeRef =
+    useRef<number>(0)
+  const lastEnemyUpdateTimeRef = useRef<number>(0)
+  const lastPumpkinUpdateTimeRef =
+    useRef<number>(0)
   const obstacles = level.obstacles.startPositions
   const canvasSize = useMemo(
     () => ({
@@ -83,7 +100,10 @@ const useGameLogic = ({
     drawPlayer,
     drawEnemies,
   } = useCanvasElements({ images, level })
-
+  const PLAYER_ANIMATION_FRAMES = {
+    right: images.pandaFrames,
+    left: images.pandaFramesLeft,
+  }
   const resetPositions = useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current)
@@ -339,32 +359,141 @@ const useGameLogic = ({
     }
   }, [modals, sounds])
 
-  // Добавляем функцию для обновления кадров анимации
-  const updateAnimationFrame = useCallback(() => {
-    setFrame(
-      prevFrame =>
-        (prevFrame + 1) %
-        images.pandaFrames.length
-    )
-    animationRef.current = requestAnimationFrame(
-      updateAnimationFrame
-    )
-  }, [images.pandaFrames.length])
+  const updatePlayerAnimation = useCallback(
+    (timestamp: number) => {
+      if (lastPlayerUpdateTimeRef.current === 0) {
+        lastPlayerUpdateTimeRef.current =
+          timestamp
+      }
 
+      const deltaTime = Math.max(
+        timestamp -
+          lastPlayerUpdateTimeRef.current,
+        0
+      )
+      lastPlayerUpdateTimeRef.current = timestamp
+
+      if (deltaTime > 16.67) {
+        // Обновляем каждые ~16.67 (1000/60) мс для 60 FPS
+        const currentFrames =
+          PLAYER_ANIMATION_FRAMES[direction] ||
+          PLAYER_ANIMATION_FRAMES.right
+        setPlayerFrame(
+          prevFrame =>
+            (prevFrame + 1) % currentFrames.length
+        )
+      }
+
+      playerAnimationRef.current =
+        requestAnimationFrame(
+          updatePlayerAnimation
+        )
+    },
+    [images.pandaFrames.length]
+  )
+
+  const updateEnemyAnimation = useCallback(
+    (timestamp: number) => {
+      if (lastEnemyUpdateTimeRef.current === 0) {
+        lastEnemyUpdateTimeRef.current = timestamp
+      }
+
+      const deltaTime = Math.max(
+        timestamp -
+          lastEnemyUpdateTimeRef.current,
+        0
+      )
+      lastEnemyUpdateTimeRef.current = timestamp
+      console.log('!!!deltaTime', deltaTime)
+      if (deltaTime > 16.67) {
+        setEnemyFrame(
+          prevFrame =>
+            (prevFrame + 1) %
+            images.foxFrames.length
+        )
+      }
+
+      enemyAnimationRef.current =
+        requestAnimationFrame(
+          updateEnemyAnimation
+        )
+    },
+    [images.foxFrames.length]
+  )
+
+  const updatePumpkinAnimation = useCallback(
+    (timestamp: number) => {
+      if (
+        lastPumpkinUpdateTimeRef.current === 0
+      ) {
+        lastPumpkinUpdateTimeRef.current =
+          timestamp
+      }
+
+      const deltaTime = Math.max(
+        timestamp -
+          lastPumpkinUpdateTimeRef.current,
+        0
+      )
+      lastPumpkinUpdateTimeRef.current = timestamp
+
+      if (deltaTime > 40) {
+        setPumpkinFrame(
+          prevFrame =>
+            (prevFrame + 1) %
+            images.pumpkinFrames.length
+        )
+      }
+
+      pumpkinAnimationRef.current =
+        requestAnimationFrame(
+          updatePumpkinAnimation
+        )
+    },
+    [images.pumpkinFrames.length]
+  )
   // Запускаем анимацию при загрузке и очищаем при размонтировании
   useEffect(() => {
     if (imagesLoaded) {
-      animationRef.current =
+      playerAnimationRef.current =
         requestAnimationFrame(
-          updateAnimationFrame
+          updatePlayerAnimation
+        )
+      enemyAnimationRef.current =
+        requestAnimationFrame(
+          updateEnemyAnimation
+        )
+      pumpkinAnimationRef.current =
+        requestAnimationFrame(
+          updatePumpkinAnimation
         )
     }
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
+      if (playerAnimationRef.current) {
+        cancelAnimationFrame(
+          playerAnimationRef.current
+        )
+        playerAnimationRef.current = null
+      }
+      if (enemyAnimationRef.current) {
+        cancelAnimationFrame(
+          enemyAnimationRef.current
+        )
+        enemyAnimationRef.current = null
+      }
+      if (pumpkinAnimationRef.current) {
+        cancelAnimationFrame(
+          pumpkinAnimationRef.current
+        )
+        pumpkinAnimationRef.current = null
       }
     }
-  }, [imagesLoaded, updateAnimationFrame])
+  }, [
+    imagesLoaded,
+    updatePlayerAnimation,
+    updateEnemyAnimation,
+    updatePumpkinAnimation,
+  ])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -379,20 +508,23 @@ const useGameLogic = ({
           canvasSize.height
         )
         drawObstacles(context, obstacles)
-        drawGems(context, gems)
+        drawGems(
+          context,
+          gems,
+          images.pumpkinFrames[pumpkinFrame]
+        )
         const playerFrames =
-          direction === 'left'
-            ? images.pandaFramesLeft
-            : images.pandaFrames
+          PLAYER_ANIMATION_FRAMES[direction] ||
+          PLAYER_ANIMATION_FRAMES.right
         drawPlayer(
           context,
           playerPosition,
-          playerFrames[frame]
+          playerFrames[playerFrame]
         )
         drawEnemies(
           context,
           enemies,
-          images.foxFrames[frame]
+          images.foxFrames[enemyFrame]
         )
         window.requestAnimationFrame(draw)
       }
@@ -420,10 +552,13 @@ const useGameLogic = ({
     gems,
     playerPosition,
     enemies,
-    frame,
+    playerFrame,
+    enemyFrame,
     canvasSize,
     images.pandaFrames,
+    images.pandaFramesLeft,
     images.foxFrames,
+    direction,
   ])
 
   return {
