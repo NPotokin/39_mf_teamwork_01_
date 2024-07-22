@@ -1,4 +1,5 @@
 import {
+  MutableRefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -62,7 +63,6 @@ const useGameLogic = ({
   const [enemyFrame, setEnemyFrame] = useState(0)
   const [pumpkinFrame, setPumpkinFrame] =
     useState(0)
-
   const canvasRef =
     useRef<HTMLCanvasElement | null>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(
@@ -70,13 +70,13 @@ const useGameLogic = ({
   )
   const playerAnimationRef = useRef<
     number | null
-  >(null)
+  >(null) as MutableRefObject<number | null>
   const enemyAnimationRef = useRef<number | null>(
     null
-  )
+  ) as MutableRefObject<number | null>
   const pumpkinAnimationRef = useRef<
     number | null
-  >(null)
+  >(null) as MutableRefObject<number | null>
   const lastPlayerUpdateTimeRef =
     useRef<number>(0)
   const lastEnemyUpdateTimeRef = useRef<number>(0)
@@ -123,32 +123,6 @@ const useGameLogic = ({
       setScore(prevScore => prevScore - 1)
     }, 1000)
   }, [level, modals, sounds])
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-      }
-      if (playerAnimationRef.current) {
-        cancelAnimationFrame(
-          playerAnimationRef.current
-        )
-        playerAnimationRef.current = null
-      }
-      if (enemyAnimationRef.current) {
-        cancelAnimationFrame(
-          enemyAnimationRef.current
-        )
-        enemyAnimationRef.current = null
-      }
-      if (pumpkinAnimationRef.current) {
-        cancelAnimationFrame(
-          pumpkinAnimationRef.current
-        )
-        pumpkinAnimationRef.current = null
-      }
-    }
-  }, [])
 
   const updatePlayerAnimation = useCallback(
     (timestamp: number) => {
@@ -257,6 +231,25 @@ const useGameLogic = ({
         requestAnimationFrame(
           updatePumpkinAnimation
         )
+    }
+
+    return () => {
+      const clearAnimationFrame = (
+        ref: MutableRefObject<number | null>
+      ) => {
+        if (ref.current !== null) {
+          cancelAnimationFrame(ref.current)
+          ref.current = null
+        }
+      }
+
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+
+      clearAnimationFrame(playerAnimationRef)
+      clearAnimationFrame(enemyAnimationRef)
+      clearAnimationFrame(pumpkinAnimationRef)
     }
   }, [
     imagesLoaded,
