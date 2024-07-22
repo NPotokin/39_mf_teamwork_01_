@@ -4,10 +4,10 @@ import { ILevel } from '../constants'
 type Props = {
   images: {
     rock: HTMLImageElement
-    pumpkin: HTMLImageElement
     foxFrames: HTMLImageElement[]
     pandaFrames: HTMLImageElement[]
     pandaFramesLeft: HTMLImageElement[]
+    pumpkinFrames: HTMLImageElement[]
   }
   level: ILevel
 }
@@ -45,11 +45,12 @@ export const useCanvasElements = ({
   const drawGems = useCallback(
     (
       context: CanvasRenderingContext2D,
-      gems: Position[]
+      gems: Position[],
+      frame: HTMLImageElement
     ) => {
       gems.forEach(gem => {
         context.drawImage(
-          images.pumpkin,
+          frame,
           gem.x,
           gem.y,
           level.gems.width,
@@ -57,11 +58,7 @@ export const useCanvasElements = ({
         )
       })
     },
-    [
-      images.pumpkin,
-      level.gems.width,
-      level.gems.height,
-    ]
+    [level.gems.width, level.gems.height]
   )
 
   const drawPlayer = useCallback(
