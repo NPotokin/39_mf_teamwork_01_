@@ -26,13 +26,17 @@ export const useCanvasElements = ({
       obstacles: Position[]
     ) => {
       obstacles.forEach(obstacle => {
-        context.drawImage(
-          images.rock,
-          obstacle.x,
-          obstacle.y,
-          level.obstacles.width,
-          level.obstacles.height
-        )
+        if (
+          images.rock instanceof HTMLImageElement
+        ) {
+          context.drawImage(
+            images.rock,
+            obstacle.x,
+            obstacle.y,
+            level.obstacles.width,
+            level.obstacles.height
+          )
+        }
       })
     },
     [
@@ -48,6 +52,9 @@ export const useCanvasElements = ({
       gems: Position[],
       frame: HTMLImageElement
     ) => {
+      if (!(frame instanceof HTMLImageElement)) {
+        return
+      }
       gems.forEach(gem => {
         context.drawImage(
           frame,
@@ -67,6 +74,9 @@ export const useCanvasElements = ({
       playerPosition: Position,
       frame: HTMLImageElement
     ) => {
+      if (!(frame instanceof HTMLImageElement)) {
+        return
+      }
       context.drawImage(
         frame,
         playerPosition.x,
@@ -83,6 +93,9 @@ export const useCanvasElements = ({
       enemies: Position[],
       frame: HTMLImageElement
     ) => {
+      if (!(frame instanceof HTMLImageElement)) {
+        return
+      }
       enemies.forEach(enemy => {
         context.drawImage(
           frame,
