@@ -45,7 +45,7 @@ const Login = () => {
           REDIRECT_URI
         )
         setServiceId(id)
-      } catch (error) {
+      } catch (error: unknown) {
         console.error(error)
       }
     }

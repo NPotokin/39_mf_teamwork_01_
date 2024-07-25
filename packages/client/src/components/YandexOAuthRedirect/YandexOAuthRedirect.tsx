@@ -21,7 +21,6 @@ const YandexOAuthRedirect = () => {
         window.location.search
       )
       const authCode = urlParams.get('code')
-      console.log(authCode)
 
       if (authCode) {
         try {
@@ -32,7 +31,7 @@ const YandexOAuthRedirect = () => {
           const userData = await getUser()
           dispatch(setUser(userData))
           navigate(RoutePath.HOME)
-        } catch (error) {
+        } catch (error: unknown) {
           console.error(error)
           navigate(RoutePath.SIGN_IN)
         }
