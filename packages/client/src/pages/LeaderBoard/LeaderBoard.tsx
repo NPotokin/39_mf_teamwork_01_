@@ -1,14 +1,14 @@
 import styles from './LeaderBord.module.scss'
-import { Avatar } from 'antd'
+import { Avatar, Pagination } from 'antd'
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
-import { leaderboardData } from './mockData'
 import { UniversalTable } from '@/components/Table'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import holder from '@images/logo_sm.svg'
 import { TITLES } from '@/lib/constants'
 import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
+import LeaderboardApi from '@/core/api/leaderBord.api'
 
 export type Comment = {
   key: string
@@ -20,11 +20,8 @@ export type LeaderboardEntry = {
   key: string
   index: number
   name: string
-  score: number
-  commentsCount: string
-  content: string
+  score?: number
   avatarUrl: string
-  comments: Comment[]
 }
 
 const LeaderBoard = () => {
@@ -32,16 +29,58 @@ const LeaderBoard = () => {
   const [dataSource, setDataSource] = useState<
     LeaderboardEntry[]
   >([])
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = leaderboardData.sort(
-        (a, b) => b.score - a.score
+  const [total, setTotal] = useState<number>(0)
+  const [currentPage, setCurrentPage] =
+    useState<number>(1)
+  const [pageSize, setPageSize] =
+    useState<number>(10)
+  const leaderboardApi = new LeaderboardApi()
+  const fetchData = async (
+    cursor: number,
+    limit: number
+  ) => {
+    try {
+      const response =
+        await leaderboardApi.getAllLeaderboard(
+          cursor,
+          limit
+        )
+      const rawData = response.data
+      console.log('!!!rawData')
+      let formattedData
+      if (Array.isArray(rawData)) {
+        formattedData = rawData.map(
+          (entry, index) => ({
+            key: entry.data.userLogin + index,
+            index: index + 1,
+            name: entry.data.userLogin,
+            score:
+              entry.data.pumpkinPandasScoreField,
+            avatarUrl: '',
+          })
+        )
+      }
+      if (formattedData) {
+        const sortedData = formattedData.sort(
+          (a, b) => b.score - a.score
+        )
+        setDataSource(sortedData)
+        setTotal(formattedData.length)
+      }
+    } catch (error) {
+      console.error(
+        'Error fetching leaderboard data:',
+        error
       )
-      setDataSource(data)
     }
-    fetchData()
-  }, [])
+  }
 
+  useEffect(() => {
+    fetchData(
+      (currentPage - 1) * pageSize,
+      pageSize
+    )
+  }, [currentPage, pageSize])
   const avatarSrc = (avatar: string) =>
     avatar ? avatar : holder
 
@@ -101,6 +140,15 @@ const LeaderBoard = () => {
             rowKey="key"
             scroll={{ y: 476 }}
             pagination={false}
+          />
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={total}
+            onChange={(page, pageSize) => {
+              setCurrentPage(page)
+              setPageSize(pageSize)
+            }}
           />
         </div>
       </div>

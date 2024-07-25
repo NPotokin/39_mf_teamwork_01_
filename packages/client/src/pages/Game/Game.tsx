@@ -20,6 +20,9 @@ import useGameLogic from './hooks/useGameLogic'
 import { useAppSelector } from '@/lib/hooks/redux'
 
 import { MuteButton } from '@/components'
+import LeaderboardApi from '@/core/api/leaderBord.api'
+
+const leaderboardApi = new LeaderboardApi()
 
 export type Level =
   | 'levelOne'
@@ -38,6 +41,9 @@ const Game: React.FC = () => {
     sounds,
     modals,
   })
+  const userLogin = useAppSelector(
+    state => state.user.login
+  )
 
   const handleStartModalButton = (
     selectedLevel: Level,
@@ -70,24 +76,50 @@ const Game: React.FC = () => {
         gameLogic.setEnemies(
           levelConfig.enemy.startPositions.hard
         )
-
         break
     }
   }
+
   const handleYesClickGameOverModal = () => {
+    leaderboardApi
+      .submitScore(userLogin, gameLogic.score)
+      .then(response => {
+        console.log(
+          'Score submitted successfully:',
+          response
+        )
+      })
+      .catch(error => {
+        console.error(
+          'Error submitting score:',
+          error
+        )
+      })
+
     modals.hideGameOverModal()
     modals.showStartModal()
     setMuted(true)
   }
 
   const handleYesClickWinModal = () => {
+    leaderboardApi
+      .submitScore(userLogin, gameLogic.score)
+      .then(response => {
+        console.log(
+          'Score submitted successfully:',
+          response
+        )
+      })
+      .catch(error => {
+        console.error(
+          'Error submitting score:',
+          error
+        )
+      })
+
     modals.hideGameWinModal()
     modals.showStartModal()
   }
-
-  const userLogin = useAppSelector(
-    state => state.user.login
-  )
 
   return (
     <Layout>
