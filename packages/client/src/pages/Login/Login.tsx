@@ -10,9 +10,13 @@ import { useNavigate } from 'react-router'
 import { RoutePath } from '@/core/Routes.enum'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
-import { signin } from '@/core/services/auth.service'
+import {
+  getServiceId,
+  signin,
+} from '@/core/services/auth.service'
 import { TITLES } from '@/lib/constants'
 import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
+import { useEffect, useState } from 'react'
 
 const initialValues: LoginForm = {
   login: EMPTY_STRING,
@@ -28,6 +32,30 @@ const Login = () => {
   useDocumentTitle(TITLES.SIGN_IN)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const [serviceId, setServiceId] = useState<
+    string | undefined
+  >('')
+  const REDIRECT_URI = import.meta.env
+    .VITE_YANDEX_REDIRECT_URI
+
+  useEffect(() => {
+    const fetchServiceId = async () => {
+      try {
+        const id = await getServiceId(
+          REDIRECT_URI
+        )
+        setServiceId(id)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchServiceId()
+  }, [])
+
+  const AUTH_URL = import.meta.env
+    .VITE_YANDEX_AUTH_URL
+  const authUrl = `${AUTH_URL}?response_type=code&client_id=${serviceId}&redirect_uri=${REDIRECT_URI}`
 
   const handleSubmit = async (
     values: Record<string, string>,
@@ -46,6 +74,10 @@ const Login = () => {
 
   const handleSignUpClick = (): void => {
     navigate(RoutePath.SIGN_UP)
+  }
+
+  const handleAuth = async () => {
+    window.location.href = authUrl
   }
 
   return (
@@ -78,6 +110,14 @@ const Login = () => {
             )}
             onClick={handleSignUpClick}>
             Sign Up
+          </Button>
+          <Button
+            className={cn(
+              'nes-btn is-warning',
+              styles.button
+            )}
+            onClick={handleAuth}>
+            Sign In with Yandex
           </Button>
         </footer>
       </div>
