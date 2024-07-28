@@ -1,4 +1,8 @@
-import { useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { Layout } from 'antd'
 import classNames from 'classnames'
 
@@ -17,6 +21,7 @@ import useModals from './hooks/useModals'
 import useGameLogic from './hooks/useGameLogic'
 import { useAppSelector } from '@/lib/hooks/redux'
 import { MuteButton } from '@/components'
+import LeaderboardApi from '@/core/api/leaderBord.api'
 
 export type Level =
   | 'levelOne'
@@ -35,9 +40,32 @@ const Game: React.FC = () => {
     sounds,
     modals,
   })
+  const leaderboardApi = new LeaderboardApi()
   const userLogin = useAppSelector(
     state => state.user.login
   )
+  useEffect(() => {
+    if (
+      modals.isGameOverVisible ||
+      modals.isGameWinVisible
+    ) {
+      submitScore()
+    }
+  }, [
+    modals.isGameOverVisible,
+    modals.isGameWinVisible,
+  ])
+
+  const submitScore = useCallback(() => {
+    leaderboardApi
+      .submitScore(userLogin, gameLogic.score)
+      .catch(error => {
+        console.error(
+          'Error submitting score:',
+          error
+        )
+      })
+  }, [gameLogic.score, userLogin])
 
   const handleStartModalButton = (
     selectedLevel: Level,
