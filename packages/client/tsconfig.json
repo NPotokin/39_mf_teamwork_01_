@@ -22,14 +22,17 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     }
   },
   "include": [
     "src",
     "setupTest.ts",
     "client.d.ts",
-    "src/global.d.ts"
+    "src/global.d.ts",
+    "ssr-entry.tsx"
   ],
   "exclude": [
     "./cypress.config.ts",
@@ -37,6 +40,8 @@
     "**/*.spec.ts"
   ],
   "references": [
-    { "path": "./tsconfig.node.json" }
+    {
+      "path": "./tsconfig.node.json"
+    }
   ]
 }
