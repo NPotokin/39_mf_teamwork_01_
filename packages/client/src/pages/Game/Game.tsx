@@ -6,23 +6,17 @@ import { Constants } from './constants'
 
 import { Header, Footer } from '@/components'
 import styles from './Game.module.scss'
-
 import React from 'react'
 import {
   GameOverModal,
   WinModal,
 } from './utils/modal'
 import { StartModal } from '../../components/GameModal/StartModal'
-
 import useGameSounds from './hooks/useGameSounds'
 import useModals from './hooks/useModals'
 import useGameLogic from './hooks/useGameLogic'
 import { useAppSelector } from '@/lib/hooks/redux'
-
 import { MuteButton } from '@/components'
-import LeaderboardApi from '@/core/api/leaderBord.api'
-
-const leaderboardApi = new LeaderboardApi()
 
 export type Level =
   | 'levelOne'
@@ -81,42 +75,12 @@ const Game: React.FC = () => {
   }
 
   const handleYesClickGameOverModal = () => {
-    leaderboardApi
-      .submitScore(userLogin, gameLogic.score)
-      .then(response => {
-        console.log(
-          'Score submitted successfully:',
-          response
-        )
-      })
-      .catch(error => {
-        console.error(
-          'Error submitting score:',
-          error
-        )
-      })
-
     modals.hideGameOverModal()
     modals.showStartModal()
     setMuted(true)
   }
 
   const handleYesClickWinModal = () => {
-    leaderboardApi
-      .submitScore(userLogin, gameLogic.score)
-      .then(response => {
-        console.log(
-          'Score submitted successfully:',
-          response
-        )
-      })
-      .catch(error => {
-        console.error(
-          'Error submitting score:',
-          error
-        )
-      })
-
     modals.hideGameWinModal()
     modals.showStartModal()
   }

@@ -9,6 +9,9 @@ import {
 import useLoadImages from './useLoadImages'
 import { useCanvasElements } from './useCanvasElements'
 import { ILevel } from '../constants'
+import { useAppSelector } from '@/lib/hooks/redux'
+import LeaderboardApi from '@/core/api/leaderBord.api'
+import usePlayerState from './usePlayerState'
 
 export type Modals = {
   isStartModalVisible: boolean
@@ -42,13 +45,13 @@ const useGameLogic = ({
   sounds,
   modals,
 }: GameLogicProps) => {
-  // Стейт для позиции главного героя
-  const [direction, setDirection] = useState<
-    'left' | 'right'
-  >('right')
-  // Стейты игрока, врагов и кристаллов
-  const [playerPosition, setPlayerPosition] =
-    useState(level.player.startPosition)
+  //   // Стейт для позиции главного героя
+  //   const [direction, setDirection] = useState<
+  //     'left' | 'right'
+  //   >('right')
+  //   // Стейты игрока, врагов и кристаллов
+  //   const [playerPosition, setPlayerPosition] =
+  //     useState(level.player.startPosition)
   const [gems, setGems] = useState<
     { x: number; y: number }[]
   >(level.gems.startPositions)
@@ -86,6 +89,12 @@ const useGameLogic = ({
 
   const { imagesLoaded, images } = useLoadImages()
   const {
+    playerPosition,
+    direction,
+    updatePlayerPosition,
+    setPlayerPosition,
+  } = usePlayerState(level)
+  const {
     drawObstacles,
     drawGems,
     drawPlayer,
@@ -95,6 +104,10 @@ const useGameLogic = ({
     right: images.pandaFrames,
     left: images.pandaFramesLeft,
   }
+  const leaderboardApi = new LeaderboardApi()
+  const userLogin = useAppSelector(
+    state => state.user.login
+  )
   const resetPositions = useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current)
@@ -196,11 +209,15 @@ const useGameLogic = ({
           break
         case 'ArrowLeft':
           newX -= step
-          setDirection('left')
+          updatePlayerPosition(newX, newY, 'left')
           break
         case 'ArrowRight':
           newX += step
-          setDirection('right')
+          updatePlayerPosition(
+            newX,
+            newY,
+            'right'
+          )
           break
       }
 
@@ -433,11 +450,20 @@ const useGameLogic = ({
     images.foxFrames,
     direction,
   ])
-
+  const submitScore = useCallback(() => {
+    leaderboardApi
+      .submitScore(userLogin, score)
+      .catch(error => {
+        console.error(
+          'Error submitting score:',
+          error
+        )
+      })
+  }, [score, userLogin])
   const handleVictory = useCallback(() => {
+    submitScore()
     modals.showGameWinModal()
 
-    // setIsGameWinVisible(true)
     modals.setIsGameActive(false)
     sounds.stopGameSound()
     sounds.playVictorySound()
@@ -447,6 +473,7 @@ const useGameLogic = ({
   }, [modals, sounds])
 
   const handleDefeat = useCallback(() => {
+    submitScore()
     modals.showGameOverModal()
     modals.setIsGameActive(false)
     sounds.stopGameSound()
