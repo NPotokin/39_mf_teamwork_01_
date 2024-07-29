@@ -37,9 +37,10 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (isAuthenticated) {
-        const storedUser = localStorage.getItem(
-          USER_DATA_KEY
-        )
+        const storedUser =
+          typeof window !== 'undefined'
+            ? localStorage.getItem(USER_DATA_KEY)
+            : null
 
         if (storedUser) {
           dispatch(

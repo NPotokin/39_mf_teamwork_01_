@@ -16,7 +16,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@reduxjs/toolkit": "^2.2.6",
-    "@types/node": "^22.0.0",
+    "@types/node": "18.11.17",
     "antd": "^5.18.3",
     "axios": "^1.7.2",
     "dotenv": "^16.0.2",

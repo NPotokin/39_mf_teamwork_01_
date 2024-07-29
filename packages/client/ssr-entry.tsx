@@ -1,6 +1,6 @@
 import ReactDOMServer from 'react-dom/server'
 
-import App from './src/core/App'
+import App from '@/core/App'
 import '@/index.scss'
 import '@/scss/nes.scss'
 

@@ -71,9 +71,6 @@ async function startServer() {
           'utf-8'
         )
       } else {
-        console.log(
-          `clientSrcPath - "${clientSrcPath}"`
-        )
         template = fs.readFileSync(
           path.resolve(
             clientSrcPath,

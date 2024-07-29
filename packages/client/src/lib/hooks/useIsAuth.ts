@@ -1,4 +1,4 @@
-import { AUTH_KEY } from '@/core/services/auth.service'
+import { AUTH_KEY } from '../../core/services/auth.service'
 import { useEffect, useState } from 'react'
 
 export const useIsAuth = ():
@@ -9,7 +9,9 @@ export const useIsAuth = ():
 
   useEffect(() => {
     const isAuthed =
-      localStorage.getItem(AUTH_KEY)
+      typeof window !== 'undefined'
+        ? localStorage.getItem(AUTH_KEY)
+        : null
 
     if (!isAuthed) {
       setIsAuthenticated(false)

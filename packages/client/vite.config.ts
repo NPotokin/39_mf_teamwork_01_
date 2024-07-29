@@ -24,12 +24,32 @@ export default defineConfig({
   plugins: [react()],
   publicDir: 'public',
   resolve: {
-    alias: {
-      '@': resolve('./src'),
-      '@images': resolve('./src/assets/images'),
-    },
+    alias: [
+      {
+        find: '@',
+        replacement: resolve(__dirname, './src'),
+      },
+      {
+        find: '@images',
+        replacement: resolve(
+          __dirname,
+          './src/assets/images'
+        ),
+      },
+    ],
   },
   build: {
     manifest: true,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (
+          warning.code ===
+          'MODULE_LEVEL_DIRECTIVE'
+        ) {
+          return
+        }
+        warn(warning)
+      },
+    },
   },
 })
