@@ -4,6 +4,7 @@ import {
   getUser,
   USER_DATA_KEY,
 } from '@/core/services/auth.service'
+import registerServiceWorker from '@/lib/sw/registerServiceWorker'
 import { useIsAuth } from '@/lib/hooks'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
@@ -17,6 +18,13 @@ const App = () => {
   const isAuthenticated = useIsAuth()
 
   useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      window.addEventListener(
+        'load',
+        registerServiceWorker
+      )
+    }
+
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
 
@@ -32,6 +40,15 @@ const App = () => {
     }
 
     fetchServerData()
+
+    return () => {
+      if (process.env.NODE_ENV === 'production') {
+        window.removeEventListener(
+          'load',
+          registerServiceWorker
+        )
+      }
+    }
   }, [])
 
   useEffect(() => {
