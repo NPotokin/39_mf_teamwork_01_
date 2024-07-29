@@ -44,6 +44,9 @@ const Game: React.FC = () => {
   const userLogin = useAppSelector(
     state => state.user.login
   )
+  const userAvatar = useAppSelector(
+    state => state.user.avatar
+  )
   useEffect(() => {
     if (
       modals.isGameOverVisible ||
@@ -58,7 +61,11 @@ const Game: React.FC = () => {
 
   const submitScore = useCallback(() => {
     leaderboardApi
-      .submitScore(userLogin, gameLogic.score)
+      .submitScore(
+        userLogin,
+        gameLogic.score,
+        userAvatar
+      )
       .catch(error => {
         console.error(
           'Error submitting score:',

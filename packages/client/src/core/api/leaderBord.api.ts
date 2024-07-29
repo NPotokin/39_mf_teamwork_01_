@@ -12,12 +12,14 @@ import {
 export default class LeaderboardApi {
   public submitScore(
     userLogin: string,
-    score: number
+    score: number,
+    avatar: string
   ) {
     const data = {
       data: {
         userLogin: userLogin,
         pumpkinPandasScoreField: score,
+        avatar: avatar,
       },
       ratingFieldName: ratingFieldName,
       teamName: teamName,

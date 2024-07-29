@@ -6,7 +6,10 @@ import { UniversalTable } from '@/components/Table'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import holder from '@images/logo_sm.svg'
-import { TITLES } from '@/lib/constants'
+import {
+  RESOURCE_URL,
+  TITLES,
+} from '@/lib/constants'
 import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
 import LeaderboardApi from '@/core/api/leaderBord.api'
 
@@ -46,7 +49,7 @@ const LeaderBoard = () => {
           limit
         )
       const rawData = response.data
-      console.log('!!!rawData')
+
       let formattedData
       if (Array.isArray(rawData)) {
         formattedData = rawData.map(
@@ -56,7 +59,7 @@ const LeaderBoard = () => {
             name: entry.data.userLogin,
             score:
               entry.data.pumpkinPandasScoreField,
-            avatarUrl: '',
+            avatarUrl: entry.data.avatar,
           })
         )
       }
@@ -81,8 +84,9 @@ const LeaderBoard = () => {
       pageSize
     )
   }, [currentPage, pageSize])
+
   const avatarSrc = (avatar: string) =>
-    avatar ? avatar : holder
+    avatar ? `${RESOURCE_URL}${avatar}` : holder
 
   const columns = [
     {
