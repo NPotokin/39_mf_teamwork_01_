@@ -86,7 +86,7 @@ const routes: RouteObject[] = [
         element: <ServerErrorPage />,
       },
       {
-        path: RoutePath.YANDEX_OAUTH_REDIRECT, // Новый маршрут
+        path: RoutePath.YANDEX_OAUTH_REDIRECT,
         element: <YandexOAuthRedirect />,
       },
       {

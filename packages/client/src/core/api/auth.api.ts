@@ -5,6 +5,7 @@ import {
   ILoginRequestData,
   ISignUpResponse,
   IUserInfo,
+  IYandexServiceId,
 } from './model'
 import axiosDB from './api'
 
@@ -51,9 +52,7 @@ export default class AuthApi {
   public getServiceId(
     redirectUri: string
   ): Promise<
-    AxiosResponse<
-      Record<string, string> | IAPIError
-    >
+    AxiosResponse<IYandexServiceId | IAPIError>
   > {
     return axiosDB.get(
       '/oauth/yandex/service-id',

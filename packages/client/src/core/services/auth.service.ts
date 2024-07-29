@@ -3,6 +3,7 @@ import {
   ICreateUser,
   ILoginRequestData,
   IUserInfo,
+  IYandexServiceId,
 } from '../api/model'
 import { isApiError } from '@/lib/utils/type-check'
 import { showNotification } from './notification.service'
@@ -98,9 +99,8 @@ export const getServiceId = async (
     const response = await authApi.getServiceId(
       redirectUri
     )
-    return (
-      response.data as Record<string, string>
-    )?.service_id
+    return (response.data as IYandexServiceId)
+      ?.service_id
   } catch (error) {
     showNotification('error', errorInfo(error))
   }
