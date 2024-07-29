@@ -1,9 +1,13 @@
 import {
   useCallback,
   useEffect,
+  MutableRefObject,
   useState,
 } from 'react'
-import { Layout } from 'antd'
+
+import {} from 'react'
+import { Layout, Button } from 'antd'
+
 import classNames from 'classnames'
 
 import { Constants } from './constants'
@@ -21,7 +25,10 @@ import useModals from './hooks/useModals'
 import useGameLogic from './hooks/useGameLogic'
 import { useAppSelector } from '@/lib/hooks/redux'
 import { MuteButton } from '@/components'
+
 import LeaderboardApi from '@/core/api/leaderBord.api'
+
+import useFullscreen from './hooks/useFullScreen'
 
 export type Level =
   | 'levelOne'
@@ -73,6 +80,12 @@ const Game: React.FC = () => {
         )
       })
   }, [gameLogic.score, userLogin])
+
+  const {
+    isFullscreen,
+    handleFullscreen,
+    elementRef,
+  } = useFullscreen()
 
   const handleStartModalButton = (
     selectedLevel: Level,
@@ -126,8 +139,14 @@ const Game: React.FC = () => {
         className={classNames(
           styles.game,
           'page'
-        )}>
-        <Header isGamePage />
+        )}
+        ref={
+          elementRef as
+            | MutableRefObject<HTMLDivElement>
+            | undefined
+        }>
+        {!isFullscreen && <Header isGamePage />}
+
         <div
           className={classNames(
             styles.canvas,
@@ -143,6 +162,13 @@ const Game: React.FC = () => {
               setMuted={setMuted}
             />
             <div>
+              <div className={styles.btnGame}>
+                <Button
+                  onClick={handleFullscreen}
+                  className="nes-btn">
+                  Fullscreen
+                </Button>
+              </div>
               <div>{userLogin}</div>
               <div>Steps: {gameLogic.steps}</div>
               <div>Time: {gameLogic.time}</div>
@@ -171,7 +197,7 @@ const Game: React.FC = () => {
           onYesClick={handleYesClickGameOverModal}
           score={gameLogic.score}
         />
-        <Footer />
+        {!isFullscreen && <Footer />}
       </div>
     </Layout>
   )
