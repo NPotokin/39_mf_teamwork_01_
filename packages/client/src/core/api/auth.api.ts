@@ -1,4 +1,7 @@
-import { AxiosResponse } from 'axios'
+import {
+  AxiosRequestConfig,
+  AxiosResponse,
+} from 'axios'
 import {
   IAPIError,
   ICreateUser,
@@ -26,10 +29,14 @@ export default class AuthApi {
     return axiosDB.post('/auth/signin', data)
   }
 
-  public user(): Promise<
+  public user(
+    options?: AxiosRequestConfig
+  ): Promise<
     AxiosResponse<IUserInfo | IAPIError>
   > {
-    return axiosDB.get('/auth/user')
+    return axiosDB.get('/auth/user', {
+      ...options,
+    })
   }
 
   public logout(): Promise<

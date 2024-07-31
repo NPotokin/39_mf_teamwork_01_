@@ -1,3 +1,8 @@
+import {
+  AxiosRequestConfig,
+  AxiosResponse,
+} from 'axios'
+
 import AuthApi from '../api/auth.api'
 import {
   ICreateUser,
@@ -13,15 +18,16 @@ export const USER_DATA_KEY = 'userData'
 
 const authApi = new AuthApi()
 
-export const getUser =
-  async (): Promise<IUserInfo> => {
-    const userResponse = await authApi.user()
+export const getUser = async (
+  options: AxiosRequestConfig = {}
+): Promise<IUserInfo> => {
+  const userResponse = await authApi.user(options)
 
-    if (isApiError(userResponse.data)) {
-      throw new Error(userResponse.data.reason)
-    }
-    return userResponse.data
+  if (isApiError(userResponse.data)) {
+    throw new Error(userResponse.data.reason)
   }
+  return userResponse.data
+}
 
 export const signin = async (
   data: ILoginRequestData

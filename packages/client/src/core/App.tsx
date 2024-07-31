@@ -25,15 +25,25 @@ const App = () => {
       )
     }
 
+    const controller = new AbortController()
+
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
 
       try {
-        const response = await fetch(url)
+        const response = await fetch(url, {
+          signal: controller.signal,
+        })
         const data = await response.json()
         console.log(data)
-      } catch (error) {
-        console.error('Ошибка запроса в БД')
+      } catch (error: unknown) {
+        if (
+          (error as Error).name === 'AbortError'
+        ) {
+          console.log('Request aborted')
+        } else {
+          console.error('Ошибка запроса в БД')
+        }
       } finally {
         setLoading(false)
       }
@@ -42,6 +52,8 @@ const App = () => {
     fetchServerData()
 
     return () => {
+      controller.abort()
+
       if (process.env.NODE_ENV === 'production') {
         window.removeEventListener(
           'load',
@@ -52,6 +64,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
+    const controller = new AbortController()
+
     const fetchUser = async () => {
       if (isAuthenticated) {
         const storedUser = localStorage.getItem(
@@ -63,8 +77,19 @@ const App = () => {
             setUser(JSON.parse(storedUser))
           )
         } else {
-          const userData = await getUser()
-          dispatch(setUser(userData))
+          try {
+            const userData = await getUser({
+              signal: controller.signal,
+            })
+            dispatch(setUser(userData))
+          } catch (error: unknown) {
+            if (
+              (error as Error).name ===
+              'AbortError'
+            ) {
+              console.log('Request aborted')
+            }
+          }
         }
       }
     }

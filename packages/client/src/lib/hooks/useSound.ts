@@ -54,6 +54,7 @@ const useSound = (
     // Функция очистки AudioContext
     return () => {
       audioContextRef.current?.close()
+      // audioContextRef.current = null
     }
   }, [url, volume])
   // Функция воспроизведения звука
@@ -78,6 +79,7 @@ const useSound = (
   // Функия остановки звука
   const stopSound = () => {
     sourceRef?.stop()
+    // sourceRef?.disconnect()
     setSourceRef(null)
   }
 
