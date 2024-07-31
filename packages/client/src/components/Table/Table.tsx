@@ -1,9 +1,9 @@
-import { Table } from 'antd'
+import { Table } from 'antd/lib'
 import { ReactNode } from 'react'
 import {
   ColumnsType,
   TablePaginationConfig,
-} from 'antd/es/table'
+} from 'antd/lib/table'
 import styles from './Table.module.scss'
 
 export type TableData = {

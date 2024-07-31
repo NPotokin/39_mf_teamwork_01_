@@ -23,16 +23,10 @@ export default defineConfig({
     },
   },
   build: {
-    lib: {
-      entry: path.resolve(
-        __dirname,
-        'ssr-entry.tsx'
-      ),
-      name: 'Client',
-      formats: ['cjs'],
-    },
+    outDir: path.join(__dirname, 'dist/client'),
     rollupOptions: {
       output: {
+        format: 'cjs',
         dir: 'dist-ssr',
       },
     },

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router'
 import cn from 'classnames'
 import styles from './NotFoundPage.module.scss'
 import panda404 from '@images/panda404.svg'
-import { Button } from 'antd'
+import { Button } from 'antd/lib'
 import { RoutePath } from '@/core/Routes.enum'
 const NotFoundPage = () => {
   const navigate = useNavigate()

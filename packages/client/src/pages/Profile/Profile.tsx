@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 import classNames from 'classnames'
-import { Button } from 'antd'
+import { Button } from 'antd/lib'
 
 import { useAppSelector } from '@/lib/hooks/redux'
 import { TITLES } from '@/lib/constants'

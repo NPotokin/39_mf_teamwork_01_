@@ -1,8 +1,8 @@
 import {
   notification,
   type NotificationArgsProps,
-} from 'antd'
-import { ArgsProps } from 'antd/es/notification'
+} from 'antd/lib'
+import { ArgsProps } from 'antd/lib/notification'
 
 type NotificationPlacement =
   NotificationArgsProps['placement']

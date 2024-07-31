@@ -5,7 +5,7 @@ import {
   Form as AntForm,
   Input,
   Button,
-} from 'antd'
+} from 'antd/lib'
 import { empty } from '@/lib/utils/empty'
 import { EMPTY_STRING } from '@/core/constants'
 import cn from 'classnames'

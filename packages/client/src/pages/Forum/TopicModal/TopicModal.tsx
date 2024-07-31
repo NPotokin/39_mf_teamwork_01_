@@ -1,5 +1,5 @@
-import { Input, Modal, Form } from 'antd'
-import TextArea from 'antd/es/input/TextArea'
+import { Input, Modal, Form } from 'antd/lib'
+import TextArea from 'antd/lib/input/TextArea'
 import {
   ChangeEvent,
   FC,

@@ -24,17 +24,18 @@ async function startServer() {
 
   let vite: ViteDevServer | undefined
   const clientDistPath = path.resolve(
-    __dirname,
-    '../client/dist/index.html'
+    '../client/dist'
   )
-  const clientSrcPath = path.resolve(
-    __dirname,
-    '../client'
-  )
-  const clientSsrPath = require.resolve(
+
+  // const clientDistPath = path.dirname(require.resolve('client/dist/index.html'))
+  console.log('kek', clientDistPath)
+
+  const clientSrcPath = path.resolve('../client')
+  const clientSsrPath = path.resolve(
     '../client/dist-ssr/client.cjs'
   )
-  // const clientDistPath = path.dirname(require.resolve('client/dist/index.html'))
+  console.log('lodqwl', clientSsrPath)
+
   // const clientSrcPath = path.dirname(require.resolve('client'))
   // const clientSsrPath = require.resolve('client/dist-ssr/client.cjs')
 
@@ -61,7 +62,6 @@ async function startServer() {
 
     try {
       let template: string
-
       if (!isDevMode) {
         template = fs.readFileSync(
           path.resolve(
