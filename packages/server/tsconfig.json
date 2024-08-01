@@ -26,8 +26,4 @@
     },
     "outDir": "dist"
   },
-  "include": ["/**/*.ts", "./index.ts"],
-  "ts-node": {
-    "esm": true
-  }
 }

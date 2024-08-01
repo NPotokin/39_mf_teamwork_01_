@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Layout } from 'antd'
+import { Layout } from 'antd/lib'
 import classNames from 'classnames'
 
 import { Constants } from './constants'

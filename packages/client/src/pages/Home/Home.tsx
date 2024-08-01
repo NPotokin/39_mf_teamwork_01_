@@ -1,5 +1,5 @@
-import { Layout } from 'antd'
-import { Content } from 'antd/es/layout/layout'
+import { Layout } from 'antd/lib'
+import { Content } from 'antd/lib/layout/layout'
 
 import { TITLES } from '@/lib/constants'
 import useDocumentTitle from '@/lib/hooks/useDocumentTitle'

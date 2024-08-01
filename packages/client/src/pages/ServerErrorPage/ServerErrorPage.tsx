@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import styles from './ServerErrorPage.module.scss'
-import { Button } from 'antd'
+import { Button } from 'antd/lib'
 import panda500 from '@images/panda500.svg'
 import { useNavigate } from 'react-router'
 import { RoutePath } from '@/core/Routes.enum'

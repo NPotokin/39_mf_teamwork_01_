@@ -1,4 +1,4 @@
-import { AUTH_KEY } from '../../core/services/auth.service'
+import { AUTH_KEY } from '@/core/services/auth.service'
 import { useEffect, useState } from 'react'
 
 export const useIsAuth = ():

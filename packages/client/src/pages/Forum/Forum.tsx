@@ -1,5 +1,5 @@
 import { LikeOutlined } from '@ant-design/icons'
-import { Button, Popover, Space } from 'antd'
+import { Button, Popover, Space } from 'antd/lib'
 import {
   ChangeEvent,
   useEffect,

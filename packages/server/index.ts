@@ -24,19 +24,12 @@ async function startServer() {
 
   let vite: ViteDevServer | undefined
   const clientDistPath = path.resolve(
-    __dirname,
-    '../client/dist/index.html'
+    '../client/dist'
   )
-  const clientSrcPath = path.resolve(
-    __dirname,
-    '../client'
-  )
-  const clientSsrPath = require.resolve(
+  const clientSrcPath = path.resolve('../client')
+  const clientSsrPath = path.resolve(
     '../client/dist-ssr/client.cjs'
   )
-  // const clientDistPath = path.dirname(require.resolve('client/dist/index.html'))
-  // const clientSrcPath = path.dirname(require.resolve('client'))
-  // const clientSsrPath = require.resolve('client/dist-ssr/client.cjs')
 
   if (isDev()) {
     vite = await createViteServer({
@@ -78,16 +71,10 @@ async function startServer() {
           ),
           'utf-8'
         )
-      }
 
-      if (vite) {
-        template = await vite.transformIndexHtml(
+        template = await vite!.transformIndexHtml(
           url,
           template
-        )
-      } else {
-        throw new Error(
-          'The Vite server for Server-Side Rendering (SSR) has not been created yet'
         )
       }
 

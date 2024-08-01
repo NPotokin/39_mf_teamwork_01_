@@ -3,7 +3,7 @@ import {
   Form as AntForm,
   Input,
   Button,
-} from 'antd'
+} from 'antd/lib'
 import classNames from 'classnames'
 
 import { updatePassword } from '@/core/services/user.service'

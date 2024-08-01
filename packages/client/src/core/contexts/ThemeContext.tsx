@@ -5,7 +5,7 @@ import {
   useEffect,
   PropsWithChildren,
 } from 'react'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider } from 'antd/lib'
 
 import {
   darkTheme,

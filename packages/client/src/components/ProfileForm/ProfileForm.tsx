@@ -6,7 +6,7 @@ import {
   Button,
   Row,
   Col,
-} from 'antd'
+} from 'antd/lib'
 import classNames from 'classnames'
 
 import {
