@@ -5,7 +5,6 @@ import {
   USER_DATA_KEY,
 } from '@/core/services/auth.service'
 import { showNotification } from '@/core/services/notification.service'
-import { errorInfo } from '@/lib/utils/errorInfo'
 import registerServiceWorker from '@/lib/sw/registerServiceWorker'
 import { useIsAuth } from '@/lib/hooks'
 import { useAppDispatch } from '@/lib/hooks/redux'
@@ -73,19 +72,30 @@ const App = () => {
 
     const fetchUser = async () => {
       if (isAuthenticated) {
-        try {
-          const userData = await getUser({
-            signal: controller.signal,
-          })
-          dispatch(setUser(userData))
-        } catch (error: unknown) {
-          if (
-            (error as Error).name === 'AbortError'
-          ) {
-            showNotification(
-              'error',
-              'Request aborted'
-            )
+        const storedUser = localStorage.getItem(
+          USER_DATA_KEY
+        )
+
+        if (storedUser) {
+          dispatch(
+            setUser(JSON.parse(storedUser))
+          )
+        } else {
+          try {
+            const userData = await getUser({
+              signal: controller.signal,
+            })
+            dispatch(setUser(userData))
+          } catch (error: unknown) {
+            if (
+              (error as Error).name ===
+              'AbortError'
+            ) {
+              showNotification(
+                'error',
+                'Request aborted'
+              )
+            }
           }
         }
       }
