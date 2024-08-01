@@ -43,3 +43,7 @@ export interface ILoginRequestData {
   login: string
   password: string
 }
+
+export interface IYandexServiceId {
+  service_id: string
+}
