@@ -7,20 +7,20 @@ const urlsToCache = [
   'sounds/game.mp3',
   'sounds/gem.mp3',
   'sounds/victory.mp3',
-  'android-chrome-192x192.png',
-  'android-chrome-512x512.png',
-  'apple-touch-icon.png',
-  'favicon-16x16.png',
-  'favicon-32x32.png',
-  'favicon.ico',
-  'robots.txt',
-  'lowres.webp',
-  'offline.html',
+  'static/android-chrome-192x192.png',
+  'static/android-chrome-512x512.png',
+  'static/apple-touch-icon.png',
+  'static/favicon-16x16.png',
+  'static/favicon-32x32.png',
+  'static/favicon.ico',
+  'static/robots.txt',
+  'static/lowres.webp',
+  'static/offline.html',
 ]
 
 async function getFilesFromManifest() {
   try {
-    const manifestUrl = '/manifest.json'
+    const manifestUrl = '/static/manifest.json'
     const manifestResponse = await fetch(
       manifestUrl
     )

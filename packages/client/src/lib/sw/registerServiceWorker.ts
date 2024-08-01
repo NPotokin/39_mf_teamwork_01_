@@ -1,4 +1,4 @@
-const swFileName = 'sw.js'
+const swFileName = 'static/sw.js'
 
 interface Window {
   Cypress?: unknown

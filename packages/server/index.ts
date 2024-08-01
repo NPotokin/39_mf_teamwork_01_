@@ -46,6 +46,18 @@ async function startServer() {
         path.resolve(clientDistPath, 'assets')
       )
     )
+    app.use(
+      '/sounds',
+      express.static(
+        path.resolve(clientDistPath, 'sounds')
+      )
+    )
+    app.use(
+      '/static',
+      express.static(
+        path.resolve(clientDistPath, 'static')
+      )
+    )
   }
 
   app.use('*', async (req, res, next) => {

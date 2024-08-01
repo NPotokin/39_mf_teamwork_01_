@@ -4,6 +4,41 @@ import dotenv from 'dotenv'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
+import path from 'node:path'
+import fs from 'node:fs/promises'
+
+function MoveManifestPlugin(desiredManifestPath) {
+  let outDir, manifest
+
+  const defaultManifestPath = './manifest.json'
+
+  return {
+    name: 'move-manifest',
+    configResolved(resolvedConfig) {
+      outDir = resolvedConfig.build.outDir
+
+      const resolvedManifest =
+        resolvedConfig.build.manifest
+      if (resolvedManifest) {
+        manifest =
+          typeof resolvedManifest === 'string'
+            ? resolvedManifest
+            : defaultManifestPath
+      } else {
+        manifest = false
+      }
+    },
+    async writeBundle(_options, _bundle) {
+      if (manifest === false) return
+
+      await fs.rename(
+        path.resolve(__dirname, outDir, manifest),
+        desiredManifestPath
+      )
+    },
+  }
+}
+
 const __dirname = dirname(
   fileURLToPath(import.meta.url)
 )
@@ -20,7 +55,12 @@ export default defineConfig({
   define: {
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    MoveManifestPlugin(
+      './dist/static/manifest.json'
+    ),
+  ],
   publicDir: 'public',
   resolve: {
     alias: [
@@ -38,6 +78,7 @@ export default defineConfig({
     ],
   },
   build: {
+    outDir: 'dist',
     manifest: true,
     rollupOptions: {
       onwarn(warning, warn) {
