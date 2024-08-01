@@ -1,7 +1,4 @@
-import {
-  AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios'
+import { AxiosRequestConfig } from 'axios'
 
 import AuthApi from '../api/auth.api'
 import {

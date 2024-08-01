@@ -2,6 +2,9 @@ import { EMPTY_STRING } from '@/core/constants'
 import styles from './Login.module.scss'
 import cn from 'classnames'
 import { CustomForm } from '@/components'
+
+import { showNotification } from '@/core/services/notification.service'
+import { errorInfo } from '@/lib/utils/errorInfo'
 import { loginSchema } from '@/lib/validation/validationSchema'
 import { titles } from './Login.const'
 import logo from '@images/logo_md.svg'
@@ -46,7 +49,10 @@ const Login = () => {
         )
         setServiceId(id)
       } catch (error: unknown) {
-        console.error(error)
+        showNotification(
+          'error',
+          errorInfo(error)
+        )
       }
     }
 

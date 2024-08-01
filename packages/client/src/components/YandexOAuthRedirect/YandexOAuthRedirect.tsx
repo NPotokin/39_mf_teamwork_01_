@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router'
 
 import {
   getAccessToken,
   getUser,
 } from '@/core/services/auth.service'
-import { useNavigate } from 'react-router'
 import { useAppDispatch } from '@/lib/hooks/redux'
+
+import { showNotification } from '@/core/services/notification.service'
+import { errorInfo } from '@/lib/utils/errorInfo'
 import { RoutePath } from '@/core/Routes.enum'
 import { setUser } from '@/state/user/userSlice'
 
@@ -32,7 +35,10 @@ const YandexOAuthRedirect = () => {
           dispatch(setUser(userData))
           navigate(RoutePath.HOME)
         } catch (error: unknown) {
-          console.error(error)
+          showNotification(
+            'error',
+            errorInfo(error)
+          )
           navigate(RoutePath.SIGN_IN)
         }
       } else {
