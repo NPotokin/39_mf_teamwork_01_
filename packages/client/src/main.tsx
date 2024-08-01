@@ -8,10 +8,12 @@ import registerServiceWorker from '@/lib/sw/registerServiceWorker'
 import './index.scss'
 import '@/scss/nes.scss'
 
-window.addEventListener(
-  'load',
-  registerServiceWorker
-)
+if (process.env.NODE_ENV === 'production') {
+  window.addEventListener(
+    'load',
+    registerServiceWorker
+  )
+}
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,

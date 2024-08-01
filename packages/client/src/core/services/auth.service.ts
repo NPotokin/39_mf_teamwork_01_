@@ -3,6 +3,7 @@ import {
   ICreateUser,
   ILoginRequestData,
   IUserInfo,
+  IYandexServiceId,
 } from '../api/model'
 import { isApiError } from '@/lib/utils/type-check'
 import { showNotification } from './notification.service'
@@ -76,3 +77,31 @@ export const logout =
       return false
     }
   }
+
+export const getAccessToken = async (
+  authCode: string,
+  redirectUri: string
+): Promise<void> => {
+  try {
+    await authApi.getAccessToken(
+      authCode,
+      redirectUri
+    )
+  } catch (error) {
+    showNotification('error', errorInfo(error))
+  }
+}
+
+export const getServiceId = async (
+  redirectUri: string
+): Promise<string | undefined> => {
+  try {
+    const response = await authApi.getServiceId(
+      redirectUri
+    )
+    return (response.data as IYandexServiceId)
+      ?.service_id
+  } catch (error) {
+    showNotification('error', errorInfo(error))
+  }
+}
