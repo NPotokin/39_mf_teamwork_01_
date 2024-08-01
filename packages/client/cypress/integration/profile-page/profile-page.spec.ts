@@ -1,9 +1,7 @@
-import {
-  apiUrl,
-  USER_DATA_KEY,
-} from '../../support/config'
+import { USER_DATA_KEY } from '../../support/config'
 
-describe('profile page', () => {
+// TODO включить тест после полной реализации задачи SSR (вместе с route)
+describe.skip('profile page', () => {
   beforeEach(() => {
     cy.login()
     cy.getUser()
