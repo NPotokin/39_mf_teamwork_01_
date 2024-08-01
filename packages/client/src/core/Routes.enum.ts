@@ -8,6 +8,7 @@ export const RoutePath = {
   LEADER_BOARD: '/leaderboard',
   FORUM: '/forum',
   PAGE_NOT_FOUND: '/404',
+  YANDEX_OAUTH_REDIRECT: '/redirect',
   SERVER_ERROR: '/500',
 } as const
 

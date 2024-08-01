@@ -8,6 +8,7 @@ import {
   ILoginRequestData,
   ISignUpResponse,
   IUserInfo,
+  IYandexServiceId,
 } from './model'
 import axiosDB from './api'
 
@@ -43,5 +44,30 @@ export default class AuthApi {
     AxiosResponse<void | IAPIError>
   > {
     return axiosDB.post('/auth/logout')
+  }
+
+  public getAccessToken(
+    authCode: string,
+    redirectUri: string
+  ): Promise<AxiosResponse<void | IAPIError>> {
+    return axiosDB.post('/oauth/yandex', {
+      code: authCode,
+      redirect_uri: redirectUri,
+    })
+  }
+
+  public getServiceId(
+    redirectUri: string
+  ): Promise<
+    AxiosResponse<IYandexServiceId | IAPIError>
+  > {
+    return axiosDB.get(
+      '/oauth/yandex/service-id',
+      {
+        params: {
+          redirect_uri: redirectUri,
+        },
+      }
+    )
   }
 }

@@ -8,6 +8,7 @@ import { RoutePath } from './Routes.enum'
 import {
   ErrorBoundaryLayout,
   ProtectedRoute,
+  YandexOAuthRedirect,
 } from '@/components'
 import {
   Home,
@@ -83,6 +84,10 @@ const routes: RouteObject[] = [
       {
         path: RoutePath.SERVER_ERROR,
         element: <ServerErrorPage />,
+      },
+      {
+        path: RoutePath.YANDEX_OAUTH_REDIRECT,
+        element: <YandexOAuthRedirect />,
       },
       {
         path: RoutePath.ERROR,
