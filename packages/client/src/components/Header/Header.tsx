@@ -4,7 +4,7 @@ import {
   Link,
   useNavigate,
 } from 'react-router-dom'
-import { Button } from 'antd'
+import { Button } from 'antd/lib'
 import { Header as AntHeader } from 'antd/lib/layout/layout'
 import {
   CloseOutlined,

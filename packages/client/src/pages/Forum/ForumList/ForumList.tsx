@@ -1,9 +1,9 @@
-import { Button } from 'antd'
+import { Button } from 'antd/lib'
 import { FC } from 'react'
 import styles from './ForumList.module.scss'
 import cn from 'classnames'
 import { Topic } from '../Forum'
-import { ColumnsType } from 'antd/es/table'
+import { ColumnsType } from 'antd/lib/table'
 import { UniversalTable } from '@/components/Table'
 
 type ForumListProps = {

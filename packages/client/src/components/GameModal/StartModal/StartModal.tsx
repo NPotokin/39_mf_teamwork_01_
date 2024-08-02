@@ -5,7 +5,7 @@ import {
   Button,
   Form,
   Select,
-} from 'antd'
+} from 'antd/lib'
 import React, {
   useEffect,
   useCallback,

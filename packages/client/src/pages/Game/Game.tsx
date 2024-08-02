@@ -1,5 +1,5 @@
 import { MutableRefObject, useState } from 'react'
-import { Layout, Button } from 'antd'
+import { Layout, Button } from 'antd/lib'
 import classNames from 'classnames'
 
 import { Constants } from './constants'

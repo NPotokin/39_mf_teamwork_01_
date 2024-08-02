@@ -19,17 +19,37 @@ export default defineConfig({
   },
   define: {
     __SERVER_PORT__: process.env.SERVER_PORT,
-    __API_URL__: `'${process.env.API_URL}'`,
   },
   plugins: [react()],
   publicDir: 'public',
   resolve: {
-    alias: {
-      '@': resolve('./src'),
-      '@images': resolve('./src/assets/images'),
-    },
+    alias: [
+      {
+        find: '@',
+        replacement: resolve(__dirname, './src'),
+      },
+      {
+        find: '@images',
+        replacement: resolve(
+          __dirname,
+          './src/assets/images'
+        ),
+      },
+    ],
   },
   build: {
+    outDir: 'dist',
     manifest: true,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (
+          warning.code ===
+          'MODULE_LEVEL_DIRECTIVE'
+        ) {
+          return
+        }
+        warn(warning)
+      },
+    },
   },
 })

@@ -1,4 +1,4 @@
-import { Spin } from 'antd'
+import { Spin } from 'antd/lib'
 import styles from './Loader.module.scss'
 
 const Loader: React.FC = () => (
