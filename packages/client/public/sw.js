@@ -20,7 +20,7 @@ const urlsToCache = [
 
 async function getFilesFromManifest() {
   try {
-    const manifestUrl = '/static/manifest.json'
+    const manifestUrl = '/manifest.json'
     const manifestResponse = await fetch(
       manifestUrl
     )

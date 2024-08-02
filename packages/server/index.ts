@@ -58,6 +58,21 @@ async function startServer() {
         path.resolve(clientDistPath, 'static')
       )
     )
+    app.use(
+      '/manifest.json',
+      express.static(
+        path.resolve(
+          clientDistPath,
+          'manifest.json'
+        )
+      )
+    )
+    app.use(
+      '/sw.js',
+      express.static(
+        path.resolve(clientDistPath, 'sw.js')
+      )
+    )
   }
 
   app.use('*', async (req, res, next) => {
