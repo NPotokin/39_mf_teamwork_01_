@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router'
 
 import {
   getAccessToken,
   getUser,
 } from '@/core/services/auth.service'
-import { useNavigate } from 'react-router'
 import { useAppDispatch } from '@/lib/hooks/redux'
+
+import { showNotification } from '@/core/services/notification.service'
+import { errorInfo } from '@/lib/utils/errorInfo'
 import { RoutePath } from '@/core/Routes.enum'
 import { setUser } from '@/state/user/userSlice'
 
@@ -16,6 +19,8 @@ const YandexOAuthRedirect = () => {
     .VITE_YANDEX_REDIRECT_URI
 
   useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
     const handleAuthCode = async () => {
       const urlParams = new URLSearchParams(
         window.location.search
@@ -26,17 +31,27 @@ const YandexOAuthRedirect = () => {
         try {
           await getAccessToken(
             authCode,
-            REDIRECT_URI
+            REDIRECT_URI,
+            { signal }
           )
-          const userData = await getUser()
+          const userData = await getUser({
+            signal,
+          })
           dispatch(setUser(userData))
           navigate(RoutePath.HOME)
         } catch (error: unknown) {
-          console.error(error)
+          showNotification(
+            'error',
+            errorInfo(error)
+          )
           navigate(RoutePath.SIGN_IN)
         }
       } else {
         navigate(RoutePath.SIGN_IN)
+      }
+
+      return () => {
+        controller.abort()
       }
     }
 

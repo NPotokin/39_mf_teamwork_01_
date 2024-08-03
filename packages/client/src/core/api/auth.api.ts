@@ -1,4 +1,7 @@
-import { AxiosResponse } from 'axios'
+import {
+  AxiosRequestConfig,
+  AxiosResponse,
+} from 'axios'
 import {
   IAPIError,
   ICreateUser,
@@ -27,10 +30,14 @@ export default class AuthApi {
     return axiosDB.post('/auth/signin', data)
   }
 
-  public user(): Promise<
+  public user(
+    options?: AxiosRequestConfig
+  ): Promise<
     AxiosResponse<IUserInfo | IAPIError>
   > {
-    return axiosDB.get('/auth/user')
+    return axiosDB.get('/auth/user', {
+      ...options,
+    })
   }
 
   public logout(): Promise<
@@ -41,16 +48,22 @@ export default class AuthApi {
 
   public getAccessToken(
     authCode: string,
-    redirectUri: string
+    redirectUri: string,
+    options?: AxiosRequestConfig
   ): Promise<AxiosResponse<void | IAPIError>> {
-    return axiosDB.post('/oauth/yandex', {
-      code: authCode,
-      redirect_uri: redirectUri,
-    })
+    return axiosDB.post(
+      '/oauth/yandex',
+      {
+        code: authCode,
+        redirect_uri: redirectUri,
+      },
+      options
+    )
   }
 
   public getServiceId(
-    redirectUri: string
+    redirectUri: string,
+    options?: AxiosRequestConfig
   ): Promise<
     AxiosResponse<IYandexServiceId | IAPIError>
   > {
@@ -60,6 +73,7 @@ export default class AuthApi {
         params: {
           redirect_uri: redirectUri,
         },
+        ...options,
       }
     )
   }
