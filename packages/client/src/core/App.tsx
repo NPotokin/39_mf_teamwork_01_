@@ -27,13 +27,14 @@ const App = () => {
     }
 
     const controller = new AbortController()
+    const signal = controller.signal
 
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
 
       try {
         const response = await fetch(url, {
-          signal: controller.signal,
+          signal,
         })
         const data = await response.json()
         console.log(data)
@@ -41,12 +42,9 @@ const App = () => {
         if (
           (error as Error).name === 'AbortError'
         ) {
-          showNotification(
-            'error',
-            'Request aborted'
-          )
+          console.log('Request aborted')
         } else {
-          console.error('Ошибка запроса в БД')
+          console.error('Fetch data failed')
         }
       } finally {
         setLoading(false)
@@ -69,6 +67,7 @@ const App = () => {
 
   useEffect(() => {
     const controller = new AbortController()
+    const signal = controller.signal
 
     const fetchUser = async () => {
       if (isAuthenticated) {
@@ -84,25 +83,24 @@ const App = () => {
         } else {
           try {
             const userData = await getUser({
-              signal: controller.signal,
+              signal,
             })
             dispatch(setUser(userData))
           } catch (error: unknown) {
-            if (
-              (error as Error).name ===
-              'AbortError'
-            ) {
-              showNotification(
-                'error',
-                'Request aborted'
-              )
-            }
+            showNotification(
+              'error',
+              'Error fetching user data'
+            )
           }
         }
       }
     }
 
     fetchUser()
+
+    return () => {
+      controller.abort()
+    }
   }, [isAuthenticated])
 
   if (loading) {

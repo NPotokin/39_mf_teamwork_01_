@@ -19,6 +19,8 @@ const YandexOAuthRedirect = () => {
     .VITE_YANDEX_REDIRECT_URI
 
   useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
     const handleAuthCode = async () => {
       const urlParams = new URLSearchParams(
         window.location.search
@@ -29,9 +31,12 @@ const YandexOAuthRedirect = () => {
         try {
           await getAccessToken(
             authCode,
-            REDIRECT_URI
+            REDIRECT_URI,
+            { signal }
           )
-          const userData = await getUser()
+          const userData = await getUser({
+            signal,
+          })
           dispatch(setUser(userData))
           navigate(RoutePath.HOME)
         } catch (error: unknown) {
@@ -43,6 +48,10 @@ const YandexOAuthRedirect = () => {
         }
       } else {
         navigate(RoutePath.SIGN_IN)
+      }
+
+      return () => {
+        controller.abort()
       }
     }
 

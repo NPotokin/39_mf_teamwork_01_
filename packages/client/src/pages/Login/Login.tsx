@@ -1,6 +1,10 @@
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
+import cn from 'classnames'
+import { Button } from 'antd/lib'
+
 import { EMPTY_STRING } from '@/core/constants'
 import styles from './Login.module.scss'
-import cn from 'classnames'
 import { CustomForm } from '@/components'
 
 import { showNotification } from '@/core/services/notification.service'
@@ -8,8 +12,6 @@ import { errorInfo } from '@/lib/utils/errorInfo'
 import { loginSchema } from '@/lib/validation/validationSchema'
 import { titles } from './Login.const'
 import logo from '@images/logo_md.svg'
-import { Button } from 'antd/lib'
-import { useNavigate } from 'react-router'
 import { RoutePath } from '@/core/Routes.enum'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
@@ -19,7 +21,6 @@ import {
 } from '@/core/services/auth.service'
 import { TITLES } from '@/lib/constants'
 import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
-import { useEffect, useState } from 'react'
 
 const initialValues: LoginForm = {
   login: EMPTY_STRING,
@@ -42,10 +43,13 @@ const Login = () => {
     .VITE_YANDEX_REDIRECT_URI
 
   useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
     const fetchServiceId = async () => {
       try {
         const id = await getServiceId(
-          REDIRECT_URI
+          REDIRECT_URI,
+          { signal }
         )
         setServiceId(id)
       } catch (error: unknown) {
@@ -57,6 +61,10 @@ const Login = () => {
     }
 
     fetchServiceId()
+
+    return () => {
+      controller.abort()
+    }
   }, [])
 
   const AUTH_URL = import.meta.env

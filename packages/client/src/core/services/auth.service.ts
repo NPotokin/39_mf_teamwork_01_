@@ -19,12 +19,18 @@ const authApi = new AuthApi()
 export const getUser = async (
   options: AxiosRequestConfig = {}
 ): Promise<IUserInfo> => {
-  const userResponse = await authApi.user(options)
-
-  if (isApiError(userResponse.data)) {
-    throw new Error(userResponse.data.reason)
+  try {
+    const userResponse = await authApi.user(
+      options
+    )
+    if (isApiError(userResponse.data)) {
+      throw new Error(userResponse.data.reason)
+    }
+    return userResponse.data
+  } catch (error: unknown) {
+    handleError(error)
+    throw error
   }
-  return userResponse.data
 }
 
 export const signin = async (
@@ -64,7 +70,7 @@ export const signup = async (
     )
 
     return user
-  } catch (error) {
+  } catch (error: unknown) {
     showNotification('error', errorInfo(error))
   }
 }
@@ -83,28 +89,44 @@ export const logout =
 
 export const getAccessToken = async (
   authCode: string,
-  redirectUri: string
+  redirectUri: string,
+  options: AxiosRequestConfig = {}
 ): Promise<void> => {
   try {
     await authApi.getAccessToken(
       authCode,
-      redirectUri
+      redirectUri,
+      options
     )
-  } catch (error) {
+  } catch (error: unknown) {
     showNotification('error', errorInfo(error))
   }
 }
 
 export const getServiceId = async (
-  redirectUri: string
+  redirectUri: string,
+  options: AxiosRequestConfig = {}
 ): Promise<string | undefined> => {
   try {
     const response = await authApi.getServiceId(
-      redirectUri
+      redirectUri,
+      options
     )
     return (response.data as IYandexServiceId)
       ?.service_id
-  } catch (error) {
+  } catch (error: unknown) {
+    handleError(error)
+  }
+}
+
+const handleError = (error: unknown) => {
+  if ((error as Error).name === 'AbortError') {
+    console.log('Request aborted')
+  } else if (
+    (error as Error).name === 'CanceledError'
+  ) {
+    console.log('Request was canceled')
+  } else {
     showNotification('error', errorInfo(error))
   }
 }

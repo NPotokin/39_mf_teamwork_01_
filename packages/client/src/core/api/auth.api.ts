@@ -48,16 +48,22 @@ export default class AuthApi {
 
   public getAccessToken(
     authCode: string,
-    redirectUri: string
+    redirectUri: string,
+    options?: AxiosRequestConfig
   ): Promise<AxiosResponse<void | IAPIError>> {
-    return axiosDB.post('/oauth/yandex', {
-      code: authCode,
-      redirect_uri: redirectUri,
-    })
+    return axiosDB.post(
+      '/oauth/yandex',
+      {
+        code: authCode,
+        redirect_uri: redirectUri,
+      },
+      options
+    )
   }
 
   public getServiceId(
-    redirectUri: string
+    redirectUri: string,
+    options?: AxiosRequestConfig
   ): Promise<
     AxiosResponse<IYandexServiceId | IAPIError>
   > {
@@ -67,6 +73,7 @@ export default class AuthApi {
         params: {
           redirect_uri: redirectUri,
         },
+        ...options,
       }
     )
   }

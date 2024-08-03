@@ -23,38 +23,55 @@ const useSound = (
     useState<AudioBufferSourceNode | null>(null)
 
   useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
     // вытаскиваем аудио файл и декодируем его в AudioBuffer
     const fetchAudio = async () => {
-      // Создаем новый AudioContext (без поддержки старых браузеров)
-      audioContextRef.current =
-        new window.AudioContext()
-      // Создаем GainNode для контроля громкости
-      // и связываем его с выводом AudioContext
-      gainNodeRef.current =
-        audioContextRef.current.createGain()
-      // Задаем громкость по умолчанию
-      gainNodeRef.current.gain.value = volume
-      gainNodeRef.current.connect(
-        audioContextRef.current.destination
-      )
-
-      // Подтягиваем аудио файл из УРЛа
-      const response = await fetch(url)
-      const arrayBuffer =
-        await response.arrayBuffer()
-      // Декодируем аудио в AudioBuffer
-      audioBufferRef.current =
-        await audioContextRef.current.decodeAudioData(
-          arrayBuffer
+      try {
+        // Создаем новый AudioContext (без поддержки старых браузеров)
+        audioContextRef.current =
+          new window.AudioContext()
+        // Создаем GainNode для контроля громкости
+        // и связываем его с выводом AudioContext
+        gainNodeRef.current =
+          audioContextRef.current.createGain()
+        // Задаем громкость по умолчанию
+        gainNodeRef.current.gain.value = volume
+        gainNodeRef.current.connect(
+          audioContextRef.current.destination
         )
+
+        // Подтягиваем аудио файл из УРЛа
+        const response = await fetch(url, {
+          signal,
+        })
+        const arrayBuffer =
+          await response.arrayBuffer()
+        // Декодируем аудио в AudioBuffer
+        audioBufferRef.current =
+          await audioContextRef.current.decodeAudioData(
+            arrayBuffer
+          )
+      } catch (error: unknown) {
+        if (
+          (error as Error).name !== 'AbortError'
+        ) {
+          console.error(
+            'Fetch audio failed',
+            error
+          )
+        }
+      }
     }
     // Вызываем
     fetchAudio()
 
     // Функция очистки AudioContext
     return () => {
+      sourceRef?.stop()
+      gainNodeRef.current?.disconnect()
       audioContextRef.current?.close()
-      // audioContextRef.current = null
+      controller.abort()
     }
   }, [url, volume])
   // Функция воспроизведения звука
@@ -79,7 +96,6 @@ const useSound = (
   // Функия остановки звука
   const stopSound = () => {
     sourceRef?.stop()
-    // sourceRef?.disconnect()
     setSourceRef(null)
   }
 
