@@ -77,3 +77,7 @@ export interface ICurrentScoreResponse {
     }
   }>
 }
+
+export interface IYandexServiceId {
+  service_id: string
+}
