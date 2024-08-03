@@ -17,12 +17,13 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2019", "esnext.asynciterable"],
+    "lib": ["DOM", "es2019", "esnext.asynciterable"],
+    "skipLibCheck": true,
     "types": ["node", "jest"],
     "baseUrl": ".",
     "paths": {
-      "*": ["types/*"]
+      "*": ["types/*"],
     },
     "outDir": "dist"
-  }
+  },
 }

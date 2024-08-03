@@ -1,5 +1,6 @@
 import styles from './LeaderBord.module.scss'
 import { Avatar, Pagination } from 'antd'
+
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { UniversalTable } from '@/components/Table'

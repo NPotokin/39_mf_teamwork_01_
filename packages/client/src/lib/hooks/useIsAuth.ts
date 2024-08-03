@@ -9,7 +9,9 @@ export const useIsAuth = ():
 
   useEffect(() => {
     const isAuthed =
-      localStorage.getItem(AUTH_KEY)
+      typeof window !== 'undefined'
+        ? localStorage.getItem(AUTH_KEY)
+        : null
 
     if (!isAuthed) {
       setIsAuthenticated(false)

@@ -1,5 +1,5 @@
-import { theme } from 'antd'
-import type { ThemeConfig } from 'antd'
+import { theme } from 'antd/lib'
+import type { ThemeConfig } from 'antd/lib'
 import commonTokens from './commonTokens'
 
 const { darkAlgorithm } = theme

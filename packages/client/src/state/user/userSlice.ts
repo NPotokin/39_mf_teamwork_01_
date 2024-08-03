@@ -10,9 +10,11 @@ import {
 
 export type UserState = IUserInfo
 
-const userData = localStorage.getItem(
-  USER_DATA_KEY
-)
+const userData =
+  typeof window !== 'undefined'
+    ? localStorage.getItem(USER_DATA_KEY)
+    : null
+
 const initialState: UserState = userData
   ? JSON.parse(userData)
   : {}
