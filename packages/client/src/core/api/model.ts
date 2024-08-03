@@ -44,6 +44,40 @@ export interface ILoginRequestData {
   password: string
 }
 
+export interface IAPIError {
+  reason: string
+}
+export const teamName = 'pumpkinPandas'
+export const ratingFieldName =
+  'pumpkinPandasScoreField'
+export interface ISubmitScoreResponse {
+  data: {
+    userLogin: string
+    pumpkinPandasScoreField: -1
+  }
+  pumpkinPandasScoreField: number
+  userLogin: string
+  ratingFieldName: typeof teamName
+  teamName: typeof ratingFieldName
+}
+
+export interface IGetLeaderboardResponse {
+  data: Array<{
+    userLogin: string
+    pumpkinPandasScoreField: number
+    avatarUrl?: string
+  }>
+}
+
+export interface ICurrentScoreResponse {
+  leaders: Array<{
+    data: {
+      userLogin: string
+      pumpkinPandasScoreField: number
+    }
+  }>
+}
+
 export interface IYandexServiceId {
   service_id: string
 }
