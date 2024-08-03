@@ -24,7 +24,9 @@ const Profile = () => {
   const [state, dispatch] = useReducer<
     React.Reducer<ProfileState, ProfileAction>
   >(profileReducer, initialState)
-  const user = useAppSelector(state => state.user)
+  const user = useAppSelector(
+    state => state.user.data
+  )
 
   return (
     <div
@@ -38,7 +40,7 @@ const Profile = () => {
         <div className={styles.card}>
           {state.view === 'info' && (
             <>
-              <ProfileInfo {...user} />
+              <ProfileInfo {...user!} />
               <div className={styles.footer}>
                 <Button
                   data-cy="edit-profile"
@@ -80,7 +82,8 @@ const Profile = () => {
           )}
           {state.view === 'editProfile' && (
             <ProfileForm
-              {...user}
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              {...user!}
               onCancel={() =>
                 dispatch({
                   type: actionTypes.SHOW_INFO,

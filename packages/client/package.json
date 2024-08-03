@@ -30,6 +30,7 @@
     "react-router": "^6.23.1",
     "react-router-dom": "^6.23.1",
     "sass": "^1.77.6",
+    "serialize-javascript": "^6.0.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {

@@ -2,22 +2,29 @@ import {
   IUpdateUserResponse,
   IUserInfo,
 } from '@/core/api/model'
-import { USER_DATA_KEY } from '@/core/services/auth.service'
+// import { USER_DATA_KEY } from '@/core/services/auth.service'
 import {
   PayloadAction,
   createSlice,
 } from '@reduxjs/toolkit'
+import { fetchUser } from './userThunk'
 
-export type UserState = IUserInfo
+export type UserState = {
+  data: IUserInfo | null
+  loading: boolean
+  error: string | null
+}
 
-const userData =
-  typeof window !== 'undefined'
-    ? localStorage.getItem(USER_DATA_KEY)
-    : null
+// const userData =
+//   typeof window !== 'undefined'
+//     ? localStorage.getItem(USER_DATA_KEY)
+//     : null
 
-const initialState: UserState = userData
-  ? JSON.parse(userData)
-  : {}
+const initialState: UserState = {
+  data: null,
+  loading: false,
+  error: null,
+}
 
 const userSlice = createSlice({
   name: 'user',
@@ -26,20 +33,53 @@ const userSlice = createSlice({
     setUser: (
       state,
       action: PayloadAction<IUserInfo>
-    ) => action.payload,
+    ) => {
+      state.data = action.payload
+    },
     updateUser: (
       state,
       action: PayloadAction<IUpdateUserResponse>
     ) => {
-      return { ...state, ...action.payload }
+      if (state.data) {
+        state.data = {
+          ...state.data,
+          ...action.payload,
+        }
+      }
     },
     updateUserAvatar: (
       state,
       action: PayloadAction<string>
     ) => {
-      return { ...state, avatar: action.payload }
+      if (state.data) {
+        state.data.avatar = action.payload
+      }
     },
     resetUser: () => initialState,
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(fetchUser.pending, state => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(
+        fetchUser.fulfilled,
+        (
+          state,
+          action: PayloadAction<IUserInfo>
+        ) => {
+          state.data = action.payload
+          state.loading = false
+        }
+      )
+      .addCase(
+        fetchUser.rejected,
+        (state, action) => {
+          state.loading = false
+          state.error = action.payload as string
+        }
+      )
   },
 })
 

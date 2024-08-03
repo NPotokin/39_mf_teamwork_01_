@@ -93,7 +93,7 @@ const Game: React.FC = () => {
   }
 
   const userLogin = useAppSelector(
-    state => state.user.login
+    state => state.user.data?.login
   )
 
   return (
