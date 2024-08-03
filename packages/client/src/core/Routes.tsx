@@ -23,7 +23,7 @@ import {
 } from '@/pages'
 import { ForumProvider } from '@/core/contexts'
 
-const routes: RouteObject[] = [
+export const routes: RouteObject[] = [
   {
     element: <ErrorBoundaryLayout />,
     children: [

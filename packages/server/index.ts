@@ -6,7 +6,9 @@ import serialize from 'serialize-javascript'
 
 dotenv.config()
 
-import express from 'express'
+import express, {
+  Request as ExpressRequest,
+} from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -106,10 +108,13 @@ async function startServer() {
         )
       }
 
-      let render: () => Promise<{
+      let render: (
+        req: ExpressRequest
+      ) => Promise<{
         html: string
         initialState: unknown
       }>
+
       if (!isDevMode) {
         render = (await import(clientSsrPath))
           .render
@@ -125,7 +130,7 @@ async function startServer() {
       }
 
       const { html: appHtml, initialState } =
-        await render()
+        await render(req)
 
       const html = template
         .replace(`<!--ssr-outlet-->`, appHtml)
