@@ -1,5 +1,5 @@
 import {
-  createBrowserRouter,
+  createMemoryRouter,
   RouteObject,
   RouterProvider,
 } from 'react-router-dom'
@@ -97,7 +97,7 @@ const routes: RouteObject[] = [
   },
 ]
 
-const router = createBrowserRouter(routes)
+const router = createMemoryRouter(routes)
 
 const Routes = () => (
   <RouterProvider router={router} />

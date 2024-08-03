@@ -1,4 +1,9 @@
-import { Modal, Image, Flex, Button } from 'antd'
+import {
+  Modal,
+  Image,
+  Flex,
+  Button,
+} from 'antd/lib'
 import React, {
   useCallback,
   useEffect,

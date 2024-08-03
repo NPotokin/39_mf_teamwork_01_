@@ -1,5 +1,5 @@
 import styles from './LeaderBord.module.scss'
-import { Avatar } from 'antd'
+import { Avatar } from 'antd/lib'
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { leaderboardData } from './mockData'
