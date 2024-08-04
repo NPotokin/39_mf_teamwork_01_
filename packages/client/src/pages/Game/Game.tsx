@@ -1,4 +1,3 @@
-
 import {
   useCallback,
   useEffect,
@@ -7,17 +6,13 @@ import {
 } from 'react'
 
 import {} from 'react'
-import { Layout, Button } from 'antd'
 
-
-import { MutableRefObject, useState } from 'react'
 import { Layout, Button } from 'antd/lib'
 
 import classNames from 'classnames'
 
 import { Constants } from './constants'
 
-import { Header, Footer } from '@/components'
 import styles from './Game.module.scss'
 import React from 'react'
 import {
@@ -28,12 +23,12 @@ import { StartModal } from '../../components/GameModal/StartModal'
 import useGameSounds from './hooks/useGameSounds'
 import useModals from './hooks/useModals'
 import useGameLogic from './hooks/useGameLogic'
-import { useAppSelector } from '@/lib/hooks/redux'
-import { MuteButton } from '@/components'
-
-import LeaderboardApi from '@/core/api/leaderBord.api'
 
 import useFullscreen from './hooks/useFullScreen'
+import { useAppSelector } from '../../lib/hooks/redux'
+import LeaderboardApi from '../../core/api/leaderBord.api'
+import MuteButton from '../../components/MuteButton/MuteButton'
+import { Footer, Header } from '../../components'
 
 export type Level =
   | 'levelOne'
