@@ -14,10 +14,6 @@ const reducer = combineReducers({
   user: userReducer,
 })
 
-// const preloadedState: Partial<RootState> = typeof window !== 'undefined' && window.APP_INITIAL_STATE
-//   ? window.APP_INITIAL_STATE
-//   : {};
-
 export const store = configureStore({
   reducer,
   preloadedState:

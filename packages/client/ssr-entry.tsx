@@ -2,11 +2,11 @@ import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 
 // import App from '@/core/App'
-// import { store } from '@/state/store'
+import { store } from '@/state/store'
 import '@/index.scss'
 import '@/scss/nes.scss'
-import { configureStore } from '@reduxjs/toolkit'
-import reducer from '@/state/user/userSlice'
+// import { configureStore } from '@reduxjs/toolkit'
+// import reducer from '@/state/user/userSlice'
 // import { fetchUser } from '@/state/user/userThunk'
 
 import { Request as ExpressRequest } from 'express'
@@ -35,9 +35,9 @@ export const render = async (
   }
 
   // 5.
-  const store = configureStore({
-    reducer,
-  })
+  // const store = configureStore({
+  //   reducer,
+  // })
 
   // 6.
   const router = createStaticRouter(

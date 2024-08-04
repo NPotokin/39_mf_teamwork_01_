@@ -7,12 +7,12 @@ import {
 import { useIsAuth } from '@/lib/hooks'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
-import { Loader } from '@/components/Loader'
+// import { Loader } from '@/components/Loader'
 import Routes from './Routes'
 import { ThemeProvider } from './contexts'
 
 const App = () => {
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
   const dispatch = useAppDispatch()
   const isAuthenticated = useIsAuth()
 
@@ -27,7 +27,7 @@ const App = () => {
       } catch (error) {
         console.error('Ошибка запроса в БД')
       } finally {
-        setLoading(false)
+        // setLoading(false)
       }
     }
 
@@ -56,9 +56,9 @@ const App = () => {
     fetchUser()
   }, [isAuthenticated])
 
-  if (loading) {
-    return <Loader />
-  }
+  // if (loading) {
+  //   return <Loader />
+  // }
 
   return (
     <>
