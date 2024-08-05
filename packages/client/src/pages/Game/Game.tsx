@@ -49,10 +49,12 @@ const Game: React.FC = () => {
   })
   const leaderboardApi = new LeaderboardApi()
   const userLogin = useAppSelector(
-    state => state.user.login
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.user.data!.login
   )
   const userAvatar = useAppSelector(
-    state => state.user.avatar
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.user.data!.avatar
   )
   useEffect(() => {
     if (
