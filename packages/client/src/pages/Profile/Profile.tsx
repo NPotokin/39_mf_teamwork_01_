@@ -18,8 +18,12 @@ import {
   profileReducer,
 } from './reducer/Profile.reducer'
 import styles from './Profile.module.scss'
+import { PageInitArgs } from '@/core/Routes'
+import { fetchUser } from '@/state/user/userThunk'
+import { usePage } from '../Game/hooks/usePage'
 
 const Profile = () => {
+  usePage({ initPage: initProfilePage })
   useDocumentTitle(TITLES.PROFILE)
   const [state, dispatch] = useReducer<
     React.Reducer<ProfileState, ProfileAction>
@@ -100,3 +104,12 @@ const Profile = () => {
 }
 
 export default Profile
+
+export const initProfilePage = async ({
+  dispatch,
+  state,
+}: PageInitArgs) => {
+  if (!state.user) {
+    return dispatch(fetchUser())
+  }
+}

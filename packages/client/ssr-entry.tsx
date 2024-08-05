@@ -15,31 +15,45 @@ import {
   createStaticRouter,
   StaticRouterProvider,
 } from 'react-router-dom/server'
-import { createFetchRequest } from '@/entry-server.utils'
+import {
+  createFetchRequest,
+  createUrl,
+} from '@/entry-server.utils'
 import { routes } from '@/core/Routes'
+import { matchRoutes } from 'react-router'
 
 export const render = async (
   req: ExpressRequest
 ) => {
-  // 1.
   const { query, dataRoutes } =
     createStaticHandler(routes)
-  // 2.
+
   const fetchRequest = createFetchRequest(req)
-  // 3.
+
   const context = await query(fetchRequest)
 
-  // 4.
   if (context instanceof Response) {
     throw context
   }
 
-  // 5.
-  // const store = configureStore({
-  //   reducer,
-  // })
+  const url = createUrl(req)
 
-  // 6.
+  const foundRoutes = matchRoutes(routes, url)
+  if (!foundRoutes) {
+    throw new Error('Страница не найдена!')
+  }
+
+  // const [{route: { fetchData }}] = foundRoutes
+
+  // try {
+  //   await fetchData({
+  //     dispatch: store.dispatch,
+  //     state: store.getState(),
+  //   })
+  // } catch (e) {
+  //   console.log('Инициализация страницы произошла с ошибкой', e)
+  // }
+
   const router = createStaticRouter(
     dataRoutes,
     context

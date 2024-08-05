@@ -1,6 +1,6 @@
 import {
   createMemoryRouter,
-  RouteObject,
+  // RouteObject,
   RouterProvider,
 } from 'react-router-dom'
 
@@ -22,8 +22,19 @@ import {
   ServerErrorPage,
 } from '@/pages'
 import { ForumProvider } from '@/core/contexts'
+import {
+  AppDispatch,
+  RootState,
+} from '@/state/store'
+import { initGamePage } from '@/pages/Game/Game'
+import { initProfilePage } from '@/pages/Profile/Profile'
 
-export const routes: RouteObject[] = [
+export type PageInitArgs = {
+  dispatch: AppDispatch
+  state: RootState
+}
+
+export const routes = [
   {
     element: <ErrorBoundaryLayout />,
     children: [
@@ -42,6 +53,7 @@ export const routes: RouteObject[] = [
             <Game />
           </ProtectedRoute>
         ),
+        fetchData: initGamePage,
       },
       {
         path: RoutePath.SIGN_IN,
@@ -76,6 +88,7 @@ export const routes: RouteObject[] = [
             <Profile />
           </ProtectedRoute>
         ),
+        fetchData: initProfilePage,
       },
       {
         path: RoutePath.PAGE_NOT_FOUND,
