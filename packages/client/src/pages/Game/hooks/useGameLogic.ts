@@ -437,7 +437,6 @@ const useGameLogic = ({
   const handleVictory = useCallback(() => {
     modals.showGameWinModal()
 
-    // setIsGameWinVisible(true)
     modals.setIsGameActive(false)
     sounds.stopGameSound()
     sounds.playVictorySound()

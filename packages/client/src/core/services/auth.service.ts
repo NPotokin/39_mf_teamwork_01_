@@ -1,3 +1,5 @@
+import { AxiosRequestConfig } from 'axios'
+
 import AuthApi from '../api/auth.api'
 import {
   ICreateUser,
@@ -14,15 +16,22 @@ export const USER_DATA_KEY = 'userData'
 
 const authApi = new AuthApi()
 
-export const getUser =
-  async (): Promise<IUserInfo> => {
-    const userResponse = await authApi.user()
-
+export const getUser = async (
+  options: AxiosRequestConfig = {}
+): Promise<IUserInfo> => {
+  try {
+    const userResponse = await authApi.user(
+      options
+    )
     if (isApiError(userResponse.data)) {
       throw new Error(userResponse.data.reason)
     }
     return userResponse.data
+  } catch (error: unknown) {
+    handleError(error)
+    throw error
   }
+}
 
 export const signin = async (
   data: ILoginRequestData
@@ -61,7 +70,7 @@ export const signup = async (
     )
 
     return user
-  } catch (error) {
+  } catch (error: unknown) {
     showNotification('error', errorInfo(error))
   }
 }
@@ -80,28 +89,44 @@ export const logout =
 
 export const getAccessToken = async (
   authCode: string,
-  redirectUri: string
+  redirectUri: string,
+  options: AxiosRequestConfig = {}
 ): Promise<void> => {
   try {
     await authApi.getAccessToken(
       authCode,
-      redirectUri
+      redirectUri,
+      options
     )
-  } catch (error) {
+  } catch (error: unknown) {
     showNotification('error', errorInfo(error))
   }
 }
 
 export const getServiceId = async (
-  redirectUri: string
+  redirectUri: string,
+  options: AxiosRequestConfig = {}
 ): Promise<string | undefined> => {
   try {
     const response = await authApi.getServiceId(
-      redirectUri
+      redirectUri,
+      options
     )
     return (response.data as IYandexServiceId)
       ?.service_id
-  } catch (error) {
+  } catch (error: unknown) {
+    handleError(error)
+  }
+}
+
+const handleError = (error: unknown) => {
+  if ((error as Error).name === 'AbortError') {
+    console.log('Request aborted')
+  } else if (
+    (error as Error).name === 'CanceledError'
+  ) {
+    console.log('Request was canceled')
+  } else {
     showNotification('error', errorInfo(error))
   }
 }

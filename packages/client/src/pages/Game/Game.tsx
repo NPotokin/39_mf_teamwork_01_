@@ -1,26 +1,34 @@
-import { MutableRefObject, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  MutableRefObject,
+  useState,
+} from 'react'
+
+import {} from 'react'
+
 import { Layout, Button } from 'antd/lib'
+
 import classNames from 'classnames'
 
 import { Constants } from './constants'
 
-import { Header, Footer } from '@/components'
 import styles from './Game.module.scss'
-
 import React from 'react'
 import {
   GameOverModal,
   WinModal,
 } from './utils/modal'
 import { StartModal } from '../../components/GameModal/StartModal'
-
 import useGameSounds from './hooks/useGameSounds'
 import useModals from './hooks/useModals'
 import useGameLogic from './hooks/useGameLogic'
-import { useAppSelector } from '@/lib/hooks/redux'
 
-import { MuteButton } from '@/components'
 import useFullscreen from './hooks/useFullScreen'
+import { useAppSelector } from '../../lib/hooks/redux'
+import LeaderboardApi from '../../core/api/leaderBord.api'
+import MuteButton from '../../components/MuteButton/MuteButton'
+import { Footer, Header } from '../../components'
 
 export type Level =
   | 'levelOne'
@@ -39,6 +47,39 @@ const Game: React.FC = () => {
     sounds,
     modals,
   })
+  const leaderboardApi = new LeaderboardApi()
+  const userLogin = useAppSelector(
+    state => state.user.login
+  )
+  const userAvatar = useAppSelector(
+    state => state.user.avatar
+  )
+  useEffect(() => {
+    if (
+      modals.isGameOverVisible ||
+      modals.isGameWinVisible
+    ) {
+      submitScore()
+    }
+  }, [
+    modals.isGameOverVisible,
+    modals.isGameWinVisible,
+  ])
+
+  const submitScore = useCallback(() => {
+    leaderboardApi
+      .submitScore(
+        userLogin,
+        gameLogic.score,
+        userAvatar
+      )
+      .catch(error => {
+        console.error(
+          'Error submitting score:',
+          error
+        )
+      })
+  }, [gameLogic.score, userLogin])
 
   const {
     isFullscreen,
@@ -77,10 +118,10 @@ const Game: React.FC = () => {
         gameLogic.setEnemies(
           levelConfig.enemy.startPositions.hard
         )
-
         break
     }
   }
+
   const handleYesClickGameOverModal = () => {
     modals.hideGameOverModal()
     modals.showStartModal()
@@ -91,10 +132,6 @@ const Game: React.FC = () => {
     modals.hideGameWinModal()
     modals.showStartModal()
   }
-
-  const userLogin = useAppSelector(
-    state => state.user.data?.login
-  )
 
   return (
     <Layout>
