@@ -19,4 +19,3 @@ export const fetchUser = createAsyncThunk<
     }
   }
 )
-//вроде норм

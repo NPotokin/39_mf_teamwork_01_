@@ -1,6 +1,6 @@
 import {
-  combineReducers,
   configureStore,
+  combineReducers,
 } from '@reduxjs/toolkit'
 import userReducer from './user/userSlice'
 
@@ -17,9 +17,10 @@ const reducer = combineReducers({
 export const store = configureStore({
   reducer,
   preloadedState:
-    typeof window === 'undefined'
-      ? undefined
-      : window.APP_INITIAL_STATE,
+    typeof window !== 'undefined' &&
+    window.APP_INITIAL_STATE
+      ? window.APP_INITIAL_STATE
+      : undefined,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware(),
 })

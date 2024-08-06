@@ -1,5 +1,6 @@
 import {
-  createMemoryRouter,
+  createBrowserRouter,
+  // createMemoryRouter,
   // RouteObject,
   RouterProvider,
 } from 'react-router-dom'
@@ -28,6 +29,7 @@ import {
 } from '@/state/store'
 import { initGamePage } from '@/pages/Game/Game'
 import { initProfilePage } from '@/pages/Profile/Profile'
+import { Router } from '@remix-run/router'
 
 export type PageInitArgs = {
   dispatch: AppDispatch
@@ -110,10 +112,15 @@ export const routes = [
   },
 ]
 
-const router = createMemoryRouter(routes)
+// const router = createMemoryRouter(routes)
+let router: Router
+if (typeof window !== 'undefined') {
+  router = createBrowserRouter(routes)
+}
 
-const Routes = () => (
-  <RouterProvider router={router} />
-)
+const Routes = () =>
+  router ? (
+    <RouterProvider router={router} />
+  ) : null
 
 export default Routes

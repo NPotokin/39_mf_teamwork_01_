@@ -15,11 +15,6 @@ export type UserState = {
   error: string | null
 }
 
-// const userData =
-//   typeof window !== 'undefined'
-//     ? localStorage.getItem(USER_DATA_KEY)
-//     : null
-
 const initialState: UserState = {
   data: null,
   loading: false,

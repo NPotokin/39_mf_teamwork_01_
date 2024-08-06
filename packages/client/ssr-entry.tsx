@@ -21,6 +21,7 @@ import {
 } from '@/entry-server.utils'
 import { routes } from '@/core/Routes'
 import { matchRoutes } from 'react-router'
+import { fetchUser } from '@/state/user/userThunk'
 
 export const render = async (
   req: ExpressRequest
@@ -53,6 +54,8 @@ export const render = async (
   // } catch (e) {
   //   console.log('Инициализация страницы произошла с ошибкой', e)
   // }
+
+  await store.dispatch(fetchUser())
 
   const router = createStaticRouter(
     dataRoutes,
