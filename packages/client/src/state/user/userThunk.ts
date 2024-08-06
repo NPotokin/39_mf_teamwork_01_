@@ -4,13 +4,15 @@ import { IUserInfo } from '@/core/api/model'
 
 export const fetchUser = createAsyncThunk<
   IUserInfo,
-  void,
+  string | undefined, // Accept cookies or undefined
   { rejectValue: string }
 >(
   'user/fetchUser',
-  async (_, { rejectWithValue }) => {
+  async (cookies, { rejectWithValue }) => {
     try {
-      const userData = await getUser()
+      const userData = await getUser({
+        headers: { Cookie: cookies },
+      })
       return userData
     } catch (error) {
       return rejectWithValue(

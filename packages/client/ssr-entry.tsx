@@ -55,7 +55,9 @@ export const render = async (
   //   console.log('Инициализация страницы произошла с ошибкой', e)
   // }
 
-  await store.dispatch(fetchUser())
+  const cookies = req.headers.cookie || ''
+  await store.dispatch(fetchUser(cookies))
+  console.log(cookies)
 
   const router = createStaticRouter(
     dataRoutes,

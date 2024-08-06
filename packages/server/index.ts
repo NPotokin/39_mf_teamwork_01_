@@ -3,6 +3,7 @@ import cors from 'cors'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import serialize from 'serialize-javascript'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -17,7 +18,13 @@ const isDev = () =>
 
 async function startServer() {
   const app = express()
-  app.use(cors())
+  app.use(
+    cors({
+      origin: process.env.CLIENT_PORT,
+      credentials: true,
+    })
+  )
+  app.use(cookieParser())
 
   const port =
     Number(process.env.SERVER_PORT) || 3001
