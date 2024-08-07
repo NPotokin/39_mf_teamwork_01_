@@ -10,6 +10,7 @@ import { useIsAuth } from '@/lib/hooks'
 import { useAppDispatch } from '@/lib/hooks/redux'
 import { setUser } from '@/state/user/userSlice'
 import { Loader } from '@/components/Loader'
+import { ENVIRONMENT } from '@/lib/constants'
 import Routes from './Routes'
 import { ThemeProvider } from './contexts'
 
@@ -19,7 +20,7 @@ const App = () => {
   const isAuthenticated = useIsAuth()
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
+    if (ENVIRONMENT.PRODUCTION) {
       window.addEventListener(
         'load',
         registerServiceWorker
@@ -30,7 +31,7 @@ const App = () => {
     const signal = controller.signal
 
     const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`
+      const url = `${__SERVER_URL__}:${__SERVER_PORT__}/api`
 
       try {
         const response = await fetch(url, {
@@ -56,7 +57,7 @@ const App = () => {
     return () => {
       controller.abort()
 
-      if (process.env.NODE_ENV === 'production') {
+      if (ENVIRONMENT.PRODUCTION) {
         window.removeEventListener(
           'load',
           registerServiceWorker

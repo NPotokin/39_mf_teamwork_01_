@@ -1,0 +1,23 @@
+ARG NODE_VERSION=18
+ARG SERVER_PORT=3001
+
+FROM node:$NODE_VERSION-buster AS base
+
+WORKDIR /app
+
+FROM base AS builder
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+COPY . .
+
+RUN yarn lerna bootstrap
+
+FROM node:$NODE_VERSION-buster-slim AS dev
+WORKDIR /app
+
+COPY --from=builder /app /app
+
+EXPOSE $SERVER_PORT
+CMD ["yarn", "dev", "--scope=server"]

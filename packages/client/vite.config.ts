@@ -15,10 +15,16 @@ dotenv.config({
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
+    host: true,
     port: Number(process.env.CLIENT_PORT) || 3000,
   },
   define: {
-    __SERVER_PORT__: process.env.SERVER_PORT,
+    __SERVER_PORT__: Number(
+      process.env.SERVER_PORT
+    ),
+    __SERVER_URL__: JSON.stringify(
+      process.env.SERVER_URL
+    ),
   },
   plugins: [react()],
   publicDir: 'public',

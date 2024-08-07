@@ -1,16 +1,20 @@
-import dotenv from 'dotenv'
+import 'dotenv/config'
+import express from 'express'
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
 import cors from 'cors'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 
-dotenv.config()
+import { createClientAndConnect } from './db'
+import { ENVIRONMENT } from './config/environment'
+import {
+  CLIENT_PATH,
+  CLIENT_DIST_PATH,
+  CLIENT_DIST_SSR_PATH,
+} from './config/paths'
 
-import express from 'express'
-import * as fs from 'fs'
-import * as path from 'path'
-
-const isDev = () =>
-  process.env.NODE_ENV === 'development'
+const isDevMode = ENVIRONMENT.DEVELOPMENT
 
 async function startServer() {
   const app = express()
@@ -19,22 +23,14 @@ async function startServer() {
   const port =
     Number(process.env.SERVER_PORT) || 3001
 
-  // TODO включить на спринте добавления БД
-  // createClientAndConnect()
+  createClientAndConnect()
 
   let vite: ViteDevServer | undefined
-  const clientDistPath = path.resolve(
-    '../client/dist'
-  )
-  const clientSrcPath = path.resolve('../client')
-  const clientSsrPath = path.resolve(
-    '../client/dist-ssr/client.cjs'
-  )
 
-  if (isDev()) {
+  if (isDevMode) {
     vite = await createViteServer({
       server: { middlewareMode: true },
-      root: clientSrcPath,
+      root: CLIENT_PATH,
       appType: 'custom',
     })
 
@@ -43,59 +39,53 @@ async function startServer() {
     app.use(
       '/assets',
       express.static(
-        path.resolve(clientDistPath, 'assets')
+        resolve(CLIENT_DIST_PATH, 'assets')
       )
     )
     app.use(
       '/sounds',
       express.static(
-        path.resolve(clientDistPath, 'sounds')
+        resolve(CLIENT_DIST_PATH, 'sounds')
       )
     )
     app.use(
       '/static',
       express.static(
-        path.resolve(clientDistPath, 'static')
+        resolve(CLIENT_DIST_PATH, 'static')
       )
     )
     app.use(
       '/manifest.json',
       express.static(
-        path.resolve(
-          clientDistPath,
-          'manifest.json'
-        )
+        resolve(CLIENT_DIST_PATH, 'manifest.json')
       )
     )
     app.use(
       '/sw.js',
       express.static(
-        path.resolve(clientDistPath, 'sw.js')
+        resolve(CLIENT_DIST_PATH, 'sw.js')
       )
     )
   }
 
+  app.get('/api', (_, res) => {
+    res.json('👋 Howdy from the server :)')
+  })
+
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl
-    const isDevMode = isDev()
 
     try {
       let template: string
 
       if (!isDevMode) {
-        template = fs.readFileSync(
-          path.resolve(
-            clientDistPath,
-            'index.html'
-          ),
+        template = readFileSync(
+          resolve(CLIENT_DIST_PATH, 'index.html'),
           'utf-8'
         )
       } else {
-        template = fs.readFileSync(
-          path.resolve(
-            clientSrcPath,
-            'index.html'
-          ),
+        template = readFileSync(
+          resolve(CLIENT_PATH, 'index.html'),
           'utf-8'
         )
 
@@ -107,15 +97,18 @@ async function startServer() {
 
       let render: () => Promise<string>
       if (!isDevMode) {
-        render = (await import(clientSsrPath))
-          .render
+        render = (
+          await import(
+            resolve(
+              CLIENT_DIST_SSR_PATH,
+              'client.cjs'
+            )
+          )
+        ).render
       } else {
         render = (
           await vite!.ssrLoadModule(
-            path.resolve(
-              clientSrcPath,
-              'ssr-entry.tsx'
-            )
+            resolve(CLIENT_PATH, 'ssr-entry.tsx')
           )
         ).render
       }
@@ -138,10 +131,6 @@ async function startServer() {
 
       next(error)
     }
-  })
-
-  app.get('/api', (_, res) => {
-    res.json('👋 Howdy from the server :)')
   })
 
   app.listen(port, () => {

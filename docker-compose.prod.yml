@@ -1,0 +1,37 @@
+services:
+  server:
+    container_name: prakticum-server
+    image: 39_mf_teamwork_01/server:1.0.0-alpha.1
+    build:
+      context: .
+      dockerfile: Dockerfile.server.prod
+      args:
+        SERVER_PORT: ${SERVER_PORT}
+    restart: unless-stopped
+    ports:
+        - "${SERVER_PORT}:${SERVER_PORT}"
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      SERVER_URL: ${SERVER_URL}
+      NODE_ENV: ${ENV}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+    networks:
+      - prakticum
+
+volumes:
+  db-data:
+    driver: local
+  db-logs:
+    driver: local
+  pgadmin-data:
+    driver: local
+networks:
+  prakticum:
+    name: ${NETWORK}
+    driver: ${DRIVER}
