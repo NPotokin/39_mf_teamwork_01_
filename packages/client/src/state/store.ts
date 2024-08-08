@@ -1,15 +1,29 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {
+  configureStore,
+  combineReducers,
+} from '@reduxjs/toolkit'
 import userReducer from './user/userSlice'
 
+declare global {
+  interface Window {
+    APP_INITIAL_STATE: RootState
+  }
+}
+
+const reducer = combineReducers({
+  user: userReducer,
+})
+
 export const store = configureStore({
-  reducer: {
-    user: userReducer,
-  },
+  reducer,
+  preloadedState:
+    typeof window !== 'undefined' &&
+    window.APP_INITIAL_STATE
+      ? window.APP_INITIAL_STATE
+      : undefined,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware(),
 })
 
 export type AppDispatch = typeof store.dispatch
-export type RootState = ReturnType<
-  typeof store.getState
->
+export type RootState = ReturnType<typeof reducer>

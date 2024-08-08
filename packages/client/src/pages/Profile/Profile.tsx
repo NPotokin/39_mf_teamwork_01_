@@ -18,13 +18,19 @@ import {
   profileReducer,
 } from './reducer/Profile.reducer'
 import styles from './Profile.module.scss'
+import { PageInitArgs } from '@/core/Routes'
+import { fetchUserThunk } from '@/state/user/userThunk'
+import { usePage } from '../Game/hooks/usePage'
 
 const Profile = () => {
+  usePage({ initPage: initProfilePage })
   useDocumentTitle(TITLES.PROFILE)
   const [state, dispatch] = useReducer<
     React.Reducer<ProfileState, ProfileAction>
   >(profileReducer, initialState)
-  const user = useAppSelector(state => state.user)
+  const user = useAppSelector(
+    state => state.user.data
+  )
 
   return (
     <div
@@ -38,7 +44,7 @@ const Profile = () => {
         <div className={styles.card}>
           {state.view === 'info' && (
             <>
-              <ProfileInfo {...user} />
+              <ProfileInfo {...user!} />
               <div className={styles.footer}>
                 <Button
                   data-cy="edit-profile"
@@ -80,7 +86,8 @@ const Profile = () => {
           )}
           {state.view === 'editProfile' && (
             <ProfileForm
-              {...user}
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              {...user!}
               onCancel={() =>
                 dispatch({
                   type: actionTypes.SHOW_INFO,
@@ -97,3 +104,12 @@ const Profile = () => {
 }
 
 export default Profile
+
+export const initProfilePage = async ({
+  dispatch,
+  state,
+}: PageInitArgs) => {
+  if (!state.user) {
+    return dispatch(fetchUserThunk())
+  }
+}

@@ -35,7 +35,7 @@ const Header = (props: Props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const userLogin = useAppSelector(
-    state => state.user.login
+    state => state.user.data?.login
   )
 
   const toggleMenu = () => {
