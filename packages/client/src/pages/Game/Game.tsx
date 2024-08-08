@@ -29,7 +29,7 @@ import { useAppSelector } from '../../lib/hooks/redux'
 import LeaderboardApi from '../../core/api/leaderBord.api'
 import MuteButton from '../../components/MuteButton/MuteButton'
 import { Footer, Header } from '../../components'
-import { fetchUser } from '@/state/user/userThunk'
+import { fetchUserThunk } from '@/state/user/userThunk'
 import { PageInitArgs } from '@/core/Routes'
 import { usePage } from './hooks/usePage'
 
@@ -216,6 +216,6 @@ export const initGamePage = async ({
   state,
 }: PageInitArgs) => {
   if (!state.user) {
-    return dispatch(fetchUser())
+    return dispatch(fetchUserThunk())
   }
 }

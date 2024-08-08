@@ -2,12 +2,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { getUser } from '@/core/services/auth.service'
 import { IUserInfo } from '@/core/api/model'
 
-export const fetchUser = createAsyncThunk<
+export const fetchUserThunk = createAsyncThunk<
   IUserInfo,
-  string | undefined, // Accept cookies or undefined
+  string | undefined,
   { rejectValue: string }
 >(
-  'user/fetchUser',
+  'user/fetchUserThunk',
   async (cookies, { rejectWithValue }) => {
     try {
       const userData = await getUser({

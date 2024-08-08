@@ -1,7 +1,7 @@
 import {
   createBrowserRouter,
   // createMemoryRouter,
-  // RouteObject,
+  RouteObject,
   RouterProvider,
 } from 'react-router-dom'
 
@@ -36,7 +36,7 @@ export type PageInitArgs = {
   state: RootState
 }
 
-export const routes = [
+export const routes: RouteObject[] = [
   {
     element: <ErrorBoundaryLayout />,
     children: [
@@ -55,7 +55,6 @@ export const routes = [
             <Game />
           </ProtectedRoute>
         ),
-        fetchData: initGamePage,
       },
       {
         path: RoutePath.SIGN_IN,
@@ -90,7 +89,6 @@ export const routes = [
             <Profile />
           </ProtectedRoute>
         ),
-        fetchData: initProfilePage,
       },
       {
         path: RoutePath.PAGE_NOT_FOUND,
@@ -112,7 +110,6 @@ export const routes = [
   },
 ]
 
-// const router = createMemoryRouter(routes)
 let router: Router
 if (typeof window !== 'undefined') {
   router = createBrowserRouter(routes)

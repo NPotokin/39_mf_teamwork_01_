@@ -1,13 +1,9 @@
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 
-// import App from '@/core/App'
-import { store } from '@/state/store'
 import '@/index.scss'
-import '@/scss/nes.scss'
-// import { configureStore } from '@reduxjs/toolkit'
-// import reducer from '@/state/user/userSlice'
-// import { fetchUser } from '@/state/user/userThunk'
+
+import reducer from '@/state/user/userSlice'
 
 import { Request as ExpressRequest } from 'express'
 import {
@@ -21,7 +17,8 @@ import {
 } from '@/entry-server.utils'
 import { routes } from '@/core/Routes'
 import { matchRoutes } from 'react-router'
-import { fetchUser } from '@/state/user/userThunk'
+import { fetchUserThunk } from '@/state/user/userThunk'
+import { configureStore } from '@reduxjs/toolkit'
 
 export const render = async (
   req: ExpressRequest
@@ -44,20 +41,10 @@ export const render = async (
     throw new Error('Страница не найдена!')
   }
 
-  // const [{route: { fetchData }}] = foundRoutes
-
-  // try {
-  //   await fetchData({
-  //     dispatch: store.dispatch,
-  //     state: store.getState(),
-  //   })
-  // } catch (e) {
-  //   console.log('Инициализация страницы произошла с ошибкой', e)
-  // }
+  const store = configureStore({ reducer })
 
   const cookies = req.headers.cookie || ''
-  await store.dispatch(fetchUser(cookies))
-  console.log(cookies)
+  await store.dispatch(fetchUserThunk(cookies))
 
   const router = createStaticRouter(
     dataRoutes,
@@ -74,5 +61,6 @@ export const render = async (
       </Provider>
     ),
     initialState: store.getState(),
+    cookie: cookies,
   }
 }

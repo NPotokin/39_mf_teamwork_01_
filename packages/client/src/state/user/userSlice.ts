@@ -2,17 +2,16 @@ import {
   IUpdateUserResponse,
   IUserInfo,
 } from '@/core/api/model'
-// import { USER_DATA_KEY } from '@/core/services/auth.service'
 import {
   PayloadAction,
   createSlice,
 } from '@reduxjs/toolkit'
-import { fetchUser } from './userThunk'
+import { fetchUserThunk } from './userThunk'
 
 export type UserState = {
   data: IUserInfo | null
-  loading: boolean
-  error: string | null
+  loading?: boolean
+  error?: string | null
 }
 
 const initialState: UserState = {
@@ -54,12 +53,12 @@ const userSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchUser.pending, state => {
+      .addCase(fetchUserThunk.pending, state => {
         state.loading = true
         state.error = null
       })
       .addCase(
-        fetchUser.fulfilled,
+        fetchUserThunk.fulfilled,
         (
           state,
           action: PayloadAction<IUserInfo>
@@ -69,7 +68,7 @@ const userSlice = createSlice({
         }
       )
       .addCase(
-        fetchUser.rejected,
+        fetchUserThunk.rejected,
         (state, action) => {
           state.loading = false
           state.error = action.payload as string

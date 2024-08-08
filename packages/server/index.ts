@@ -120,6 +120,7 @@ async function startServer() {
       ) => Promise<{
         html: string
         initialState: unknown
+        cookie: string
       }>
 
       if (!isDevMode) {

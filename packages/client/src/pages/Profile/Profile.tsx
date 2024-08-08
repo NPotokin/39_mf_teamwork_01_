@@ -19,7 +19,7 @@ import {
 } from './reducer/Profile.reducer'
 import styles from './Profile.module.scss'
 import { PageInitArgs } from '@/core/Routes'
-import { fetchUser } from '@/state/user/userThunk'
+import { fetchUserThunk } from '@/state/user/userThunk'
 import { usePage } from '../Game/hooks/usePage'
 
 const Profile = () => {
@@ -110,6 +110,6 @@ export const initProfilePage = async ({
   state,
 }: PageInitArgs) => {
   if (!state.user) {
-    return dispatch(fetchUser())
+    return dispatch(fetchUserThunk())
   }
 }

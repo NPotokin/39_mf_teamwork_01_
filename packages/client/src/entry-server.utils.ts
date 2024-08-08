@@ -3,10 +3,6 @@ import { Request as ExpressRequest } from 'express'
 export const createUrl = (
   req: ExpressRequest
 ) => {
-  console.log(
-    'entry-server.utils headers.cookie:',
-    req.headers.cookie
-  )
   const origin = `${req.protocol}://${req.get(
     'host'
   )}`
