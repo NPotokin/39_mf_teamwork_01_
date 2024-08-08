@@ -9,14 +9,8 @@ services:
         SERVER_PORT: ${SERVER_PORT}
     restart: unless-stopped
     ports:
-        - "${SERVER_PORT}:${SERVER_PORT}"
-        - "${VITE_PORT}:${VITE_PORT}"
-    environment:
-      SERVER_PORT: ${SERVER_PORT}
-      SERVER_URL: ${SERVER_URL}
-      VITE_PORT: ${VITE_PORT}
-      NODE_ENV: ${ENV}
-      POSTGRES_HOST: ${POSTGRES_HOST}
+      - "${SERVER_PORT}:${SERVER_PORT}"
+      - "${VITE_PORT}:${VITE_PORT}"
     env_file:
       - .env
     volumes:

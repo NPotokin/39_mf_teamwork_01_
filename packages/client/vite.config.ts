@@ -19,7 +19,7 @@ export default defineConfig({
     port: Number(process.env.CLIENT_PORT) || 3000,
   },
   define: {
-    __SERVER_PORT__: Number(
+    __SERVER_PORT__: JSON.stringify(
       process.env.SERVER_PORT
     ),
     __SERVER_URL__: JSON.stringify(
