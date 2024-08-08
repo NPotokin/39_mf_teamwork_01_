@@ -20,6 +20,7 @@
     "@types/node": "18.11.17",
     "antd": "^5.18.3",
     "axios": "^1.7.2",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.2",
     "eslint-config-prettier": "^8.5.0",
     "formik": "^2.4.6",
@@ -30,6 +31,7 @@
     "react-router": "^6.23.1",
     "react-router-dom": "^6.23.1",
     "sass": "^1.77.6",
+    "serialize-javascript": "^6.0.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {

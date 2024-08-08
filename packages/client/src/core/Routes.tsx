@@ -1,5 +1,6 @@
 import {
-  createMemoryRouter,
+  createBrowserRouter,
+  // createMemoryRouter,
   RouteObject,
   RouterProvider,
 } from 'react-router-dom'
@@ -22,8 +23,20 @@ import {
   ServerErrorPage,
 } from '@/pages'
 import { ForumProvider } from '@/core/contexts'
+import {
+  AppDispatch,
+  RootState,
+} from '@/state/store'
+import { initGamePage } from '@/pages/Game/Game'
+import { initProfilePage } from '@/pages/Profile/Profile'
+import { Router } from '@remix-run/router'
 
-const routes: RouteObject[] = [
+export type PageInitArgs = {
+  dispatch: AppDispatch
+  state: RootState
+}
+
+export const routes: RouteObject[] = [
   {
     element: <ErrorBoundaryLayout />,
     children: [
@@ -97,10 +110,14 @@ const routes: RouteObject[] = [
   },
 ]
 
-const router = createMemoryRouter(routes)
+let router: Router
+if (typeof window !== 'undefined') {
+  router = createBrowserRouter(routes)
+}
 
-const Routes = () => (
-  <RouterProvider router={router} />
-)
+const Routes = () =>
+  router ? (
+    <RouterProvider router={router} />
+  ) : null
 
 export default Routes

@@ -2,10 +2,14 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
+import serialize from 'serialize-javascript'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
-import express from 'express'
+import express, {
+  Request as ExpressRequest,
+} from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -14,7 +18,13 @@ const isDev = () =>
 
 async function startServer() {
   const app = express()
-  app.use(cors())
+  app.use(
+    cors({
+      origin: process.env.CLIENT_PORT,
+      credentials: true,
+    })
+  )
+  app.use(cookieParser())
 
   const port =
     Number(process.env.SERVER_PORT) || 3001
@@ -105,7 +115,14 @@ async function startServer() {
         )
       }
 
-      let render: () => Promise<string>
+      let render: (
+        req: ExpressRequest
+      ) => Promise<{
+        html: string
+        initialState: unknown
+        cookie: string
+      }>
+
       if (!isDevMode) {
         render = (await import(clientSsrPath))
           .render
@@ -120,12 +137,20 @@ async function startServer() {
         ).render
       }
 
-      const appHtml = await render()
+      const { html: appHtml, initialState } =
+        await render(req)
 
-      const html = template.replace(
-        '<!--ssr-outlet-->',
-        appHtml
-      )
+      const html = template
+        .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace(
+          `<!--ssr-initial-state-->`,
+          `<script>window.APP_INITIAL_STATE = ${serialize(
+            initialState,
+            {
+              isJSON: true,
+            }
+          )}</script>`
+        )
 
       res
         .status(200)

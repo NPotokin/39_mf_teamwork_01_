@@ -29,6 +29,9 @@ import { useAppSelector } from '../../lib/hooks/redux'
 import LeaderboardApi from '../../core/api/leaderBord.api'
 import MuteButton from '../../components/MuteButton/MuteButton'
 import { Footer, Header } from '../../components'
+import { fetchUserThunk } from '@/state/user/userThunk'
+import { PageInitArgs } from '@/core/Routes'
+import { usePage } from './hooks/usePage'
 
 export type Level =
   | 'levelOne'
@@ -36,6 +39,7 @@ export type Level =
   | 'levelThree'
 
 const Game: React.FC = () => {
+  usePage({ initPage: initGamePage })
   const sounds = useGameSounds()
   const modals = useModals()
   const [level, setLevel] = useState(
@@ -49,10 +53,12 @@ const Game: React.FC = () => {
   })
   const leaderboardApi = new LeaderboardApi()
   const userLogin = useAppSelector(
-    state => state.user.login
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.user.data!.login
   )
   const userAvatar = useAppSelector(
-    state => state.user.avatar
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.user.data!.avatar
   )
   useEffect(() => {
     if (
@@ -204,3 +210,12 @@ const Game: React.FC = () => {
 }
 
 export default Game
+
+export const initGamePage = async ({
+  dispatch,
+  state,
+}: PageInitArgs) => {
+  if (!state.user) {
+    return dispatch(fetchUserThunk())
+  }
+}
