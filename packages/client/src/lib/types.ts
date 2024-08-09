@@ -4,3 +4,4 @@ export type SameKyes<
 > = {
   [key in keyof T]: string
 }
+export type Env = 'development' | 'production'

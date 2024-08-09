@@ -1,8 +1,6 @@
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 
-import '@/index.scss'
-
 import reducer from '@/state/user/userSlice'
 
 import { Request as ExpressRequest } from 'express'
