@@ -10,7 +10,7 @@ import {
   Index,
   HasMany,
 } from 'sequelize-typescript'
-import UserTheme from './User' // Путь к модели UserTheme
+import UserTheme from './User'
 
 @Table({
   timestamps: false,

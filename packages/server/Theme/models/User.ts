@@ -38,30 +38,3 @@ class UserTheme extends Model<UserTheme> {
 }
 
 export default UserTheme
-// import { Model, Table, Column, DataType, PrimaryKey, ForeignKey, BelongsTo, AllowNull } from 'sequelize-typescript';
-// import SiteTheme from './Theme'; // Путь к модели SiteTheme
-
-// @Table({
-//     timestamps: false,
-//     tableName: 'user_theme',
-// })
-// class UserTheme extends Model<UserTheme> {
-//     @PrimaryKey
-//     @AllowNull(false)
-//     @Column(DataType.INTEGER)
-//     userId!: number;
-
-//     @AllowNull(false)
-//     @ForeignKey(() => SiteTheme) // Указываем, что это внешний ключ, который ссылается на SiteTheme
-//     @Column(DataType.INTEGER)
-//     themeId!: number; // Внешний ключ для связи с таблицей SiteTheme
-
-//     @BelongsTo(() => SiteTheme)
-//     siteTheme!: SiteTheme; // Связь с SiteTheme
-
-//     @AllowNull(true)
-//     @Column(DataType.STRING)
-//     description?: string;
-// }
-
-// export default UserTheme;

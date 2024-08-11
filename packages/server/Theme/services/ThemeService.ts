@@ -56,33 +56,60 @@ export const createTheme = async (
     )
   }
 }
-//Обновление темы:
+
 export const updateTheme = async (
   userId: number,
   newTheme: string,
   description?: string
 ) => {
   try {
-    const existingTheme = await SiteTheme.findOne(
-      { where: { theme: newTheme } }
-    )
-    if (!existingTheme) {
+    // Поиск существующей темы по userId
+    const userTheme = await UserTheme.findOne({
+      where: { ownerId: userId },
+    })
+    if (!userTheme) {
+      // Если записи нет, создаем новую тему
       const createdTheme = await SiteTheme.create(
         {
           theme: newTheme,
           description,
         } as SiteTheme
       )
-      await UserTheme.upsert({
+
+      // Создаем новую запись UserTheme
+      await UserTheme.create({
+        themeId: createdTheme.themeId,
         ownerId: userId,
       } as UserTheme)
+
       return createdTheme
     }
 
-    await UserTheme.upsert({
-      themeId: existingTheme.themeId,
-      ownerId: userId,
-    } as UserTheme)
+    // Если запись есть, ищем существующую тему по названию
+    const existingTheme = await SiteTheme.findOne(
+      { where: { theme: newTheme } }
+    )
+
+    if (!existingTheme) {
+      // Если тема не существует, создаем новую
+      const createdTheme = await SiteTheme.create(
+        {
+          theme: newTheme,
+          description,
+        } as SiteTheme
+      )
+
+      // Обновляем запись UserTheme с новым themeId
+      userTheme.themeId = createdTheme.themeId
+      await userTheme.save()
+
+      return createdTheme
+    }
+
+    // Обновляем запись UserTheme существующей темой
+    userTheme.themeId = existingTheme.themeId
+    await userTheme.save()
+
     return existingTheme
   } catch (error) {
     const errorMessage = (error as Error).message
