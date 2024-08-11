@@ -28,6 +28,69 @@ const createTopic = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+const updateTopicDescription = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const topicId = req.params.id
+
+    if (!topicId) {
+      res.status(status.BAD_REQUEST).json({
+        reason: 'Отсутствует идентификатор топика',
+      })
+      return
+    }
+
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      res.status(status.SERVER_ERROR).json({
+        reason: errors.array(),
+      })
+      return
+    }
+
+    const newDescription = req.body.description
+
+    const topic = await TopicModel.findByPk(topicId)
+
+    if (topic) {
+      await topic.update({ description: newDescription })
+      res.status(status.SUCCESS).json({ info: 'Описание успешно обновлено' })
+    } else {
+      res.status(status.NOT_FOUND).json({
+        reason: `По идентификатору ${topicId} не найдено совпадений`,
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+const deleteTopic = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const topicId = req.params.id
+
+    if (!topicId) {
+      res.status(status.BAD_REQUEST).json({
+        reason: 'Отсутствует идентификатор топика',
+      })
+      return
+    }
+
+    const topic = await TopicModel.findByPk(topicId)
+
+    if (topic) {
+      await topic.destroy()
+      res.status(status.SUCCESS).json({ info: 'Топик успешно удален' })
+    } else {
+      res.status(status.NOT_FOUND).json({
+        reason: `По идентификатору ${topicId} не найдено совпадений`,
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
 const getAllTopics = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const topics = await TopicModel.findAll()
@@ -64,6 +127,8 @@ const getTopicById = async (req: Request, res: Response, next: NextFunction) => 
 
 export default {
   createTopic,
+  updateTopicDescription,
+  deleteTopic,
   getAllTopics,
   getTopicById,
 }
