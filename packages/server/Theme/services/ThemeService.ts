@@ -25,7 +25,8 @@ export const getThemeByUserId = async (
 export const createTheme = async (
   userId: number,
   theme: string,
-  description?: string
+  description?: string,
+  device?: string
 ) => {
   try {
     const existingTheme = await SiteTheme.findOne(
@@ -35,6 +36,7 @@ export const createTheme = async (
       await UserTheme.upsert({
         themeId: existingTheme.themeId,
         ownerId: userId,
+        device: device,
       } as UserTheme)
       return existingTheme
     }
@@ -46,6 +48,7 @@ export const createTheme = async (
     await UserTheme.create({
       themeId: newTheme.themeId,
       ownerId: userId,
+      device: device,
     } as UserTheme)
 
     return newTheme
@@ -57,10 +60,12 @@ export const createTheme = async (
   }
 }
 
+//Обновление темы:
 export const updateTheme = async (
   userId: number,
   newTheme: string,
-  description?: string
+  description?: string,
+  device?: string
 ) => {
   try {
     // Поиск существующей темы по userId
@@ -80,6 +85,7 @@ export const updateTheme = async (
       await UserTheme.create({
         themeId: createdTheme.themeId,
         ownerId: userId,
+        device: device,
       } as UserTheme)
 
       return createdTheme
@@ -108,6 +114,7 @@ export const updateTheme = async (
 
     // Обновляем запись UserTheme существующей темой
     userTheme.themeId = existingTheme.themeId
+    userTheme.device = device
     await userTheme.save()
 
     return existingTheme

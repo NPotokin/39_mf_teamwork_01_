@@ -11,6 +11,8 @@ import {
   darkTheme,
   lightTheme,
 } from '@/core/theme'
+import { getUserDevice } from '../utils/deviceUtils'
+import { useAppSelector } from '@/lib/hooks/redux'
 
 type ThemeType = 'light' | 'dark'
 
@@ -41,17 +43,20 @@ export const useTheme = () => {
 export const ThemeProvider: React.FC<
   PropsWithChildren
 > = ({ children }) => {
-  const [theme, setTheme] =
-    useState<ThemeType>('light')
+  // Сначала пытаемся получить тему из localStorage, если её там нет - по умолчанию 'light'
+  const [theme, setTheme] = useState<ThemeType>(
+    (localStorage.getItem(
+      'theme'
+    ) as ThemeType) || 'light'
+  )
 
-  const userData =
-    localStorage.getItem('userData')
-  const userId = userData
-    ? JSON.parse(userData).id
-    : null
-
+  const user = useAppSelector(
+    state => state.user.data
+  )
+  const userId = user?.id
   useEffect(() => {
     const fetchTheme = async () => {
+      if (!userId) return
       try {
         const response = await axios.get(
           `/api/themes/${userId}`
@@ -68,8 +73,10 @@ export const ThemeProvider: React.FC<
       }
     }
 
-    fetchTheme()
-  }, [])
+    if (userId) {
+      fetchTheme()
+    }
+  }, [userId])
 
   useEffect(() => {
     document.body.setAttribute(
@@ -83,13 +90,17 @@ export const ThemeProvider: React.FC<
       theme === 'light' ? 'dark' : 'light'
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
+    if (!userId) return // Если пользователь не зарегистрирован, не выполнять запрос
+    const device = getUserDevice() // Используем функцию для получения устройства
 
     try {
+      if (!userId) return
       try {
         await axios.get(`/api/themes/${userId}`)
         await axios.put(`/api/themes/${userId}`, {
           theme: newTheme,
           description: newTheme,
+          device, // Отправляем устройство пользователя
         })
       } catch (error) {
         const axiosError = error as AxiosError
@@ -100,6 +111,7 @@ export const ThemeProvider: React.FC<
             {
               theme: newTheme,
               description: newTheme,
+              device, // Отправляем устройство пользователя
             }
           )
         } else {

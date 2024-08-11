@@ -61,12 +61,14 @@ export const updateTheme = async (
   res: Response
 ) => {
   const { userId } = req.params
-  const { theme, description } = req.body
+  const { theme, description, device } = req.body
+  console.log('!!!req', req)
   try {
     const updatedTheme = await modifyTheme(
       parseInt(userId, 10),
       theme,
-      description
+      description,
+      device
     )
     if (updatedTheme) {
       res.status(200).json(updatedTheme)

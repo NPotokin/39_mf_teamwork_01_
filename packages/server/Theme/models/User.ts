@@ -7,6 +7,7 @@ import {
   AutoIncrement,
   PrimaryKey,
   AllowNull,
+  Index,
 } from 'sequelize-typescript'
 import SiteTheme from './Theme'
 
@@ -23,6 +24,7 @@ class UserTheme extends Model<UserTheme> {
 
   @ForeignKey(() => SiteTheme)
   @AllowNull(false)
+  @Index //  индекс на themeId
   @Column(DataType.INTEGER)
   themeId!: number // Внешний ключ на SiteTheme
 
@@ -34,6 +36,7 @@ class UserTheme extends Model<UserTheme> {
     type: DataType.INTEGER,
     field: 'owner_id',
   })
+  @Index //индекс на ownerId
   ownerId!: number // Идентификатор пользователя
 }
 

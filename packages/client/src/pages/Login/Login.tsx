@@ -5,7 +5,10 @@ import { Button } from 'antd/lib'
 
 import { EMPTY_STRING } from '@/core/constants'
 import styles from './Login.module.scss'
-import { CustomForm } from '@/components'
+import {
+  CustomForm,
+  ThemeToggle,
+} from '@/components'
 
 import { showNotification } from '@/core/services/notification.service'
 import { errorInfo } from '@/lib/utils/errorInfo'
@@ -96,6 +99,7 @@ const Login = () => {
 
   return (
     <div className={cn('page', styles.page)}>
+      <ThemeToggle className={styles.theme} />
       <div className={styles.card}>
         <header className={styles.header}>
           <div className={styles.logo}>
