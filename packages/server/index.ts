@@ -1,5 +1,7 @@
 import express, {
   Request as ExpressRequest,
+  Response,
+  NextFunction,
 } from 'express'
 import 'dotenv/config'
 import { readFileSync } from 'fs'
@@ -11,12 +13,14 @@ import serialize from 'serialize-javascript'
 import cookieParser from 'cookie-parser'
 
 import { createClientAndConnect } from './db'
+import { status } from './constants'
 import { ENVIRONMENT } from './config/environment'
 import {
   CLIENT_PATH,
   CLIENT_DIST_PATH,
   CLIENT_DIST_SSR_PATH,
 } from './config/paths'
+import router from './routes'
 
 const isDevMode = ENVIRONMENT.DEVELOPMENT
 
@@ -79,9 +83,8 @@ async function startServer() {
     )
   }
 
-  app.get('/api', (_, res) => {
-    res.json('👋 Howdy from the server :)')
-  })
+  app.use(express.json())
+  app.use('/api', router)
 
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl
@@ -158,6 +161,19 @@ async function startServer() {
       next(error)
     }
   })
+
+  app.use(
+    (
+      err: Error,
+      req: ExpressRequest,
+      res: Response,
+      next: NextFunction
+    ) => {
+      console.log(err)
+      res.status(status.SERVER_ERROR).json(err)
+      next()
+    }
+  )
 
   app.listen(port, () => {
     console.log(

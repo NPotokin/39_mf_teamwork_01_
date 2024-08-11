@@ -21,33 +21,46 @@ const App = () => {
   const isAuthenticated = useIsAuth()
 
   useEffect(() => {
-    if (ENVIRONMENT.PRODUCTION) {
-      window.addEventListener(
-        'load',
-        registerServiceWorker
-      )
-    }
+    // if (ENVIRONMENT.PRODUCTION) {
+    //   window.addEventListener(
+    //     'load',
+    //     registerServiceWorker
+    //   )
+    // }
 
     const controller = new AbortController()
     const signal = controller.signal
 
     const fetchServerData = async () => {
-      const url = `${__SERVER_URL__}:${__SERVER_PORT__}/api`
+      const urlTopics = `${__SERVER_URL__}:${__SERVER_PORT__}/api/topics`
+      // const urlTopicById = `${__SERVER_URL__}:${__SERVER_PORT__}/api/topics/${3}`
 
       try {
-        const response = await fetch(url, {
-          signal,
-        })
-        const data = await response.json()
-        console.log(data)
+        // const allTopics = await fetch(urlTopics, { signal })
+        const createTopic = await fetch(
+          urlTopics,
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              topicName: 'Game difficult',
+              description:
+                'Topic about difficulty levels of the game Pumkin Pandas',
+            }),
+            signal,
+          }
+        )
+        // const topicById = await fetch(urlTopicById, { signal })
+
+        // const allTopicsData = await allTopics.json();
+        // const topicByIdData = await topicById.json();
+        const resp = await createTopic.json()
+
+        // console.log(allTopicsData)
+        // console.log(topicByIdData)
+        console.log(resp)
       } catch (error: unknown) {
-        if (
-          (error as Error).name === 'AbortError'
-        ) {
-          console.log('Request aborted')
-        } else {
-          console.error('Fetch data failed')
-        }
+        console.error('Fetch data failed')
+        console.error(error)
       } finally {
         // setLoading(false)
       }

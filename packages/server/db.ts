@@ -3,6 +3,7 @@ import {
   Sequelize,
   SequelizeOptions,
 } from 'sequelize-typescript'
+import { topicModel } from './models'
 
 const {
   POSTGRES_USER,
@@ -19,10 +20,15 @@ const sequelizeOptions: SequelizeOptions = {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   dialect: 'postgres',
-  models: [],
 }
 
 const sequelize = new Sequelize(sequelizeOptions)
+
+export const TopicModel = sequelize.define(
+  'Topic',
+  topicModel,
+  { timestamps: false }
+)
 
 export const createClientAndConnect =
   async (): Promise<void> => {
