@@ -17,6 +17,7 @@ import {
   CLIENT_DIST_PATH,
   CLIENT_DIST_SSR_PATH,
 } from './config/paths'
+import themeRoutes from './Theme/themeRoutes'
 
 const isDevMode = ENVIRONMENT.DEVELOPMENT
 
@@ -78,6 +79,9 @@ async function startServer() {
       )
     )
   }
+  // Подключение маршрутов
+  app.use(express.json()) // Для обработки JSON данных в запросах
+  app.use('/api', themeRoutes) // Подключение маршрутов, все маршруты будут начинаться с /api
 
   app.get('/api', (_, res) => {
     res.json('👋 Howdy from the server :)')
