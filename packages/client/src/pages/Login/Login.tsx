@@ -24,6 +24,7 @@ import {
 } from '@/core/services/auth.service'
 import { TITLES } from '@/lib/constants'
 import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
+import { ThemeProvider } from '@/core/contexts'
 
 const initialValues: LoginForm = {
   login: EMPTY_STRING,
@@ -98,48 +99,50 @@ const Login = () => {
   }
 
   return (
-    <div className={cn('page', styles.page)}>
-      <ThemeToggle className={styles.theme} />
-      <div className={styles.card}>
-        <header className={styles.header}>
-          <div className={styles.logo}>
-            <img src={logo} alt="Panda logo" />
+    <ThemeProvider>
+      <div className={cn('page', styles.page)}>
+        <ThemeToggle className={styles.theme} />
+        <div className={styles.card}>
+          <header className={styles.header}>
+            <div className={styles.logo}>
+              <img src={logo} alt="Panda logo" />
+            </div>
+            <div className={styles.title}>
+              Welcome back!
+            </div>
+          </header>
+          <div className={styles.form}>
+            <CustomForm
+              initialValues={initialValues}
+              titles={titles}
+              schema={loginSchema}
+              buttonTitle="Sign In"
+              handleSubmit={
+                handleSubmit
+              }></CustomForm>
           </div>
-          <div className={styles.title}>
-            Welcome back!
-          </div>
-        </header>
-        <div className={styles.form}>
-          <CustomForm
-            initialValues={initialValues}
-            titles={titles}
-            schema={loginSchema}
-            buttonTitle="Sign In"
-            handleSubmit={
-              handleSubmit
-            }></CustomForm>
+          <footer className={styles.footer}>
+            <span>Don't have an account?</span>
+            <Button
+              className={cn(
+                'nes-btn',
+                styles.button
+              )}
+              onClick={handleSignUpClick}>
+              Sign Up
+            </Button>
+            <Button
+              className={cn(
+                'nes-btn is-warning',
+                styles.button
+              )}
+              onClick={handleAuth}>
+              Sign In with Yandex
+            </Button>
+          </footer>
         </div>
-        <footer className={styles.footer}>
-          <span>Don't have an account?</span>
-          <Button
-            className={cn(
-              'nes-btn',
-              styles.button
-            )}
-            onClick={handleSignUpClick}>
-            Sign Up
-          </Button>
-          <Button
-            className={cn(
-              'nes-btn is-warning',
-              styles.button
-            )}
-            onClick={handleAuth}>
-            Sign In with Yandex
-          </Button>
-        </footer>
       </div>
-    </div>
+    </ThemeProvider>
   )
 }
 

@@ -62,7 +62,7 @@ export const updateTheme = async (
 ) => {
   const { userId } = req.params
   const { theme, description, device } = req.body
-  console.log('!!!req', req)
+
   try {
     const updatedTheme = await modifyTheme(
       parseInt(userId, 10),

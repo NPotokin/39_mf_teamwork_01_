@@ -36,7 +36,6 @@ class UserTheme extends Model<UserTheme> {
     type: DataType.INTEGER,
     field: 'owner_id',
   })
-  @Index //индекс на ownerId
   ownerId!: number // Идентификатор пользователя
 }
 

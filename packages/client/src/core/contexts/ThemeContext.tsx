@@ -44,14 +44,18 @@ export const ThemeProvider: React.FC<
   PropsWithChildren
 > = ({ children }) => {
   // Сначала пытаемся получить тему из localStorage, если её там нет - по умолчанию 'light'
-  const [theme, setTheme] = useState<ThemeType>(
-    (localStorage.getItem(
-      'theme'
-    ) as ThemeType) || 'light'
-  )
+  const themeStart =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem(
+          'theme'
+        ) as ThemeType)
+      : 'light'
+
+  const [theme, setTheme] =
+    useState<ThemeType>(themeStart)
 
   const user = useAppSelector(
-    state => state.user.data
+    state => state.user?.data
   )
   const userId = user?.id
   useEffect(() => {
