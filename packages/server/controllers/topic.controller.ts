@@ -1,7 +1,8 @@
-import { TopicModel, Topic } from '../models'
+import { TopicModel, Topic, CommentsModel } from '../models'
 import { status } from '../constants'
 import { NextFunction, Request, Response } from 'express'
 import { validationResult } from 'express-validator'
+import { col, fn } from 'sequelize'
 
 const createTopic = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -92,8 +93,21 @@ const deleteTopic = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllTopics = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    // TODO добавить join для получения количества сообщений по каждому топику
-    const topics = await TopicModel.findAll()
+    const topics = await TopicModel.findAll({
+      attributes: [
+        'topicId',
+        'name',
+        'description',
+        [fn('COUNT', col('comments.topicId')), 'count'],
+      ],
+      include: {
+        model: CommentsModel,
+        as: 'comments',
+        attributes: [],
+      },
+      group: ['TopicModel.topicId'],
+      order: ['topicId'],
+    })
     res.status(status.SUCCESS).json(topics)
   } catch (error) {
     next(error)

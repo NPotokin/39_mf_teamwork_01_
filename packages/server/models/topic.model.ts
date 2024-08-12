@@ -7,9 +7,10 @@ import {
   PrimaryKey,
   AllowNull,
   Validate,
-  Unique,
   Default,
+  HasMany,
 } from 'sequelize-typescript'
+import CommentsModel, { Comments } from './comments.model'
 
 export type Topic = {
   name: string
@@ -27,7 +28,6 @@ class TopicModel extends Model<Topic> {
   topicId!: number
 
   @AllowNull(false)
-  @Unique
   @Validate({
     notEmpty: true,
     max: 255,
@@ -41,6 +41,9 @@ class TopicModel extends Model<Topic> {
   })
   @Column(DataType.TEXT)
   description!: string
+
+  @HasMany(() => CommentsModel)
+  comments!: Comments[]
 }
 
 export default TopicModel

@@ -31,7 +31,7 @@ const deleteComment = async (req: Request, res: Response, next: NextFunction) =>
 
     if (!commentId) {
       res.status(status.BAD_REQUEST).json({
-        reason: 'Отсутствует идентификатор комменатрия',
+        reason: 'Отсутствует идентификатор комментария',
       })
       return
     }

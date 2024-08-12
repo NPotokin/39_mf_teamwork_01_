@@ -7,8 +7,6 @@ commentRouter.get('/comments/:id')
 
 commentRouter.post('/comments/:id', commentController.addComment)
 
-commentRouter.put('/comments/:id')
-
 commentRouter.delete('/comments/:id', commentController.deleteComment)
 
 export default commentRouter

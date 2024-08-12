@@ -8,8 +8,9 @@ import {
   PrimaryKey,
   AllowNull,
   Validate,
+  BelongsTo,
 } from 'sequelize-typescript'
-import TopicModel from './topic.model'
+import TopicModel, { Topic } from './topic.model'
 
 export type Comments = {
   content: string
@@ -38,6 +39,9 @@ class CommentsModel extends Model<Comments> {
   @AllowNull(false)
   @Column(DataType.INTEGER)
   topicId!: number
+
+  @BelongsTo(() => TopicModel)
+  topic!: Topic
 }
 
 export default CommentsModel
