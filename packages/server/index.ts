@@ -52,6 +52,13 @@ async function startServer() {
 
   app.use('/api', router)
 
+  app.use((req, res, next) => {
+    req.setTimeout(20000, () => {
+      res.status(408).send('Request Timeout')
+    })
+    next()
+  })
+
   // Глобальный middleware обработки ошибок
   app.use(ErrorHandler)
 
@@ -87,7 +94,8 @@ async function startServer() {
         `<!--ssr-initial-state-->`,
         `<script>window.APP_INITIAL_STATE = ${serialize(initialState, {
           isJSON: true,
-        })}</script>`
+        })}
+        </script>`
       )
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)

@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import topicController from '../controllers/topic.controller'
-import { topicCreateDataValidate, topicUpdateDescDataValidate } from '../validation/topic.schema'
+import { topicController } from '../controllers'
+import { topicCreateDataValidate, topicUpdateDescDataValidate } from '../validation'
 
 const topicRouter = Router()
 

@@ -1,17 +1,8 @@
 import 'dotenv/config'
-import {
-  Sequelize,
-  SequelizeOptions,
-} from 'sequelize-typescript'
-import { topicModel } from './models'
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
+import { commentsModel, topicModel } from './models'
 
-const {
-  POSTGRES_USER,
-  POSTGRES_PASSWORD,
-  POSTGRES_DB,
-  POSTGRES_PORT,
-  POSTGRES_HOST,
-} = process.env
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, POSTGRES_HOST } = process.env
 
 const sequelizeOptions: SequelizeOptions = {
   host: POSTGRES_HOST,
@@ -24,25 +15,19 @@ const sequelizeOptions: SequelizeOptions = {
 
 const sequelize = new Sequelize(sequelizeOptions)
 
-export const TopicModel = sequelize.define(
-  'Topic',
-  topicModel,
-  { timestamps: false }
-)
+export const TopicModel = sequelize.define('Topic', topicModel, { timestamps: false })
+export const CommentsModel = sequelize.define('Comments', commentsModel)
 
-export const createClientAndConnect =
-  async (): Promise<void> => {
-    try {
-      await sequelize.authenticate()
-      await sequelize.sync()
+TopicModel.hasMany(CommentsModel, { onDelete: 'CASCADE', hooks: true })
+CommentsModel.belongsTo(TopicModel)
 
-      console.log(
-        'Connection has been established successfully.'
-      )
-    } catch (error: unknown) {
-      console.error(
-        'Unable to connect to the database:',
-        error
-      )
-    }
+export const createClientAndConnect = async (): Promise<void> => {
+  try {
+    await sequelize.authenticate()
+    await sequelize.sync()
+
+    console.log('Connection has been established successfully.')
+  } catch (error: unknown) {
+    console.error('Unable to connect to the database:', error)
   }
+}

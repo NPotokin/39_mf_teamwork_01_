@@ -125,10 +125,4 @@ const getTopicById = async (req: Request, res: Response, next: NextFunction) => 
   }
 }
 
-export default {
-  createTopic,
-  updateTopicDescription,
-  deleteTopic,
-  getAllTopics,
-  getTopicById,
-}
+export { createTopic, updateTopicDescription, deleteTopic, getAllTopics, getTopicById }
