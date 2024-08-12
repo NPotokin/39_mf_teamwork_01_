@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
-import { commentsModel, topicModel } from './models'
+import { TopicModel, CommentsModel } from './models'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, POSTGRES_HOST } = process.env
 
@@ -11,15 +11,10 @@ const sequelizeOptions: SequelizeOptions = {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   dialect: 'postgres',
+  models: [TopicModel, CommentsModel],
 }
 
 const sequelize = new Sequelize(sequelizeOptions)
-
-export const TopicModel = sequelize.define('Topic', topicModel, { timestamps: false })
-export const CommentsModel = sequelize.define('Comments', commentsModel)
-
-TopicModel.hasMany(CommentsModel, { onDelete: 'CASCADE', hooks: true })
-CommentsModel.belongsTo(TopicModel)
 
 export const createClientAndConnect = async (): Promise<void> => {
   try {

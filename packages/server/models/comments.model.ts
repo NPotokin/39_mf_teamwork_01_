@@ -1,26 +1,43 @@
-import { DataType, Model } from 'sequelize-typescript'
-import { ModelAttributes } from 'sequelize/types'
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  ForeignKey,
+  AutoIncrement,
+  PrimaryKey,
+  AllowNull,
+  Validate,
+} from 'sequelize-typescript'
+import TopicModel from './topic.model'
 
 export type Comments = {
   content: string
   topicId: string
 }
+@Table({
+  timestamps: false,
+  paranoid: true,
+  tableName: 'Comments',
+})
+class CommentsModel extends Model<Comments> {
+  @AutoIncrement
+  @PrimaryKey
+  @Column(DataType.INTEGER)
+  commentId!: number
 
-export const commentsModel: ModelAttributes<Model<Comments>, Comments> = {
-  content: {
-    type: DataType.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-      max: 255,
-    },
-  },
-  topicId: {
-    type: DataType.INTEGER,
-    allowNull: false,
-    references: {
-      model: { tableName: 'Topics' },
-      key: 'id',
-    },
-  },
+  @AllowNull(false)
+  @Validate({
+    notEmpty: true,
+    max: 255,
+  })
+  @Column(DataType.STRING)
+  content!: string
+
+  @ForeignKey(() => TopicModel)
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  topicId!: number
 }
+
+export default CommentsModel

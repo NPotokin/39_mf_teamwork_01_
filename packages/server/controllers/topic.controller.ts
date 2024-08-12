@@ -1,6 +1,5 @@
-import { Topic } from '../models/topic.model'
+import { TopicModel, Topic } from '../models'
 import { status } from '../constants'
-import { TopicModel } from '../db'
 import { NextFunction, Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 
@@ -93,6 +92,7 @@ const deleteTopic = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllTopics = async (_req: Request, res: Response, next: NextFunction) => {
   try {
+    // TODO добавить join для получения количества сообщений по каждому топику
     const topics = await TopicModel.findAll()
     res.status(status.SUCCESS).json(topics)
   } catch (error) {

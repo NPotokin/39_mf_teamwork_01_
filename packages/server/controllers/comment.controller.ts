@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { status } from '../constants'
-import { CommentsModel } from '../db'
-import { Comments } from '../models/comments.model'
+import { CommentsModel, Comments } from '../models'
 
 const addComment = async (req: Request, res: Response, next: NextFunction) => {
   try {
