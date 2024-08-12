@@ -80,6 +80,7 @@ async function startServer() {
     )
   }
   //  Подключение маршрутов
+  app.use(express.json())
   app.use('/api', themeRoutes) // Подключение маршрутов, все маршруты будут начинаться с /api
 
   app.get('/api', (_, res) => {
