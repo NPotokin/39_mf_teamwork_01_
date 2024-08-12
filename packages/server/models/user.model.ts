@@ -9,7 +9,7 @@ import {
   AllowNull,
   Index,
 } from 'sequelize-typescript'
-import SiteTheme from './Theme'
+import SiteTheme from './theme.model'
 
 @Table({
   timestamps: false,

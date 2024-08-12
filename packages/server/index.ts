@@ -17,7 +17,7 @@ import {
   CLIENT_DIST_PATH,
   CLIENT_DIST_SSR_PATH,
 } from './config/paths'
-import themeRoutes from './Theme/themeRoutes'
+import router from './routes'
 
 const isDevMode = ENVIRONMENT.DEVELOPMENT
 
@@ -30,6 +30,7 @@ async function startServer() {
       credentials: true,
     })
   )
+  app.use(express.json())
   app.use(cookieParser())
 
   const port =
@@ -79,10 +80,15 @@ async function startServer() {
       )
     )
   }
-  //  Подключение маршрутов
-  app.use(express.json())
-  app.use('/api', themeRoutes) // Подключение маршрутов, все маршруты будут начинаться с /api
 
+  app.use('/api', router)
+
+  app.use((req, res, next) => {
+    req.setTimeout(20000, () => {
+      res.status(408).send('Request Timeout')
+    })
+    next()
+  })
   app.get('/api', (_, res) => {
     res.json('👋 Howdy from the server :)')
   })

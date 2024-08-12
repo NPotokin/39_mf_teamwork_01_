@@ -1,5 +1,5 @@
-import SiteTheme from '../models/Theme'
-import UserTheme from '../models/User'
+import SiteTheme from '../models/theme.model'
+import UserTheme from '../models/user.model'
 
 //Получение темы по userId:
 export const getThemeByUserId = async (

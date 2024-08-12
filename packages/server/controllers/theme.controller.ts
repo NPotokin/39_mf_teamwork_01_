@@ -3,7 +3,7 @@ import {
   getThemeByUserId,
   createTheme,
   updateTheme as modifyTheme,
-} from '../services/ThemeService'
+} from '../services/theme.service'
 // Получение темы:
 export const getTheme = async (
   req: Request,

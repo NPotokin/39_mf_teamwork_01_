@@ -45,7 +45,8 @@ export const ThemeProvider: React.FC<
 > = ({ children }) => {
   // Сначала пытаемся получить тему из localStorage, если её там нет - по умолчанию 'light'
   const themeStart =
-    typeof window !== 'undefined'
+    typeof window !== 'undefined' &&
+    localStorage.getItem('theme')
       ? (localStorage.getItem(
           'theme'
         ) as ThemeType)
@@ -67,8 +68,10 @@ export const ThemeProvider: React.FC<
         )
         const userTheme = response.data
           .theme as ThemeType
-        setTheme(userTheme)
-        localStorage.setItem('theme', userTheme)
+        if (userTheme) {
+          setTheme(userTheme)
+          localStorage.setItem('theme', userTheme)
+        }
       } catch (error) {
         console.error(
           'Failed to fetch theme from server',
@@ -130,7 +133,6 @@ export const ThemeProvider: React.FC<
       )
     }
   }
-
   return (
     <ThemeContext.Provider
       value={{ theme, toggleTheme }}>
