@@ -12,7 +12,7 @@ import { createClientAndConnect } from './db'
 import { ENVIRONMENT } from './config/environment'
 import { CLIENT_PATH, CLIENT_DIST_PATH, CLIENT_DIST_SSR_PATH } from './config/paths'
 import router from './routes'
-import { ErrorHandler } from './middleware'
+import { ErrorHandler, yandexApiProxy } from './middleware'
 
 const isDevMode = ENVIRONMENT.DEVELOPMENT
 
@@ -50,6 +50,7 @@ async function startServer() {
     app.use('/sw.js', express.static(resolve(CLIENT_DIST_PATH, 'sw.js')))
   }
 
+  app.use('/yandex-api', yandexApiProxy)
   app.use('/api', router)
 
   app.use((req, res, next) => {

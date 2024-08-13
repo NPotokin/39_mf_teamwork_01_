@@ -1,7 +1,4 @@
-import {
-  AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import {
   IAPIError,
   ICreateUser,
@@ -13,36 +10,22 @@ import {
 import axiosDB from './api'
 
 export default class AuthApi {
-  public create(
-    data: ICreateUser
-  ): Promise<
-    AxiosResponse<ISignUpResponse | IAPIError>
-  > {
-    return axiosDB.post<ISignUpResponse>(
-      '/auth/signup',
-      data
-    )
+  public create(data: ICreateUser): Promise<AxiosResponse<ISignUpResponse | IAPIError>> {
+    return axiosDB.post<ISignUpResponse>('/auth/signup', data)
   }
 
-  public login(
-    data: ILoginRequestData
-  ): Promise<AxiosResponse<void | IAPIError>> {
-    return axiosDB.post('/auth/signin', data)
+  public login(data: ILoginRequestData): Promise<AxiosResponse<void | IAPIError>> {
+    return axios.post('http://localhost:3001/yandex-api/auth/signin', data)
+    // return axiosDB.post('/auth/signin', data)
   }
 
-  public user(
-    options?: AxiosRequestConfig
-  ): Promise<
-    AxiosResponse<IUserInfo | IAPIError>
-  > {
+  public user(options?: AxiosRequestConfig): Promise<AxiosResponse<IUserInfo | IAPIError>> {
     return axiosDB.get('/auth/user', {
       ...options,
     })
   }
 
-  public logout(): Promise<
-    AxiosResponse<void | IAPIError>
-  > {
+  public logout(): Promise<AxiosResponse<void | IAPIError>> {
     return axiosDB.post('/auth/logout')
   }
 
@@ -64,17 +47,12 @@ export default class AuthApi {
   public getServiceId(
     redirectUri: string,
     options?: AxiosRequestConfig
-  ): Promise<
-    AxiosResponse<IYandexServiceId | IAPIError>
-  > {
-    return axiosDB.get(
-      '/oauth/yandex/service-id',
-      {
-        params: {
-          redirect_uri: redirectUri,
-        },
-        ...options,
-      }
-    )
+  ): Promise<AxiosResponse<IYandexServiceId | IAPIError>> {
+    return axiosDB.get('/oauth/yandex/service-id', {
+      params: {
+        redirect_uri: redirectUri,
+      },
+      ...options,
+    })
   }
 }

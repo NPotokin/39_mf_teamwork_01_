@@ -3,8 +3,10 @@ import { commentController } from '../controllers/'
 
 const commentRouter = Router()
 
-commentRouter.get('/comments/:id')
+// Получить все комментарии по идентификатору топика
+commentRouter.get('/comments/:id', commentController.getCommentsOnTopic)
 
+// Добавить комментарий по идентификатору топика
 commentRouter.post('/comments/:id', commentController.addComment)
 
 commentRouter.delete('/comments/:id', commentController.deleteComment)
