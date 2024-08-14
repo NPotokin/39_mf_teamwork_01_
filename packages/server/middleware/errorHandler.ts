@@ -2,9 +2,7 @@ import { status } from '../constants'
 import { NextFunction, Request, Response } from 'express'
 import { UniqueConstraintError } from 'sequelize'
 
-const ErrorHandler = (err: unknown, _req: Request, res: Response, next: NextFunction) => {
-  console.log('Middleware Error Hadnling')
-
+const errorHandler = (err: unknown, _req: Request, res: Response, next: NextFunction) => {
   if (err instanceof UniqueConstraintError) {
     res.status(status.BAD_REQUEST).json({
       reason: err.errors.map(error => error.message).join(','),
@@ -19,4 +17,4 @@ const ErrorHandler = (err: unknown, _req: Request, res: Response, next: NextFunc
   next()
 }
 
-export default ErrorHandler
+export default errorHandler
