@@ -27,6 +27,7 @@ async function startServer() {
       credentials: true,
     })
   )
+  
   app.use('/yandex-api', yandexApiProxy)
   app.use(express.json())
 

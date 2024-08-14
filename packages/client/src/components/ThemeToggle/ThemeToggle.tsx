@@ -19,7 +19,6 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
 
   const handleClick = () => {
     toggleTheme()
-    if (onChange) onChange()
   }
   return (
     <Button

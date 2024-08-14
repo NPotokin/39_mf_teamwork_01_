@@ -64,3 +64,19 @@
     }
   }
 }
+
+  .theme{
+	color: var(--light);
+	font-size: 1.85rem;
+	margin-left: 92%;
+    margin-top: 3rem;
+	&:hover {
+	  color: var(--state-primary) !important;
+	}
+  
+	&:focus {
+	  outline: none;
+	  box-shadow: none;
+	}
+	
+  }  
