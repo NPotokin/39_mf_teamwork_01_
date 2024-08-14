@@ -36,9 +36,9 @@ const getAllEmojisForComment = async (req: Request, res: Response, next: NextFun
       where: {
         commentId,
       },
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       attributes: [
         'emoji',
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         [ReactionsModel.sequelize!.fn('COUNT', ReactionsModel.sequelize!.col('emoji')), 'count'],
       ],
       group: ['emoji'],
