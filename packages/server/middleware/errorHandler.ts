@@ -8,7 +8,7 @@ const errorHandler = (err: unknown, _req: Request, res: Response, next: NextFunc
       reason: err.errors.map(error => error.message).join(','),
     })
   } else {
-    const errMsg = err instanceof Error ? err.message : 'Не известная ошибка'
+    const errMsg = err instanceof Error ? err.message : 'Unknown error'
     res.status(status.SERVER_ERROR).json({
       reason: errMsg,
     })

@@ -22,7 +22,7 @@ const createTopic = async (req: Request, res: Response, next: NextFunction) => {
 
     await TopicModel.create(newTopic)
 
-    res.status(status.SUCCESS).json({ info: 'Топик успешно создан' })
+    res.status(status.SUCCESS).json({ info: 'Success' })
   } catch (error) {
     next(error)
   }
@@ -34,7 +34,7 @@ const updateTopicDescription = async (req: Request, res: Response, next: NextFun
 
     if (!topicId) {
       res.status(status.BAD_REQUEST).json({
-        reason: 'Отсутствует идентификатор топика',
+        reason: 'Topic id missed',
       })
       return
     }
@@ -54,10 +54,10 @@ const updateTopicDescription = async (req: Request, res: Response, next: NextFun
 
     if (topic) {
       await topic.update({ description: newDescription })
-      res.status(status.SUCCESS).json({ info: 'Описание успешно обновлено' })
+      res.status(status.SUCCESS).json({ info: 'Succes' })
     } else {
       res.status(status.NOT_FOUND).json({
-        reason: `По идентификатору ${topicId} не найдено совпадений`,
+        reason: 'No matches found',
       })
     }
   } catch (error) {
@@ -71,7 +71,7 @@ const deleteTopic = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!topicId) {
       res.status(status.BAD_REQUEST).json({
-        reason: 'Отсутствует идентификатор топика',
+        reason: 'Topic id missed',
       })
       return
     }
@@ -80,10 +80,10 @@ const deleteTopic = async (req: Request, res: Response, next: NextFunction) => {
 
     if (topic) {
       await topic.destroy()
-      res.status(status.SUCCESS).json({ info: 'Топик успешно удален' })
+      res.status(status.SUCCESS).json({ info: 'Success' })
     } else {
       res.status(status.NOT_FOUND).json({
-        reason: `По идентификатору ${topicId} не найдено совпадений`,
+        reason: 'No matches found',
       })
     }
   } catch (error) {
@@ -120,7 +120,7 @@ const getTopicById = async (req: Request, res: Response, next: NextFunction) => 
 
     if (!topicId) {
       res.status(status.BAD_REQUEST).json({
-        reason: 'Отсутствует идентификатор топика',
+        reason: 'Topic id missed',
       })
       return
     }
@@ -131,7 +131,7 @@ const getTopicById = async (req: Request, res: Response, next: NextFunction) => 
       res.status(status.SUCCESS).json(topic)
     } else {
       res.status(status.NOT_FOUND).json({
-        reason: `По идентификатору ${topicId} не найдено совпадений`,
+        reason: 'No matches found',
       })
     }
   } catch (error) {
