@@ -18,7 +18,7 @@ export default {
     __SERVER_PORT__: JSON.stringify(
       process.env.SERVER_PORT
     ),
-    __SERVER_ULR__:
+    __SERVER_URL__:
       JSON.stringify(process.env.SERVER_URL),
   },
   moduleNameMapper: {
