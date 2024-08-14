@@ -19,9 +19,6 @@ const sequelize = new Sequelize(sequelizeOptions)
 const setupAssociations = () => {
   CommentsModel.hasMany(ReactionsModel, { foreignKey: 'commentId' })
   ReactionsModel.belongsTo(CommentsModel, { foreignKey: 'commentId' })
-
-  UserTheme.hasMany(ReactionsModel, { foreignKey: 'userId' })
-  ReactionsModel.belongsTo(UserTheme, { foreignKey: 'userId' })
 }
 
 setupAssociations()
