@@ -7,7 +7,7 @@ const __dirname = dirname(
 )
 
 dotenv.config({
-  path: resolve(__dirname, '../../.env'),
+  path: resolve(__dirname, '../../.env.test'),
 })
 
 export default {
