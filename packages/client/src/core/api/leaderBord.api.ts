@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import axiosDB from './api'
+import { axiosDB } from './api'
 import {
   IAPIError,
   ISubmitScoreResponse,
@@ -10,11 +10,7 @@ import {
 } from './model'
 
 export default class LeaderboardApi {
-  public submitScore(
-    userLogin: string,
-    score: number,
-    avatar: string
-  ) {
+  public submitScore(userLogin: string, score: number, avatar: string) {
     const data = {
       data: {
         userLogin: userLogin,
@@ -24,47 +20,30 @@ export default class LeaderboardApi {
       ratingFieldName: ratingFieldName,
       teamName: teamName,
     }
-    return axiosDB.post<ISubmitScoreResponse>(
-      '/leaderboard',
-      data
-    )
+    return axiosDB.post<ISubmitScoreResponse>('/leaderboard', data)
   }
 
   public getAllLeaderboard(
     cursor: number,
     limit: number
-  ): Promise<
-    AxiosResponse<
-      IGetLeaderboardResponse | IAPIError
-    >
-  > {
+  ): Promise<AxiosResponse<IGetLeaderboardResponse | IAPIError>> {
     const data = {
       ratingFieldName: ratingFieldName,
       cursor,
       limit,
     }
-    return axiosDB.post<IGetLeaderboardResponse>(
-      '/leaderboard/all',
-      data
-    )
+    return axiosDB.post<IGetLeaderboardResponse>('/leaderboard/all', data)
   }
 
   public getTeamLeaderBoard(
     cursor: number,
     limit: number
-  ): Promise<
-    AxiosResponse<
-      ICurrentScoreResponse | IAPIError
-    >
-  > {
+  ): Promise<AxiosResponse<ICurrentScoreResponse | IAPIError>> {
     const data = {
       ratingFieldName: ratingFieldName,
       cursor,
       limit,
     }
-    return axiosDB.post(
-      `/leaderboard/${teamName}`,
-      data
-    )
+    return axiosDB.post(`/leaderboard/${teamName}`, data)
   }
 }

@@ -1,7 +1,4 @@
-import {
-  AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import {
   IAPIError,
   ICreateUser,
@@ -10,40 +7,25 @@ import {
   IUserInfo,
   IYandexServiceId,
 } from './model'
-import axiosDB from './api'
+import { axiosDB, axiosProxy } from './api'
 
 export default class AuthApi {
-  public create(
-    data: ICreateUser
-  ): Promise<
-    AxiosResponse<ISignUpResponse | IAPIError>
-  > {
-    return axiosDB.post<ISignUpResponse>(
-      '/auth/signup',
-      data
-    )
+  public create(data: ICreateUser): Promise<AxiosResponse<ISignUpResponse | IAPIError>> {
+    return axiosDB.post<ISignUpResponse>('/auth/signup', data)
   }
 
-  public login(
-    data: ILoginRequestData
-  ): Promise<AxiosResponse<void | IAPIError>> {
-    return axiosDB.post('/auth/signin', data)
+  public login(data: ILoginRequestData): Promise<AxiosResponse<void | IAPIError>> {
+    return axiosProxy.post('/yandex-api/auth/signin', data)
   }
 
-  public user(
-    options?: AxiosRequestConfig
-  ): Promise<
-    AxiosResponse<IUserInfo | IAPIError>
-  > {
-    return axiosDB.get('/auth/user', {
+  public user(options?: AxiosRequestConfig): Promise<AxiosResponse<IUserInfo | IAPIError>> {
+    return axiosProxy.get('/yandex-api/auth/user', {
       ...options,
     })
   }
 
-  public logout(): Promise<
-    AxiosResponse<void | IAPIError>
-  > {
-    return axiosDB.post('/auth/logout')
+  public logout(): Promise<AxiosResponse<void | IAPIError>> {
+    return axiosProxy.post('/yandex-api/auth/logout')
   }
 
   public getAccessToken(
@@ -64,17 +46,12 @@ export default class AuthApi {
   public getServiceId(
     redirectUri: string,
     options?: AxiosRequestConfig
-  ): Promise<
-    AxiosResponse<IYandexServiceId | IAPIError>
-  > {
-    return axiosDB.get(
-      '/oauth/yandex/service-id',
-      {
-        params: {
-          redirect_uri: redirectUri,
-        },
-        ...options,
-      }
-    )
+  ): Promise<AxiosResponse<IYandexServiceId | IAPIError>> {
+    return axiosDB.get('/oauth/yandex/service-id', {
+      params: {
+        redirect_uri: redirectUri,
+      },
+      ...options,
+    })
   }
 }
