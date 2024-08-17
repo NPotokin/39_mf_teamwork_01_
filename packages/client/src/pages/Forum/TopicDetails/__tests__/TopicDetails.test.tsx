@@ -1,13 +1,12 @@
-import {
-  fireEvent,
-  render,
-} from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 
 import '@testing-library/jest-dom'
 import TopicDetails from '../TopicDetails'
 import { mockData } from '../../mockData'
 import { MemoryRouter } from 'react-router'
 import { ThemeProvider } from '@/core/contexts'
+import { Provider } from 'react-redux'
+import { store } from '@/state/store'
 
 const commentsColumns = [
   {
@@ -24,36 +23,38 @@ const selectedComments = mockData[0].comments
 describe('TopicDetails', () => {
   it('renders leader', () => {
     const { getByText } = render(
-      <ThemeProvider>
-        <MemoryRouter>
-          <TopicDetails
-            selectedTopic={selectedTopic}
-            selectedComments={selectedComments}
-            commentsColumns={commentsColumns}
-            onBack={onBack}
-            showCommentModal={showCommentModal}
-          />
-        </MemoryRouter>
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider>
+          <MemoryRouter>
+            <TopicDetails
+              selectedTopic={selectedTopic}
+              selectedComments={selectedComments}
+              commentsColumns={commentsColumns}
+              onBack={onBack}
+              showCommentModal={showCommentModal}
+            />
+          </MemoryRouter>
+        </ThemeProvider>
+      </Provider>
     )
 
-    expect(
-      getByText(selectedTopic.name)
-    ).toBeInTheDocument()
+    expect(getByText(selectedTopic.name)).toBeInTheDocument()
   })
   it('renders Back button,  Add Comment button and navigates on click', () => {
     const { getByText } = render(
-      <ThemeProvider>
-        <MemoryRouter>
-          <TopicDetails
-            selectedTopic={selectedTopic}
-            selectedComments={selectedComments}
-            commentsColumns={commentsColumns}
-            onBack={onBack}
-            showCommentModal={showCommentModal}
-          />
-        </MemoryRouter>
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider>
+          <MemoryRouter>
+            <TopicDetails
+              selectedTopic={selectedTopic}
+              selectedComments={selectedComments}
+              commentsColumns={commentsColumns}
+              onBack={onBack}
+              showCommentModal={showCommentModal}
+            />
+          </MemoryRouter>
+        </ThemeProvider>
+      </Provider>
     )
     const backBtn = getByText('Back')
     const addCommentBtn = getByText('Add Comment')

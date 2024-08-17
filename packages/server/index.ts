@@ -12,12 +12,14 @@ import { createClientAndConnect } from './db'
 import { ENVIRONMENT } from './config/environment'
 import { CLIENT_PATH, CLIENT_DIST_PATH, CLIENT_DIST_SSR_PATH } from './config/paths'
 import router from './routes'
-import { ErrorHandler, yandexApiProxy } from './middleware'
+import { errorHandler, isAuthenticated, yandexApiProxy } from './middleware'
 
 const isDevMode = ENVIRONMENT.DEVELOPMENT
 
 async function startServer() {
   const app = express()
+  app.use(cookieParser())
+
   // CLIENT_PORT replaced to SERVER_PORT
   app.use(
     cors({
@@ -25,8 +27,9 @@ async function startServer() {
       credentials: true,
     })
   )
+
+  app.use('/yandex-api', yandexApiProxy)
   app.use(express.json())
-  app.use(cookieParser())
 
   const port = Number(process.env.SERVER_PORT) || 3001
 
@@ -50,8 +53,7 @@ async function startServer() {
     app.use('/sw.js', express.static(resolve(CLIENT_DIST_PATH, 'sw.js')))
   }
 
-  app.use('/yandex-api', yandexApiProxy)
-  app.use('/api', router)
+  app.use('/api', isAuthenticated, router)
 
   app.use((req, res, next) => {
     req.setTimeout(20000, () => {
@@ -61,7 +63,7 @@ async function startServer() {
   })
 
   // Глобальный middleware обработки ошибок
-  app.use(ErrorHandler)
+  app.use(errorHandler)
 
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl

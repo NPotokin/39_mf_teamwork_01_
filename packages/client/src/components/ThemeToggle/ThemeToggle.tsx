@@ -1,8 +1,5 @@
 import { Button } from 'antd/lib'
-import {
-  MoonOutlined,
-  SunOutlined,
-} from '@ant-design/icons'
+import { MoonOutlined, SunOutlined } from '@ant-design/icons'
 
 import { useTheme } from '@/core/contexts'
 
@@ -11,26 +8,15 @@ type ThemeToggleProps = {
   onChange?(): void
 }
 
-const ThemeToggle: React.FC<ThemeToggleProps> = ({
-  className,
-  onChange,
-}) => {
+const ThemeToggle: React.FC<ThemeToggleProps> = ({ className, onChange }) => {
   const { theme, toggleTheme } = useTheme()
 
   const handleClick = () => {
     toggleTheme()
-    if (onChange) onChange()
   }
   return (
-    <Button
-      className={className || ''}
-      type="link"
-      onClick={handleClick}>
-      {theme === 'light' ? (
-        <MoonOutlined />
-      ) : (
-        <SunOutlined />
-      )}
+    <Button className={className || ''} type="link" onClick={handleClick}>
+      {theme === 'light' ? <MoonOutlined /> : <SunOutlined />}
     </Button>
   )
 }

@@ -8,7 +8,7 @@ const addComment = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!topicId) {
       res.status(status.BAD_REQUEST).json({
-        reason: 'Отсутствует идентификатор топика',
+        reason: 'Topic id missed',
       })
       return
     }
@@ -31,7 +31,7 @@ const deleteComment = async (req: Request, res: Response, next: NextFunction) =>
 
     if (!commentId) {
       res.status(status.BAD_REQUEST).json({
-        reason: 'Отсутствует идентификатор комментария',
+        reason: 'Comment id missed',
       })
       return
     }
@@ -43,7 +43,7 @@ const deleteComment = async (req: Request, res: Response, next: NextFunction) =>
       res.status(status.SUCCESS).send('ok')
     } else {
       res.status(status.NOT_FOUND).json({
-        reason: `По идентификатору ${commentId} не найдено совпадений`,
+        reason: 'No matches found',
       })
     }
   } catch (error) {
@@ -57,7 +57,7 @@ const getCommentsOnTopic = async (req: Request, res: Response, next: NextFunctio
 
     if (!topicId) {
       res.status(status.BAD_REQUEST).json({
-        reason: 'Отсутствует идентификатор топика',
+        reason: 'Topic id missed',
       })
       return
     }

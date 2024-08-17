@@ -6,11 +6,7 @@ import {
 } from 'react-router-dom'
 
 import { RoutePath } from './Routes.enum'
-import {
-  ErrorBoundaryLayout,
-  ProtectedRoute,
-  YandexOAuthRedirect,
-} from '@/components'
+import { ErrorBoundaryLayout, ProtectedRoute, YandexOAuthRedirect } from '@/components'
 import {
   Home,
   Game,
@@ -23,12 +19,7 @@ import {
   ServerErrorPage,
 } from '@/pages'
 import { ForumProvider } from '@/core/contexts'
-import {
-  AppDispatch,
-  RootState,
-} from '@/state/store'
-import { initGamePage } from '@/pages/Game/Game'
-import { initProfilePage } from '@/pages/Profile/Profile'
+import { AppDispatch, RootState } from '@/state/store'
 import { Router } from '@remix-run/router'
 
 export type PageInitArgs = {
@@ -115,9 +106,6 @@ if (typeof window !== 'undefined') {
   router = createBrowserRouter(routes)
 }
 
-const Routes = () =>
-  router ? (
-    <RouterProvider router={router} />
-  ) : null
+const Routes = () => (router ? <RouterProvider router={router} /> : null)
 
 export default Routes

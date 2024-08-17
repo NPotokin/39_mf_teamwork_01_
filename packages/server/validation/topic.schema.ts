@@ -3,11 +3,11 @@ import { checkSchema } from 'express-validator'
 const topicCreateDataValidate = checkSchema({
   name: {
     exists: {
-      errorMessage: 'Требуется наименование топика',
+      errorMessage: 'Name required',
       options: { values: 'falsy' },
     },
     isString: {
-      errorMessage: 'Наименование должно быть строкой',
+      errorMessage: 'Name must be string',
     },
   },
 })
@@ -15,7 +15,7 @@ const topicCreateDataValidate = checkSchema({
 const topicUpdateDescDataValidate = checkSchema({
   description: {
     exists: {
-      errorMessage: 'Необходимо заполнить описание топика',
+      errorMessage: 'Must be filled in',
       options: { values: 'falsy' },
     },
   },

@@ -1,6 +1,5 @@
+import { PRAKTIKUM_HOST } from '../constants'
 import { createProxyMiddleware } from 'http-proxy-middleware'
-
-const HOST = 'https://ya-praktikum.tech/api/v2'
 
 /**
  * Проксирование запросов на апи практикума
@@ -11,9 +10,9 @@ const yandexApiProxy = createProxyMiddleware({
     '*': '',
   },
   pathRewrite: {
-    '/yandex-api': '',
+    '^/yandex-api': '',
   },
-  target: HOST,
+  target: PRAKTIKUM_HOST,
 })
 
 export default yandexApiProxy

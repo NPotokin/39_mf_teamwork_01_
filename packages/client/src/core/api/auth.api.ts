@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import {
   IAPIError,
   ICreateUser,
@@ -7,7 +7,7 @@ import {
   IUserInfo,
   IYandexServiceId,
 } from './model'
-import axiosDB from './api'
+import { axiosDB, axiosProxy } from './api'
 
 export default class AuthApi {
   public create(data: ICreateUser): Promise<AxiosResponse<ISignUpResponse | IAPIError>> {
@@ -15,18 +15,17 @@ export default class AuthApi {
   }
 
   public login(data: ILoginRequestData): Promise<AxiosResponse<void | IAPIError>> {
-    return axios.post('http://localhost:3001/yandex-api/auth/signin', data)
-    // return axiosDB.post('/auth/signin', data)
+    return axiosProxy.post('/yandex-api/auth/signin', data)
   }
 
   public user(options?: AxiosRequestConfig): Promise<AxiosResponse<IUserInfo | IAPIError>> {
-    return axiosDB.get('/auth/user', {
+    return axiosProxy.get('/yandex-api/auth/user', {
       ...options,
     })
   }
 
   public logout(): Promise<AxiosResponse<void | IAPIError>> {
-    return axiosDB.post('/auth/logout')
+    return axiosProxy.post('/yandex-api/auth/logout')
   }
 
   public getAccessToken(
