@@ -1,14 +1,5 @@
-import {
-  configureStore,
-  combineReducers,
-} from '@reduxjs/toolkit'
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import userReducer from './user/userSlice'
-
-declare global {
-  interface Window {
-    APP_INITIAL_STATE: RootState
-  }
-}
 
 const reducer = combineReducers({
   user: userReducer,
@@ -17,12 +8,10 @@ const reducer = combineReducers({
 export const store = configureStore({
   reducer,
   preloadedState:
-    typeof window !== 'undefined' &&
-    window.APP_INITIAL_STATE
+    typeof window !== 'undefined' && window.APP_INITIAL_STATE
       ? window.APP_INITIAL_STATE
       : undefined,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware(),
+  middleware: getDefaultMiddleware => getDefaultMiddleware(),
 })
 
 export type AppDispatch = typeof store.dispatch

@@ -8,6 +8,7 @@ import {
   ratingFieldName,
   teamName,
 } from './model'
+import { YANDEX_API_URL } from '@/lib/constants'
 
 export default class LeaderboardApi {
   public submitScore(userLogin: string, score: number, avatar: string) {
@@ -20,7 +21,7 @@ export default class LeaderboardApi {
       ratingFieldName: ratingFieldName,
       teamName: teamName,
     }
-    return axiosDB.post<ISubmitScoreResponse>('/leaderboard', data)
+    return axiosDB.post<ISubmitScoreResponse>(`${YANDEX_API_URL}/leaderboard`, data)
   }
 
   public getAllLeaderboard(
@@ -32,7 +33,7 @@ export default class LeaderboardApi {
       cursor,
       limit,
     }
-    return axiosDB.post<IGetLeaderboardResponse>('/leaderboard/all', data)
+    return axiosDB.post<IGetLeaderboardResponse>(`${YANDEX_API_URL}/leaderboard/all`, data)
   }
 
   public getTeamLeaderBoard(
@@ -44,6 +45,6 @@ export default class LeaderboardApi {
       cursor,
       limit,
     }
-    return axiosDB.post(`/leaderboard/${teamName}`, data)
+    return axiosDB.post(`${YANDEX_API_URL}/leaderboard/${teamName}`, data)
   }
 }
