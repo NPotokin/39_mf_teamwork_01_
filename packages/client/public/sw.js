@@ -88,10 +88,9 @@ self.addEventListener('fetch', async event => {
             const cache = await caches.open(
               CACHE_NAME
             )
-            cache.put(
-              event.request,
-              networkResponse.clone()
-            )
+            if (event.request.method === 'GET') {
+              cache.put(event.request, networkResponse.clone())
+            }
           }
           return networkResponse
         } catch (error) {
