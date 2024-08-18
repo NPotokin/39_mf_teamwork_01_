@@ -10,6 +10,10 @@ export default defineConfig({
       '@images': resolve('./src/assets/images'),
     },
   },
+  define: {
+    __SERVER_PORT__: JSON.stringify(process.env.SERVER_PORT),
+    __SERVER_URL__: JSON.stringify(process.env.SERVER_URL),
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'ssr-entry.tsx'),

@@ -7,25 +7,26 @@ import {
   IUserInfo,
   IYandexServiceId,
 } from './model'
-import { axiosDB, axiosProxy } from './api'
+import { axiosDB } from './api'
+import { YANDEX_API_URL } from '@/lib/constants'
 
 export default class AuthApi {
   public create(data: ICreateUser): Promise<AxiosResponse<ISignUpResponse | IAPIError>> {
-    return axiosDB.post<ISignUpResponse>('/auth/signup', data)
+    return axiosDB.post<ISignUpResponse>(`${YANDEX_API_URL}/auth/signup`, data)
   }
 
   public login(data: ILoginRequestData): Promise<AxiosResponse<void | IAPIError>> {
-    return axiosProxy.post('/yandex-api/auth/signin', data)
+    return axiosDB.post(`${YANDEX_API_URL}/auth/signin`, data)
   }
 
   public user(options?: AxiosRequestConfig): Promise<AxiosResponse<IUserInfo | IAPIError>> {
-    return axiosProxy.get('/yandex-api/auth/user', {
+    return axiosDB.get(`${YANDEX_API_URL}/auth/user`, {
       ...options,
     })
   }
 
   public logout(): Promise<AxiosResponse<void | IAPIError>> {
-    return axiosProxy.post('/yandex-api/auth/logout')
+    return axiosDB.post(`${YANDEX_API_URL}/auth/logout`)
   }
 
   public getAccessToken(
@@ -34,7 +35,7 @@ export default class AuthApi {
     options?: AxiosRequestConfig
   ): Promise<AxiosResponse<void | IAPIError>> {
     return axiosDB.post(
-      '/oauth/yandex',
+      `${YANDEX_API_URL}/oauth/yandex`,
       {
         code: authCode,
         redirect_uri: redirectUri,
@@ -47,7 +48,7 @@ export default class AuthApi {
     redirectUri: string,
     options?: AxiosRequestConfig
   ): Promise<AxiosResponse<IYandexServiceId | IAPIError>> {
-    return axiosDB.get('/oauth/yandex/service-id', {
+    return axiosDB.get(`${YANDEX_API_URL}/oauth/yandex/service-id`, {
       params: {
         redirect_uri: redirectUri,
       },

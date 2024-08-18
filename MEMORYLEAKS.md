@@ -55,6 +55,26 @@ useEffect(() => {
 }, [])
 ```
 
+## Утечка памяти 3: Удаление глобальной переменной
+### Описание проблемы
+После того как компонент размонтировался, глобальная переменная `window.APP_INITIAL_STATE` не удалялась, что могло привести к утечке памяти.
+
+### Исправление
+Дополнительно к удалению обработчиков событий, было добавлено удаление глобальной переменной `window.APP_INITIAL_STATE` при размонтировании компонента.
+```typescript
+  useEffect(() => {
+    if (ENVIRONMENT.PRODUCTION) {
+      window.addEventListener('load', registerServiceWorker)
+    }
+
+    return () => {
+      if (ENVIRONMENT.PRODUCTION) {
+        window.removeEventListener('load', registerServiceWorker)
+      }
+      delete window.APP_INITIAL_STATE
+    }
+```
+
 ## Потенциальная утечка памяти 1: Асинхронные Запросы в useEffect без отмены
 
 ### Описание проблемы

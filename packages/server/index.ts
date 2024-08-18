@@ -95,9 +95,12 @@ async function startServer() {
 
       const html = template.replace(`<!--ssr-outlet-->`, appHtml).replace(
         `<!--ssr-initial-state-->`,
-        `<script>window.APP_INITIAL_STATE = ${serialize(initialState, {
-          isJSON: true,
-        })}
+        `<script>window.APP_INITIAL_STATE = ${serialize(
+          { user: initialState },
+          {
+            isJSON: true,
+          }
+        )}
         </script>`
       )
 

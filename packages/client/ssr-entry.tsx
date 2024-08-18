@@ -1,7 +1,7 @@
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 
-// import reducer from '@/state/user/userSlice'
+import reducer from '@/state/user/userSlice'
 
 import { Request as ExpressRequest } from 'express'
 import {
@@ -12,9 +12,8 @@ import {
 import { createFetchRequest, createUrl } from '@/entry-server.utils'
 import { routes } from '@/core/Routes'
 import { matchRoutes } from 'react-router'
-// import { fetchUserThunk } from '@/state/user/userThunk'
-// import { configureStore } from '@reduxjs/toolkit'
-import { store } from '@/state/store'
+import { fetchUserThunk } from '@/state/user/userThunk'
+import { configureStore } from '@reduxjs/toolkit'
 
 export const render = async (req: ExpressRequest) => {
   const { query, dataRoutes } = createStaticHandler(routes)
@@ -34,10 +33,10 @@ export const render = async (req: ExpressRequest) => {
     throw new Error('Страница не найдена!')
   }
 
-  // const store = configureStore({ reducer }) - до 9ого спринта
+  const store = configureStore({ reducer })
 
   const cookies = req.headers.cookie || ''
-  // await store.dispatch(fetchUserThunk(cookies)) - до 9ого спринта
+  await store.dispatch(fetchUserThunk(cookies))
 
   const router = createStaticRouter(dataRoutes, context)
 
