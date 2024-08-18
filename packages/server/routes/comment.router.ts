@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { commentController } from '../controllers/'
+import { commentController, reactionController } from '../controllers/'
 
 const commentRouter = Router()
 
@@ -10,5 +10,11 @@ commentRouter.get('/comments/:id', commentController.getCommentsOnTopic)
 commentRouter.post('/comments/:id', commentController.addComment)
 
 commentRouter.delete('/comments/:id', commentController.deleteComment)
+
+// Получить реакции на конкретный комментарий
+commentRouter.get('/comments/:id/reactions', reactionController.getAllEmojisForComment)
+
+// Добавить реакцию на конкретный комментарий
+commentRouter.post('/comments/:id/reactions', reactionController.setEmoji)
 
 export default commentRouter

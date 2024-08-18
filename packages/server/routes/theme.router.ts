@@ -1,8 +1,4 @@
-import {
-  getTheme,
-  addTheme,
-  updateTheme,
-} from '../controllers/theme.controller'
+import { getTheme, addTheme, updateTheme } from '../controllers/theme.controller'
 import { Router } from 'express'
 
 const themeRouter = Router()
