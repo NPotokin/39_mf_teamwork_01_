@@ -1,11 +1,11 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import {
   getThemeByUserId,
   createTheme,
   updateTheme as modifyTheme,
 } from '../services/theme.service'
-// Получение темы:
-export const getTheme = async (req: Request, res: Response) => {
+
+export const getTheme = async (req: Request, res: Response, next: NextFunction) => {
   const { userId } = req.params
   try {
     const theme = await getThemeByUserId(parseInt(userId, 10))
@@ -15,10 +15,11 @@ export const getTheme = async (req: Request, res: Response) => {
       res.status(404).json({ message: 'Theme not found' })
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error })
+    next(error) // Передаём ошибку следующему обработчику
   }
 }
-export const addTheme = async (req: Request, res: Response) => {
+
+export const addTheme = async (req: Request, res: Response, next: NextFunction) => {
   const { userId } = req.params
   const { theme, description } = req.body
   try {
@@ -28,11 +29,12 @@ export const addTheme = async (req: Request, res: Response) => {
     if (error instanceof Error && error.name === 'SequelizeUniqueConstraintError') {
       res.status(409).json({ message: 'Theme already exists' })
     } else {
-      res.status(500).json({ message: 'Server error', error })
+      next(error)
     }
   }
 }
-export const updateTheme = async (req: Request, res: Response) => {
+
+export const updateTheme = async (req: Request, res: Response, next: NextFunction) => {
   const { userId } = req.params
   const { theme, description, device } = req.body
 
@@ -44,6 +46,6 @@ export const updateTheme = async (req: Request, res: Response) => {
       res.status(404).json({ message: 'Theme not found' })
     }
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error })
+    next(error)
   }
 }
