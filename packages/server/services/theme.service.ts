@@ -2,9 +2,7 @@ import SiteTheme from '../models/theme.model'
 import UserTheme from '../models/user.model'
 
 //Получение темы по userId:
-export const getThemeByUserId = async (
-  userId: number
-) => {
+export const getThemeByUserId = async (userId: number) => {
   try {
     const userTheme = await UserTheme.findOne({
       where: { ownerId: userId },
@@ -15,9 +13,7 @@ export const getThemeByUserId = async (
     return null
   } catch (error) {
     const errorMessage = (error as Error).message
-    throw new Error(
-      'Error fetching theme: ' + errorMessage
-    )
+    throw new Error('Error fetching theme: ' + errorMessage)
   }
 }
 
@@ -29,9 +25,7 @@ export const createTheme = async (
   device?: string
 ) => {
   try {
-    const existingTheme = await SiteTheme.findOne(
-      { where: { theme } }
-    )
+    const existingTheme = await SiteTheme.findOne({ where: { theme } })
     if (existingTheme) {
       await UserTheme.upsert({
         themeId: existingTheme.themeId,
@@ -54,9 +48,7 @@ export const createTheme = async (
     return newTheme
   } catch (error) {
     const errorMessage = (error as Error).message
-    throw new Error(
-      'Error creating theme: ' + errorMessage
-    )
+    throw new Error('Error creating theme: ' + errorMessage)
   }
 }
 
@@ -74,12 +66,10 @@ export const updateTheme = async (
     })
     if (!userTheme) {
       // Если записи нет, создаем новую тему
-      const createdTheme = await SiteTheme.create(
-        {
-          theme: newTheme,
-          description,
-        } as SiteTheme
-      )
+      const createdTheme = await SiteTheme.create({
+        theme: newTheme,
+        description,
+      } as SiteTheme)
 
       // Создаем новую запись UserTheme
       await UserTheme.create({
@@ -92,18 +82,14 @@ export const updateTheme = async (
     }
 
     // Если запись есть, ищем существующую тему по названию
-    const existingTheme = await SiteTheme.findOne(
-      { where: { theme: newTheme } }
-    )
+    const existingTheme = await SiteTheme.findOne({ where: { theme: newTheme } })
 
     if (!existingTheme) {
       // Если тема не существует, создаем новую
-      const createdTheme = await SiteTheme.create(
-        {
-          theme: newTheme,
-          description,
-        } as SiteTheme
-      )
+      const createdTheme = await SiteTheme.create({
+        theme: newTheme,
+        description,
+      } as SiteTheme)
 
       // Обновляем запись UserTheme с новым themeId
       userTheme.themeId = createdTheme.themeId
@@ -120,8 +106,6 @@ export const updateTheme = async (
     return existingTheme
   } catch (error) {
     const errorMessage = (error as Error).message
-    throw new Error(
-      'Error updating theme: ' + errorMessage
-    )
+    throw new Error('Error updating theme: ' + errorMessage)
   }
 }

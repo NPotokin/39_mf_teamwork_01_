@@ -1,7 +1,4 @@
-import {
-  fireEvent,
-  render,
-} from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import ForumList from '../ForumList'
 import { mockData } from '../../mockData'
@@ -28,19 +25,13 @@ describe('ForumList', () => {
       <Provider store={store}>
         <ThemeProvider>
           <MemoryRouter>
-            <ForumList
-              dataSource={mockData}
-              columns={columnsForumList}
-              showModal={jest.fn}
-            />
+            <ForumList dataSource={mockData} columns={columnsForumList} showModal={jest.fn} />
           </MemoryRouter>
         </ThemeProvider>
       </Provider>
     )
 
-    expect(
-      getByText('COMMENTS')
-    ).toBeInTheDocument()
+    expect(getByText('COMMENTS')).toBeInTheDocument()
   })
   it('renders Back button and navigates on click', () => {
     const showModalForumList = jest.fn()
