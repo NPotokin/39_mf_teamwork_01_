@@ -1,8 +1,6 @@
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 
-import reducer from '@/state/user/userSlice'
-
 import { Request as ExpressRequest } from 'express'
 import {
   createStaticHandler,
@@ -14,6 +12,7 @@ import { routes } from '@/core/Routes'
 import { matchRoutes } from 'react-router'
 import { fetchUserThunk } from '@/state/user/userThunk'
 import { configureStore } from '@reduxjs/toolkit'
+import { reducer } from '@/state/store'
 
 export const render = async (req: ExpressRequest) => {
   const { query, dataRoutes } = createStaticHandler(routes)
