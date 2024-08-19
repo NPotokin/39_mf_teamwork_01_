@@ -4,7 +4,8 @@ import { status } from '../constants'
 
 const setEmoji = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { commentId, emoji } = req.body
+    const { emoji } = req.body
+    const commentId = req.params.id
 
     if (!commentId || !emoji) {
       res.status(status.BAD_REQUEST).json({
