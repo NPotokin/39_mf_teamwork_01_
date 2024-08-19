@@ -5,7 +5,10 @@ import { darkTheme, lightTheme } from '@/core/theme'
 import { getUserDevice } from '../utils/deviceUtils'
 import { useAppSelector } from '@/lib/hooks/redux'
 
-type ThemeType = 'light' | 'dark'
+export const LIGHT_THEME = 'light' as const
+export const DARK_THEME = 'dark' as const
+
+export type ThemeType = typeof LIGHT_THEME | typeof DARK_THEME
 
 type ThemeContextType = {
   theme: ThemeType
@@ -17,6 +20,7 @@ const themeMap = {
   dark: darkTheme,
 }
 
+export const THEME_KEY = 'theme'
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export const useTheme = () => {
@@ -30,8 +34,8 @@ export const useTheme = () => {
 export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   // Сначала пытаемся получить тему из localStorage, если её там нет - по умолчанию 'light'
   const themeStart =
-    typeof window !== 'undefined' && localStorage.getItem('theme')
-      ? (localStorage.getItem('theme') as ThemeType)
+    typeof window !== 'undefined' && localStorage.getItem(THEME_KEY)
+      ? (localStorage.getItem(THEME_KEY) as ThemeType)
       : 'light'
 
   const [theme, setTheme] = useState<ThemeType>(themeStart)
@@ -46,7 +50,7 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
         const userTheme = response.data.theme as ThemeType
         if (userTheme) {
           setTheme(userTheme)
-          localStorage.setItem('theme', userTheme)
+          localStorage.setItem(THEME_KEY, userTheme)
         }
       } catch (error) {
         console.error('Failed to fetch theme from server', error)
@@ -63,20 +67,19 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [theme])
 
   const toggleTheme = async () => {
-    const newTheme: ThemeType = theme === 'light' ? 'dark' : 'light'
+    const newTheme: ThemeType = theme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME
     setTheme(newTheme)
-    localStorage.setItem('theme', newTheme)
-    if (!userId) return // Если пользователь не зарегистрирован, не выполнять запрос
-    const device = getUserDevice() // Используем функцию для получения устройства
+    localStorage.setItem(THEME_KEY, newTheme)
+    if (!userId) return
+    const device = getUserDevice() // Функция для получения устройства
 
     try {
-      if (!userId) return
       try {
         await axios.get(`/api/themes/${userId}`)
         await axios.put(`/api/themes/${userId}`, {
           theme: newTheme,
           description: newTheme,
-          device, // Отправляем устройство пользователя
+          device,
         })
       } catch (error) {
         const axiosError = error as AxiosError
@@ -85,7 +88,7 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
           await axios.post(`/api/themes/${userId}`, {
             theme: newTheme,
             description: newTheme,
-            device, // Отправляем устройство пользователя
+            device,
           })
         } else {
           throw error

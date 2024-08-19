@@ -1,66 +1,71 @@
-export const mockData = [
+import { Topic } from '@/core/contexts/ForumContext'
+
+export const mockData: Topic[] = [
   {
-    key: '1',
+    topicId: '1',
     name: 'New games',
-    commentsCount: '3',
-    content:
+    description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    count: '3',
     comments: [
       {
-        key: '1',
-        comment: 'interesting',
+        commentId: '1',
+        content: 'interesting',
         emoji: '',
+        topicId: '1',
       },
-      { key: '2', comment: 'no bad', emoji: '' },
+      { commentId: '2', content: 'no bad', emoji: '', topicId: '1' },
       {
-        key: '3',
-        comment: 'i like it',
+        commentId: '3',
+        content: 'i like it',
         emoji: '',
+        topicId: '1',
       },
     ],
   },
   {
-    key: '2',
+    topicId: '2',
     name: 'Gamedev',
-    commentsCount: '3',
-    content:
+    count: '3',
+    description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     comments: [
-      { key: '1', comment: 'ok', emoji: '' },
+      { commentId: '1', content: 'ok', emoji: '', topicId: '2' },
       {
-        key: '2',
-        comment: 'chudesno',
+        commentId: '2',
+        content: 'chudesno',
         emoji: '',
+        topicId: '2',
       },
-      { key: '3', comment: 'super', emoji: '' },
+      { commentId: '3', content: 'super', emoji: '', topicId: '2' },
     ],
   },
   {
-    key: '3',
+    topicId: '3',
     name: 'Game design',
-    commentsCount: '3',
-    content:
+    count: '3',
+    description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     comments: [
       {
-        key: '1',
-        comment: 'i love it',
+        commentId: '1',
+        content: 'i love it',
         emoji: '',
+        topicId: '3',
       },
-      { key: '2', comment: 'its ok', emoji: '' },
-      { key: '3', comment: 'eee', emoji: '' },
+      { commentId: '2', content: 'its ok', emoji: '', topicId: '3' },
+      { commentId: '3', content: 'eee', emoji: '', topicId: '3' },
     ],
   },
   {
-    key: '4',
+    topicId: '4',
     name: 'Technologies',
-    commentsCount: '3',
-    content:
-      'This is the content of Technologies topic',
+    count: '3',
+    description: 'This is the content of Technologies topic',
     comments: [
-      { key: '1', comment: 'ok', emoji: '' },
-      { key: '2', comment: 'eee', emoji: '' },
-      { key: '3', comment: 'amazing', emoji: '' },
+      { commentId: '1', content: 'ok', emoji: '', topicId: '4' },
+      { commentId: '2', content: 'eee', emoji: '', topicId: '4' },
+      { commentId: '3', content: 'amazing', emoji: '', topicId: '4' },
     ],
   },
 ]

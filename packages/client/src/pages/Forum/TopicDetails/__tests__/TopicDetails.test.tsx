@@ -21,6 +21,9 @@ const selectedTopic = mockData[0]
 const selectedComments = mockData[0].comments
 
 describe('TopicDetails', () => {
+  const fetchComments = jest.fn().mockResolvedValue({
+    data: selectedComments,
+  })
   it('renders leader', () => {
     const { getByText } = render(
       <Provider store={store}>
@@ -32,6 +35,7 @@ describe('TopicDetails', () => {
               commentsColumns={commentsColumns}
               onBack={onBack}
               showCommentModal={showCommentModal}
+              fetchComments={fetchComments}
             />
           </MemoryRouter>
         </ThemeProvider>
@@ -51,6 +55,7 @@ describe('TopicDetails', () => {
               commentsColumns={commentsColumns}
               onBack={onBack}
               showCommentModal={showCommentModal}
+              fetchComments={fetchComments}
             />
           </MemoryRouter>
         </ThemeProvider>

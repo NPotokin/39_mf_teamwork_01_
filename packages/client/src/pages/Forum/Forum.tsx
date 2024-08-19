@@ -1,11 +1,6 @@
 import { LikeOutlined } from '@ant-design/icons'
 import { Button, Popover, Space } from 'antd/lib'
-import {
-  ChangeEvent,
-  useEffect,
-  useState,
-} from 'react'
-import { mockData } from './mockData'
+import { ChangeEvent, useEffect, useState } from 'react'
 import TopicModal from './TopicModal/TopicModal'
 import CommentModal from './CommentModal/CommentModal'
 import ForumList from './ForumList/ForumList'
@@ -17,20 +12,8 @@ import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { TITLES } from '@/lib/constants'
 import useDocumentTitle from '@/lib/hooks/useDocumentTitle'
-
-export type Comment = {
-  key: string
-  comment: string
-  emoji: string
-}
-
-export type Topic = {
-  key: string
-  name: string
-  commentsCount: string
-  content: string
-  comments: Comment[]
-}
+import axios from 'axios'
+import { Comment, Topic } from '@/core/contexts/ForumContext'
 
 const Forum = () => {
   useDocumentTitle(TITLES.FORUM)
@@ -42,23 +25,33 @@ const Forum = () => {
     selectedTopic,
     setSelectedTopic,
   } = useForum()
-  const [isModalVisible, setIsModalVisible] =
-    useState(false)
-  const [
-    isCommentModalVisible,
-    setIsCommentModalVisible,
-  ] = useState(false)
-  const [newTopicName, setNewTopicName] =
-    useState('')
-  const [newTopicContent, setNewTopicContent] =
-    useState('')
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isCommentModalVisible, setIsCommentModalVisible] = useState(false)
+  const [newTopicName, setNewTopicName] = useState('')
+  const [newTopicContent, setNewTopicContent] = useState('')
   const [newComment, setNewComment] = useState('')
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = mockData
-      setDataSource(data)
+  const fetchData = async () => {
+    try {
+      const topicsResponse = await axios.get('/api/topics')
+      const topics = topicsResponse.data
+      setDataSource(topics)
+    } catch (error) {
+      console.error('Error getting topics:', error)
     }
+  }
+
+  const fetchComments = async (topicId: string) => {
+    try {
+      const response = await axios.get(`/api/comments/${topicId}`)
+      if (response.status === 200) {
+        setSelectedComments(response.data)
+      }
+    } catch (error) {
+      console.error('Error fetching comments:', error)
+    }
+  }
+  useEffect(() => {
     fetchData()
   }, [])
 
@@ -69,82 +62,69 @@ const Forum = () => {
   const showCommentModal = () => {
     setIsCommentModalVisible(true)
   }
+  const handleOk = async () => {
+    try {
+      const newTopic = {
+        name: newTopicName,
+        description: newTopicContent,
+      }
 
-  const handleOk = () => {
-    const newKey = (
-      dataSource.length + 1
-    ).toString()
-    const newTopic = {
-      key: newKey,
-      name: newTopicName,
-      commentsCount: '0',
-      content: newTopicContent,
-      comments: [],
+      const response = await axios.post('/api/topics', newTopic)
+
+      if (response.status === 200) {
+        setDataSource([...dataSource, response.data])
+        setIsModalVisible(false)
+        setNewTopicName('')
+        setNewTopicContent('')
+        fetchData()
+      }
+    } catch (error) {
+      console.error('Error creating topic:', error)
     }
-    setDataSource([...dataSource, newTopic])
-    setIsModalVisible(false)
-    setNewTopicName('')
-    setNewTopicContent('')
   }
 
   const handleCancel = () => {
     setIsModalVisible(false)
   }
-
-  const handleCommentOk = () => {
+  const handleCommentOk = async () => {
     if (!selectedTopic) return
-    const newKey = (
-      selectedComments.length + 1
-    ).toString()
-    const newCommentEntry = {
-      key: newKey,
-      comment: newComment,
-      emoji: '',
-    }
-    const updatedDataSource = dataSource.map(
-      item => {
-        return item.key === selectedTopic.key
-          ? {
-              ...item,
-              comments: [
-                ...item.comments,
-                newCommentEntry,
-              ],
-              commentsCount: (
-                parseInt(item.commentsCount) + 1
-              ).toString(),
-            }
-          : item
+
+    try {
+      const newCommentEntry = {
+        content: newComment,
+        emoji: '',
       }
-    )
-    setDataSource(updatedDataSource)
-    setSelectedComments([
-      ...selectedComments,
-      newCommentEntry,
-    ])
-    setIsCommentModalVisible(false)
-    setNewComment('')
+
+      const response = await axios.post(`/api/comments/${selectedTopic.topicId}`, newCommentEntry)
+
+      if (response.status === 200) {
+        const updatedComments = [...selectedComments, response.data]
+
+        setSelectedComments(updatedComments)
+        setDataSource(dataSource)
+        setNewComment('')
+        setIsCommentModalVisible(false)
+        fetchComments(selectedTopic.topicId)
+        fetchData()
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error)
+    }
   }
 
   const handleCommentCancel = () => {
     setIsCommentModalVisible(false)
   }
 
-  const handleTopicNameChange = (
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleTopicNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTopicName(e.target.value)
   }
 
-  const handleTopicContentChange = (
-    e: ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleTopicContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNewTopicContent(e.target.value)
   }
 
-  const handleCommentInputChange = (
-    e: ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleCommentInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNewComment(e.target.value)
   }
 
@@ -153,69 +133,34 @@ const Forum = () => {
     setSelectedComments(record.comments)
   }
 
-  const handleEmojiSelect = (
-    commentKey: string,
-    emoji: string
-  ) => {
+  const handleEmojiSelect = (commentKey: string, emoji: string) => {
     if (!selectedTopic) return
-    const updatedComments = selectedComments.map(
-      comment =>
-        comment.key === commentKey
-          ? { ...comment, emoji }
-          : comment
+    const updatedComments = selectedComments.map(comment =>
+      comment.commentId === commentKey ? { ...comment, emoji } : comment
     )
+
     setSelectedComments(updatedComments)
-    const updatedDataSource = dataSource.map(
-      topic =>
-        topic.key === selectedTopic.key
-          ? {
-              ...topic,
-              comments: updatedComments,
-            }
-          : topic
-    )
-    setDataSource(updatedDataSource)
+    setDataSource(dataSource)
   }
 
-  const renderEmojiPopover = (
-    commentKey: string
-  ) => {
-    const emojis = [
-      '😀',
-      '😅',
-      '😂',
-      '😎',
-      '😍',
-      '😢',
-      '😡',
-      '👍',
-    ]
+  const renderEmojiPopover = (commentKey: string) => {
+    const emojis = ['😀', '😅', '😂', '😎', '😍', '😢', '😡', '👍']
     return (
       <Popover
         content={
           <Space>
             {emojis.map(emoji => (
               <Button
-                className={
-                  styles[`popover__emoji-btn`]
-                }
+                className={styles[`popover__emoji-btn`]}
                 key={emoji}
-                onClick={() =>
-                  handleEmojiSelect(
-                    commentKey,
-                    emoji
-                  )
-                }>
+                onClick={() => handleEmojiSelect(commentKey, emoji)}>
                 {emoji}
               </Button>
             ))}
           </Space>
         }
         trigger="click">
-        <Button
-          className={styles.popover__btn}
-          icon={<LikeOutlined />}
-        />
+        <Button className={styles.popover__btn} icon={<LikeOutlined />} />
       </Popover>
     )
   }
@@ -226,36 +171,27 @@ const Forum = () => {
       dataIndex: 'name',
       key: 'name',
       render: (text: string, record: Topic) => {
-        return (
-          <a
-            onClick={() =>
-              handleNameClick(record)
-            }>
-            {text}
-          </a>
-        )
+        return <a onClick={() => handleNameClick(record)}>{text}</a>
       },
     },
     {
       title: 'COMMENTS',
-      dataIndex: 'commentsCount',
-      key: 'commentsCount',
+      dataIndex: 'count',
+      key: 'count',
     },
   ]
 
   const commentsColumns = [
     {
       title: 'COMMENT',
-      dataIndex: 'comment',
-      key: 'comment',
+      dataIndex: 'content',
+      key: 'content',
       render: (_: string, record: Comment) => (
         <div>
-          <div>{record.comment}</div>
+          <div>{record.content}</div>
           <div>
-            {renderEmojiPopover(record.key)}
-            {record.emoji && (
-              <span>{record.emoji}</span>
-            )}
+            {renderEmojiPopover(record.commentId)}
+            {record.emoji && <span>{record.emoji}</span>}
           </div>
         </div>
       ),
@@ -265,17 +201,9 @@ const Forum = () => {
   return (
     <div className={cn(styles.wrapper, 'page')}>
       <Header />
-      <div
-        className={cn(
-          styles.forums,
-          'container'
-        )}>
+      <div className={cn(styles.forums, 'container')}>
         {!selectedTopic ? (
-          <ForumList
-            dataSource={dataSource}
-            columns={columns}
-            showModal={showModal}
-          />
+          <ForumList dataSource={dataSource} columns={columns} showModal={showModal} />
         ) : (
           <TopicDetails
             selectedTopic={selectedTopic}
@@ -286,6 +214,7 @@ const Forum = () => {
               setSelectedComments([])
             }}
             showCommentModal={showCommentModal}
+            fetchComments={fetchComments}
           />
         )}
         <TopicModal
@@ -294,21 +223,15 @@ const Forum = () => {
           topicContent={newTopicContent}
           onOk={handleOk}
           onCancel={handleCancel}
-          onTopicNameChange={
-            handleTopicNameChange
-          }
-          onTopicContentChange={
-            handleTopicContentChange
-          }
+          onTopicNameChange={handleTopicNameChange}
+          onTopicContentChange={handleTopicContentChange}
         />
         <CommentModal
           visible={isCommentModalVisible}
           comment={newComment}
           onOk={handleCommentOk}
           onCancel={handleCommentCancel}
-          onCommentChange={
-            handleCommentInputChange
-          }
+          onCommentChange={handleCommentInputChange}
         />
       </div>
       <Footer />

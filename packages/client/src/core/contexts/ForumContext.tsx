@@ -1,22 +1,18 @@
-import {
-  createContext,
-  useState,
-  FC,
-  useContext,
-  PropsWithChildren,
-} from 'react'
+import { createContext, useState, FC, useContext, PropsWithChildren } from 'react'
 
 export type Comment = {
-  key: string
-  comment: string
-  emoji: string
+  commentId: string
+  content: string
+  topicId: string
+  emoji?: string
+  topic?: Topic
 }
 
 export type Topic = {
-  key: string
+  topicId: string
   name: string
-  commentsCount: string
-  content: string
+  description: string
+  count: string
   comments: Comment[]
 }
 
@@ -26,25 +22,15 @@ type ForumContextType = {
   selectedTopic: Topic | null
   setSelectedTopic: (topic: Topic | null) => void
   selectedComments: Comment[]
-  setSelectedComments: (
-    comments: Comment[]
-  ) => void
+  setSelectedComments: (comments: Comment[]) => void
 }
 
-export const ForumContext = createContext<
-  ForumContextType | undefined
->(undefined)
+export const ForumContext = createContext<ForumContextType | undefined>(undefined)
 
-export const ForumProvider: FC<
-  PropsWithChildren
-> = ({ children }) => {
-  const [dataSource, setDataSource] = useState<
-    Topic[]
-  >([])
-  const [selectedTopic, setSelectedTopic] =
-    useState<Topic | null>(null)
-  const [selectedComments, setSelectedComments] =
-    useState<Comment[]>([])
+export const ForumProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [dataSource, setDataSource] = useState<Topic[]>([])
+  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null)
+  const [selectedComments, setSelectedComments] = useState<Comment[]>([])
 
   return (
     <ForumContext.Provider
@@ -64,9 +50,7 @@ export const ForumProvider: FC<
 export const useForum = () => {
   const context = useContext(ForumContext)
   if (context === undefined) {
-    throw new Error(
-      'useForum must be used within a ForumProvider'
-    )
+    throw new Error('useForum must be used within a ForumProvider')
   }
   return context
 }
