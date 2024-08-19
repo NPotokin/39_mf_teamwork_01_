@@ -4,7 +4,7 @@ export type Comment = {
   commentId: string
   content: string
   topicId: string
-  emoji?: string
+  emojis?: { emoji: string; count: number }[]
   topic?: Topic
 }
 

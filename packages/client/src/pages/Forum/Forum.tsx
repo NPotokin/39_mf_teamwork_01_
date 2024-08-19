@@ -40,17 +40,25 @@ const Forum = () => {
       console.error('Error getting topics:', error)
     }
   }
-
   const fetchComments = async (topicId: string) => {
     try {
       const response = await axios.get(`/api/comments/${topicId}`)
-      if (response.status === 200) {
-        setSelectedComments(response.data)
-      }
+      const comments = response.data
+
+      const updatedComments = await Promise.all(
+        comments.map(async (comment: Comment) => {
+          const emojiResponse = await axios.get(`/api/comments/${comment.commentId}/reactions`)
+          const emojis = emojiResponse.data
+          return { ...comment, emojis }
+        })
+      )
+
+      setSelectedComments(updatedComments)
     } catch (error) {
       console.error('Error fetching comments:', error)
     }
   }
+
   useEffect(() => {
     fetchData()
   }, [])
@@ -133,14 +141,28 @@ const Forum = () => {
     setSelectedComments(record.comments)
   }
 
-  const handleEmojiSelect = (commentKey: string, emoji: string) => {
+  const handleEmojiSelect = async (commentKey: string, emoji: string) => {
     if (!selectedTopic) return
-    const updatedComments = selectedComments.map(comment =>
-      comment.commentId === commentKey ? { ...comment, emoji } : comment
-    )
 
-    setSelectedComments(updatedComments)
-    setDataSource(dataSource)
+    try {
+      await axios.post(`/api/comments/${commentKey}/reactions`, { emoji })
+
+      const updatedComments = selectedComments.map(comment => {
+        if (comment.commentId === commentKey) {
+          const existingEmoji = comment.emojis?.find(e => e.emoji === emoji)
+          if (existingEmoji) {
+            existingEmoji.count = Number(existingEmoji.count) + 1
+          } else {
+            comment.emojis = [...(comment.emojis || []), { emoji, count: 1 }]
+          }
+        }
+        return comment
+      })
+
+      setSelectedComments(updatedComments)
+    } catch (error) {
+      console.error('Error setting emoji:', error)
+    }
   }
 
   const renderEmojiPopover = (commentKey: string) => {
@@ -191,7 +213,12 @@ const Forum = () => {
           <div>{record.content}</div>
           <div>
             {renderEmojiPopover(record.commentId)}
-            {record.emoji && <span>{record.emoji}</span>}
+            {record.emojis &&
+              record.emojis.map(emojiData => (
+                <span key={emojiData.emoji} className={styles.emojiSpan}>
+                  {emojiData.emoji} <span className={styles.count}>{emojiData.count}</span>
+                </span>
+              ))}
           </div>
         </div>
       ),
