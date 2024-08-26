@@ -13,15 +13,12 @@ import { ENVIRONMENT } from './config/environment'
 import { CLIENT_PATH, CLIENT_DIST_PATH, CLIENT_DIST_SSR_PATH } from './config/paths'
 import router from './routes'
 import { errorHandler, isAuthenticated, yandexApiProxy } from './middleware'
-import { xssValidator } from './middleware/xssValidation'
 
 const isDevMode = ENVIRONMENT.DEVELOPMENT
 
 async function startServer() {
   const app = express()
   app.use(cookieParser())
-
-  app.use(xssValidator())
 
   // CLIENT_PORT replaced to SERVER_PORT
   app.use(
