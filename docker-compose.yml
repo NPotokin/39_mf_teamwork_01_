@@ -40,6 +40,32 @@ services:
       - postgres
     networks:
       - prakticum
+  nginx:
+    container_name: prakticum-nginx
+    image: nginx:alpine:1.24.0
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl.conf:/etc/nginx/ssl.conf 
+      - ./cerbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    environment:
+      - DOMAIN=pumpkin-pandas.ya-praktikum.tech
+    networks:
+      - prakticum
+  certbot:
+    container_name: prakticum-certbot
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    depends_on: 
+      - nginx
+    networks:
+      - prakticum
 
 volumes:
   db-data:
