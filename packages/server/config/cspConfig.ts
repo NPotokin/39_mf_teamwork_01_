@@ -1,4 +1,3 @@
-// server/config/cspConfig.ts
 import { CSPDirectives } from 'csp-header'
 import { INLINE, SELF, NONE } from 'express-csp-header'
 
