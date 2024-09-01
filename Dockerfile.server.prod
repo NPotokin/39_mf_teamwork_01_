@@ -4,10 +4,10 @@ FROM node:$NODE_VERSION-buster AS base
 WORKDIR /app
 
 FROM base AS builder
-ARG SERVER_PORT=3001
-ARG SERVER_URL='http://localhost'
-ENV SERVER_PORT=${SERVER_PORT}
-ENV SERVER_URL=${SERVER_URL}
+ARG SERVER_PORT
+ARG SERVER_URL
+ARG YANDEX_AUTH_URL
+ARG YANDEX_REDIRECT_URI
 
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile

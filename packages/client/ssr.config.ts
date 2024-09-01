@@ -13,6 +13,8 @@ export default defineConfig({
   define: {
     __SERVER_PORT__: JSON.stringify(process.env.SERVER_PORT),
     __SERVER_URL__: JSON.stringify(process.env.SERVER_URL),
+    __YANDEX_AUTH_URL__: JSON.stringify(process.env.YANDEX_AUTH_URL),
+    __YANDEX_REDIRECT_URI__: JSON.stringify(process.env.YANDEX_REDIRECT_URI),
   },
   build: {
     lib: {

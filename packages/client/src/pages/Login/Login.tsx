@@ -35,7 +35,8 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [serviceId, setServiceId] = useState<string | undefined>('')
-  const REDIRECT_URI = import.meta.env.VITE_YANDEX_REDIRECT_URI
+  const REDIRECT_URI = __YANDEX_REDIRECT_URI__
+  console.log(REDIRECT_URI)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -56,7 +57,7 @@ const Login = () => {
     }
   }, [])
 
-  const AUTH_URL = import.meta.env.VITE_YANDEX_AUTH_URL
+  const AUTH_URL = __YANDEX_AUTH_URL__
   const authUrl = `${AUTH_URL}?response_type=code&client_id=${serviceId}&redirect_uri=${REDIRECT_URI}`
 
   const handleSubmit = async (

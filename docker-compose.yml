@@ -42,7 +42,7 @@ services:
       - prakticum
   nginx:
     container_name: prakticum-nginx
-    image: nginx:alpine:1.24.0
+    image: nginx:latest
     restart: always
     ports:
       - "80:80"
