@@ -5,7 +5,7 @@ import { Button } from 'antd/lib'
 
 import { EMPTY_STRING } from '@/core/constants'
 import styles from './Login.module.scss'
-import { CustomForm, ThemeToggle } from '@/components'
+import { CustomForm } from '@/components'
 
 import { showNotification } from '@/core/services/notification.service'
 import { errorInfo } from '@/lib/utils/errorInfo'
