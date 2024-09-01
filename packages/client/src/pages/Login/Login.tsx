@@ -36,7 +36,6 @@ const Login = () => {
   const dispatch = useAppDispatch()
   const [serviceId, setServiceId] = useState<string | undefined>('')
   const REDIRECT_URI = __YANDEX_REDIRECT_URI__
-  console.log(REDIRECT_URI)
 
   useEffect(() => {
     const controller = new AbortController()
