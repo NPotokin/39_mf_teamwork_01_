@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { commentController, reactionController } from '../controllers/'
+import { xssValidator } from '../middleware/xssValidation'
 
 const commentRouter = Router()
 
@@ -7,7 +8,7 @@ const commentRouter = Router()
 commentRouter.get('/comments/:id', commentController.getCommentsOnTopic)
 
 // Добавить комментарий по идентификатору топика
-commentRouter.post('/comments/:id', commentController.addComment)
+commentRouter.post('/comments/:id', xssValidator(), commentController.addComment)
 
 commentRouter.delete('/comments/:id', commentController.deleteComment)
 
@@ -15,6 +16,6 @@ commentRouter.delete('/comments/:id', commentController.deleteComment)
 commentRouter.get('/comments/:id/reactions', reactionController.getAllEmojisForComment)
 
 // Добавить реакцию на конкретный комментарий
-commentRouter.post('/comments/:id/reactions', reactionController.setEmoji)
+commentRouter.post('/comments/:id/reactions', xssValidator(), reactionController.setEmoji)
 
 export default commentRouter

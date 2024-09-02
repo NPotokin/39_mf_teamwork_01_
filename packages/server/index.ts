@@ -13,6 +13,8 @@ import { ENVIRONMENT } from './config/environment'
 import { CLIENT_PATH, CLIENT_DIST_PATH, CLIENT_DIST_SSR_PATH } from './config/paths'
 import router from './routes'
 import { errorHandler, isAuthenticated, yandexApiProxy } from './middleware'
+import { expressCspHeader } from 'express-csp-header'
+import { getCspDirectives } from './config/cspConfig'
 
 const isDevMode = ENVIRONMENT.DEVELOPMENT
 
@@ -30,6 +32,12 @@ async function startServer() {
 
   app.use('/yandex-api', yandexApiProxy)
   app.use(express.json())
+
+  app.use(
+    expressCspHeader({
+      directives: getCspDirectives(),
+    })
+  )
 
   const port = Number(process.env.SERVER_PORT) || 3001
 
