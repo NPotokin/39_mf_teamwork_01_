@@ -2,6 +2,7 @@ import { CSPDirectives } from 'csp-header'
 import { INLINE, SELF, NONE } from 'express-csp-header'
 
 const YANDEX_API_HOST = 'https://ya-praktikum.tech/api/v2'
+const YANDEX_GEOCODE_API_HOST = 'https://geocode-maps.yandex.ru'
 
 export const getCspDirectives = (): Partial<CSPDirectives> => {
   const directives: Partial<CSPDirectives> = {
@@ -9,8 +10,8 @@ export const getCspDirectives = (): Partial<CSPDirectives> => {
     'script-src': [SELF, INLINE],
     'style-src': [SELF, INLINE, 'https://fonts.googleapis.com'],
     'font-src': [SELF, 'https://fonts.gstatic.com'],
-    'img-src': [SELF, 'data:', YANDEX_API_HOST],
-    'connect-src': [SELF, YANDEX_API_HOST],
+    'img-src': [SELF, 'data:', YANDEX_API_HOST, YANDEX_GEOCODE_API_HOST],
+    'connect-src': [SELF, YANDEX_API_HOST, YANDEX_GEOCODE_API_HOST],
     'frame-ancestors': [NONE],
     'worker-src': [SELF],
     'block-all-mixed-content': true,
