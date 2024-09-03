@@ -40,6 +40,30 @@ services:
       - postgres
     networks:
       - prakticum
+  nginx:
+    container_name: prakticum-nginx
+    image: ghcr.io/olgazhyzhka/nginx:1.0
+    restart: always
+    ports:
+      - "8081:80"
+      - "8443:443"
+    volumes:
+      - nginx-config:/etc/nginx
+      - certbot-data:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    networks:
+      - prakticum
+  certbot:
+    container_name: prakticum-certbot
+    image: certbot/certbot:latest
+    volumes:
+      - nginx-config:/etc/nginx
+      - certbot-data:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    depends_on: 
+      - nginx
+    networks:
+      - prakticum
 
 volumes:
   db-data:
@@ -47,6 +71,12 @@ volumes:
   db-logs:
     driver: local
   pgadmin-data:
+    driver: local
+  nginx-config:
+    driver: local
+  certbot-data:
+    driver: local
+  certbot-www:
     driver: local
 networks:
   prakticum:

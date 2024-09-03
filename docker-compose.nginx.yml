@@ -1,28 +1,27 @@
 services:
   nginx:
     container_name: prakticum-nginx
-    image: nginx:latest
+    image: ghcr.io/olgazhyzhka/nginx:1.0
     restart: always
     ports:
       - "80:80"
       - "443:443"
+    depends_on:
+      - server
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/ssl.conf:/etc/nginx/ssl.conf 
-      - ./cerbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - nginx-config:/etc/nginx
+      - certbot-data:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
     networks:
       - prakticum
-  certbot:
-    container_name: prakticum-certbot
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
-    depends_on: 
-      - nginx
-    networks:
-      - prakticum
+
+volumes:
+  nginx-config:
+    driver: local
+  certbot-data:
+    driver: local
+  certbot-www:
+    driver: local
 
 networks:
   prakticum:
