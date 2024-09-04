@@ -36,6 +36,7 @@ const Login = () => {
   const dispatch = useAppDispatch()
   const [serviceId, setServiceId] = useState<string | undefined>('')
   const REDIRECT_URI = __YANDEX_REDIRECT_URI__
+  const AUTH_URL = __YANDEX_AUTH_URL__
 
   useEffect(() => {
     const controller = new AbortController()
@@ -56,9 +57,7 @@ const Login = () => {
     }
   }, [])
 
-  const AUTH_URL = __YANDEX_AUTH_URL__
   const authUrl = `${AUTH_URL}?response_type=code&client_id=${serviceId}&redirect_uri=${REDIRECT_URI}`
-
   const handleSubmit = async (
     values: Record<string, string>,
     setSubmittingCb: (isSubmitting: boolean) => void

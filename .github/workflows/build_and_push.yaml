@@ -19,10 +19,11 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build and push client image
+    - name: Build and push nginx image
       run: |
         docker build \
-          --file Dockerfile.client \
+          --file Dockerfile.nginx \
+          --platform linux/amd64 \
           --tag ghcr.io/npotokin/39_mf_teamwork_01:client-latest \
           .
         docker push ghcr.io/npotokin/39_mf_teamwork_01:client-latest
@@ -30,13 +31,19 @@ jobs:
       run: |
         docker build \
           --file Dockerfile.server.prod \
+          --platform linux/amd64 \
           --tag ghcr.io/npotokin/39_mf_teamwork_01:server-latest \
+          --build-arg SERVER_PORT=${{ secrets.SERVER_PORT }} \
+          --build-arg SERVER_URL=${{ secrets.SERVER_URL }} \
+          --build-arg YANDEX_AUTH_URL=${{ secrets.YANDEX_AUTH_URL }} \
+          --build-arg YANDEX_REDIRECT_URI=${{ secrets.YANDEX_REDIRECT_URI }} \
           .
         docker push ghcr.io/npotokin/39_mf_teamwork_01:server-latest
     - name: Build and push db image
       run: |
         docker build \
           --file Dockerfile.db \
+          --platform linux/amd64 \
           --tag ghcr.io/npotokin/39_mf_teamwork_01:db-latest \
           .
         docker push ghcr.io/npotokin/39_mf_teamwork_01:db-latest

@@ -17,6 +17,7 @@ export const getCspDirectives = (): Partial<CSPDirectives> => {
       YANDEX_GEOCODE_API_HOST,
       'https://fonts.googleapis.com',
       'https://fonts.gstatic.com',
+      'https://mc.yandex.com',
     ],
     'frame-ancestors': [NONE],
     'worker-src': [SELF],

@@ -45,23 +45,14 @@ services:
     image: ghcr.io/olgazhyzhka/nginx:1.0
     restart: always
     ports:
-      - "8081:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - server
     volumes:
       - nginx-config:/etc/nginx
       - certbot-data:/etc/letsencrypt
       - certbot-www:/var/www/certbot
-    networks:
-      - prakticum
-  certbot:
-    container_name: prakticum-certbot
-    image: certbot/certbot:latest
-    volumes:
-      - nginx-config:/etc/nginx
-      - certbot-data:/etc/letsencrypt
-      - certbot-www:/var/www/certbot
-    depends_on: 
-      - nginx
     networks:
       - prakticum
 
@@ -72,12 +63,11 @@ volumes:
     driver: local
   pgadmin-data:
     driver: local
-  nginx-config:
-    driver: local
   certbot-data:
     driver: local
   certbot-www:
     driver: local
+
 networks:
   prakticum:
     name: ${NETWORK}
