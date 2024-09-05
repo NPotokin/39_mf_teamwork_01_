@@ -5,7 +5,7 @@ import { Button } from 'antd/lib'
 
 import { EMPTY_STRING } from '@/core/constants'
 import styles from './Login.module.scss'
-import { CustomForm, ThemeToggle } from '@/components'
+import { CustomForm } from '@/components'
 
 import { showNotification } from '@/core/services/notification.service'
 import { errorInfo } from '@/lib/utils/errorInfo'
@@ -35,7 +35,8 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [serviceId, setServiceId] = useState<string | undefined>('')
-  const REDIRECT_URI = import.meta.env.VITE_YANDEX_REDIRECT_URI
+  const REDIRECT_URI = __YANDEX_REDIRECT_URI__
+  const AUTH_URL = __YANDEX_AUTH_URL__
 
   useEffect(() => {
     const controller = new AbortController()
@@ -56,9 +57,7 @@ const Login = () => {
     }
   }, [])
 
-  const AUTH_URL = import.meta.env.VITE_YANDEX_AUTH_URL
   const authUrl = `${AUTH_URL}?response_type=code&client_id=${serviceId}&redirect_uri=${REDIRECT_URI}`
-
   const handleSubmit = async (
     values: Record<string, string>,
     setSubmittingCb: (isSubmitting: boolean) => void

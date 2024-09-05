@@ -4,10 +4,10 @@ FROM node:$NODE_VERSION-buster AS base
 WORKDIR /app
 
 FROM base AS builder
-ARG SERVER_PORT=3001
-ARG SERVER_URL='http://localhost'
-ENV SERVER_PORT=${SERVER_PORT}
-ENV SERVER_URL=${SERVER_URL}
+ARG SERVER_PORT
+ARG SERVER_URL
+ARG YANDEX_AUTH_URL
+ARG YANDEX_REDIRECT_URI
 
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
@@ -31,6 +31,7 @@ COPY --from=builder /app/packages/client/package.json /app/packages/client/packa
 COPY --from=builder /app/packages/client/node_modules /app/packages/client/node_modules
 COPY --from=builder /app/packages/client/dist/ /app/packages/client/dist/
 COPY --from=builder /app/packages/client/dist-ssr/ /app/packages/client/dist-ssr/
+COPY --from=builder /app/nginx/ /app/nginx/
 
 EXPOSE $SERVER_PORT
 CMD [ "node", "/app/packages/server/dist/index.js" ]
