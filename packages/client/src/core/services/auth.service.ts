@@ -17,7 +17,7 @@ export const getUser = async (options: AxiosRequestConfig = {}): Promise<IUserIn
     if (isApiError(userResponse.data)) {
       throw new Error(userResponse.data.reason)
     }
-    localStorage.setItem(USER_DATA_KEY, JSON.stringify(userResponse))
+    localStorage.setItem(USER_DATA_KEY, JSON.stringify(userResponse.data))
     return userResponse.data
   } catch (error: unknown) {
     handleError(error)
