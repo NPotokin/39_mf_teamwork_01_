@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push nginx image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: Dockerfile.nginx
@@ -36,7 +36,7 @@ jobs:
           platforms: linux/amd64
 
       - name: Build and push server image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: Dockerfile.server.prod
@@ -50,7 +50,7 @@ jobs:
           platforms: linux/amd64
 
       - name: Build and push db image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: Dockerfile.db
