@@ -13,6 +13,7 @@ import { matchRoutes } from 'react-router'
 import { fetchUserThunk } from '@/state/user/userThunk'
 import { configureStore } from '@reduxjs/toolkit'
 import { reducer } from '@/state/store'
+import { ThemeProvider } from '@/core/contexts'
 
 export const render = async (req: ExpressRequest) => {
   const { query, dataRoutes } = createStaticHandler(routes)
@@ -42,7 +43,9 @@ export const render = async (req: ExpressRequest) => {
   return {
     html: ReactDOMServer.renderToString(
       <Provider store={store}>
-        <StaticRouterProvider router={router} context={context} />
+        <ThemeProvider>
+          <StaticRouterProvider router={router} context={context} />
+        </ThemeProvider>
       </Provider>
     ),
     initialState: store.getState(),

@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import registerServiceWorker from '@/lib/sw/registerServiceWorker'
 import { ENVIRONMENT } from '@/lib/constants'
 import Routes from './Routes'
-import { ThemeProvider } from './contexts'
 
 const App = () => {
   useEffect(() => {
@@ -19,13 +18,7 @@ const App = () => {
     }
   }, [])
 
-  return (
-    <>
-      <ThemeProvider>
-        <Routes />
-      </ThemeProvider>
-    </>
-  )
+  return <Routes />
 }
 
 export default App

@@ -17,7 +17,6 @@ export const getUser = async (options: AxiosRequestConfig = {}): Promise<IUserIn
     if (isApiError(userResponse.data)) {
       throw new Error(userResponse.data.reason)
     }
-    localStorage.setItem(USER_DATA_KEY, JSON.stringify(userResponse.data))
     return userResponse.data
   } catch (error: unknown) {
     handleError(error)
@@ -30,6 +29,7 @@ export const signin = async (data: ILoginRequestData): Promise<IUserInfo | undef
     await authApi.login(data)
     const user = await getUser()
     localStorage.setItem(AUTH_KEY, JSON.stringify(true))
+    localStorage.setItem(USER_DATA_KEY, JSON.stringify(user))
     return user
   } catch (error: unknown) {
     showNotification('error', errorInfo(error))
@@ -41,6 +41,7 @@ export const signup = async (data: ICreateUser): Promise<IUserInfo | undefined> 
     await authApi.create(data)
     const user = await getUser()
     localStorage.setItem(AUTH_KEY, JSON.stringify(true))
+    localStorage.setItem(USER_DATA_KEY, JSON.stringify(user))
     return user
   } catch (error: unknown) {
     showNotification('error', errorInfo(error))
@@ -62,10 +63,13 @@ export const getAccessToken = async (
   authCode: string,
   redirectUri: string,
   options: AxiosRequestConfig = {}
-): Promise<void> => {
+): Promise<IUserInfo | undefined> => {
   try {
     await authApi.getAccessToken(authCode, redirectUri, options)
     localStorage.setItem(AUTH_KEY, JSON.stringify(true))
+    const userData = await getUser()
+    localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData))
+    return userData
   } catch (error: unknown) {
     showNotification('error', errorInfo(error))
   }
