@@ -82,7 +82,6 @@ const Login = () => {
   return (
     <ThemeProvider>
       <div className={cn('page', styles.page)}>
-        {/* <ThemeToggle className={styles.theme} /> */}
         <div className={styles.card}>
           <header className={styles.header}>
             <div className={styles.logo}>
