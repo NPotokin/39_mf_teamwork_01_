@@ -45,7 +45,7 @@ const Header = (props: Props) => {
   }
 
   return (
-    <AntHeader className={styles.root}>
+    <AntHeader style={{ height: '60px', lineHeight: '60px' }} className={styles.root}>
       <Link to={RoutePath.HOME}>
         <Logo className={styles.logo} title="Panda" />
       </Link>

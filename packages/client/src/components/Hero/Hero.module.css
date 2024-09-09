@@ -1,5 +1,5 @@
 .root {
-  height: calc(100vh - 64px);
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,6 +11,7 @@
 }
 
 .intro {
+  padding-top: 30px;
   text-align: center;
   color: var(--light);
 }
@@ -35,9 +36,7 @@
   margin-bottom: 2.5rem;
 }
 
-@supports (
-  background-image: url(@images/bg_landing.webp)
-) {
+@supports (background-image: url(@images/bg_landing.webp)) {
   .root {
     background-image: url(@images/bg_landing.webp);
   }
@@ -48,10 +47,7 @@
     background-image: url(@images/bg_landing-mob.jpg);
   }
 
-  @supports (
-    background-image:
-      url(@images/bg_landing-mob.webp)
-  ) {
+  @supports (background-image: url(@images/bg_landing-mob.webp)) {
     .root {
       background-image: url(@images/bg_landing-mob.webp);
     }
