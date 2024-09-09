@@ -47,7 +47,6 @@ const LeaderBoard = () => {
           avatarUrl: entry.data.avatar,
         }))
       }
-      console.log(formattedData)
       if (formattedData) {
         const sortedData = formattedData.sort((a, b) => b.score - a.score)
         setDataSource(sortedData)
