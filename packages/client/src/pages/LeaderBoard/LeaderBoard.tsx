@@ -28,9 +28,9 @@ export type LeaderboardEntry = {
 const LeaderBoard = () => {
   useDocumentTitle(TITLES.LEADER_BOARD)
   const [dataSource, setDataSource] = useState<LeaderboardEntry[]>([])
-  const [total, setTotal] = useState<number>(0)
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<number>(10)
+  const [total, setTotal] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   const leaderboardApi = new LeaderboardApi()
   const fetchData = async (cursor: number, limit: number) => {
     try {
@@ -40,13 +40,14 @@ const LeaderBoard = () => {
       let formattedData
       if (Array.isArray(rawData)) {
         formattedData = rawData.map((entry, index) => ({
-          key: entry.data.userLogin + index,
+          key: entry.data.userLogin,
           index: index + 1,
           name: entry.data.userLogin,
           score: entry.data.pumpkinPandasScoreField,
           avatarUrl: entry.data.avatar,
         }))
       }
+      console.log(formattedData)
       if (formattedData) {
         const sortedData = formattedData.sort((a, b) => b.score - a.score)
         setDataSource(sortedData)
