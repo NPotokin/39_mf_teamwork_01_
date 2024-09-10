@@ -2,14 +2,27 @@
   background-image: url(@images/bg.jpg);
 }
 .leaderBoard {
-  padding-top: 100px;
+  padding-top: 80px;
   padding-bottom: 50px;
+  flex: 1;
+
+  @media screen and (min-width: 1680px) {
+    padding-top: 100px;
+  }
 
   &__table {
-    width: 450px;
-    height: 532px;
     margin: 20px auto;
     position: relative;
+
+    @media screen and (min-width: 768px) {
+      width: 450px;
+      height: 532px;
+    }
+  }
+
+  &__pagination {
+    margin-top: 16px;
+    text-align: center;
   }
 }
 .columns__name {
@@ -19,23 +32,18 @@
     margin-left: 8px;
   }
 }
-@supports (
-  background-image: url(@images/bg.webp)
-) {
+@supports (background-image: url(@images/bg.webp)) {
   .wrapper {
     background-image: url(@images/bg.webp);
   }
 }
-
 
 @media screen and (max-width: 767px) {
   .wrapper {
     background-image: url(@images/bg-mob.jpg);
   }
 
-  @supports (
-    background-image: url(@images/bg-mob.webp)
-  ) {
+  @supports (background-image: url(@images/bg-mob.webp)) {
     .wrapper {
       background-image: url(@images/bg-mob.webp);
     }

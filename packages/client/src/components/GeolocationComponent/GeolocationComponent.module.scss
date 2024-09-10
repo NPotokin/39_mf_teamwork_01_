@@ -1,44 +1,48 @@
 .container {
-	display: flex;
-	align-items: center;
-	gap: 10px; 
-	white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.locationButton,
+.refreshButton {
+  font-size: 0.8rem;
+  margin: 0;
+  color: #dd6904;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.locationButton:hover,
+.refreshButton:hover,
+.locationButton:focus,
+.refreshButton:focus,
+.locationButton:active,
+.refreshButton:active {
+  color: #dd6904 !important;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.address {
+  width: 50px;
+
+  @media screen and (min-width: 560px) {
+    width: 150px;
   }
-  
-  .locationButton, .refreshButton {
-	font-size: 0.8rem; 
-	margin: 0; 
-	color: #dd6904; 
-	background: none; 
-	border: none; 
-	padding: 0; 
-	cursor: pointer; 
+
+  @media screen and (max-width: 430px) {
+    width: 20px;
   }
-  
-  .locationButton:hover,
-  .refreshButton:hover,
-  .locationButton:focus,
-  .refreshButton:focus,
-  .locationButton:active,
-  .refreshButton:active {
-	color: #dd6904!important; 
-	background: none; 
-	border: none; 
-	outline: none; 
-  }
-  
-  .address {
-	display: flex;
-	flex-direction: column; 
-	gap: 2px; 
-	margin-bottom: 5.5em;
-  }
-  
-  .coordinate {
-	font-size: 0.5rem; 
-	height: 1em;
-  }
-  
+}
+
+.coordinate {
+  font-size: 0.5rem;
+  color: var(--light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

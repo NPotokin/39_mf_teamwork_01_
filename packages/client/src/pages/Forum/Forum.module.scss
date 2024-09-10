@@ -3,8 +3,13 @@
 }
 
 .forums {
-  padding-top: 100px;
+  padding-top: 80px;
   padding-bottom: 50px;
+  flex: 1;
+
+  @media screen and (min-width: 1680px) {
+    padding-top: 100px;
+  }
 }
 
 .popover {
@@ -19,23 +24,21 @@
 }
 
 .emojiSpan {
-  font-size: 1.5em; 
-  border: 1px solid #ccc; 
-  padding: 2px 5px; 
-  border-radius: 4px; 
-  margin-right: 5px; 
+  font-size: 1.5em;
+  border: 1px solid #ccc;
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-right: 5px;
   display: inline-flex;
   align-items: center;
 }
 
 .count {
-  padding-left: 4px; 
-  font-size: 0.5em; 
+  padding-left: 4px;
+  font-size: 0.5em;
 }
 
-@supports (
-  background-image: url(@images/bg.webp)
-) {
+@supports (background-image: url(@images/bg.webp)) {
   .wrapper {
     background-image: url(@images/bg.webp);
   }
@@ -46,9 +49,7 @@
     background-image: url(@images/bg-mob.jpg);
   }
 
-  @supports (
-    background-image: url(@images/bg-mob.webp)
-  ) {
+  @supports (background-image: url(@images/bg-mob.webp)) {
     .wrapper {
       background-image: url(@images/bg-mob.webp);
     }

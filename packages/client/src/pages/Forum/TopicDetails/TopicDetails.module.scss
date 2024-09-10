@@ -11,17 +11,24 @@
     font-size: 14px;
   }
   &__table {
-    width: 970px;
-    margin: 0 auto 4.5em;
+    margin: 0 auto;
     position: relative;
     &-title {
       border-bottom: 1px solid #303030;
+    }
+
+    @media screen and (min-width: 1024px) {
+      width: 970px;
     }
   }
 
   &__btn {
     text-align: center;
     margin-top: 1em;
+
+    .forums__btn-comments {
+      margin-left: 1.5rem;
+    }
   }
 }
 .cover {

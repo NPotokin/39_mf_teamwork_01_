@@ -10,7 +10,7 @@ export default class UserApi {
   }
 
   public updatePassword(data: IUpdatePassword): Promise<AxiosResponse<void | IAPIError>> {
-    return axiosDB.put(`${YANDEX_API_URL}/user/profile/user/password`, data)
+    return axiosDB.put(`${YANDEX_API_URL}/user/password`, data)
   }
 
   public updateAvatar(data: FormData): Promise<AxiosResponse<IUserInfo | IAPIError>> {

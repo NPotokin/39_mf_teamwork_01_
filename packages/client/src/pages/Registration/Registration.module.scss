@@ -8,25 +8,19 @@
   flex-direction: column;
   width: 95%;
   margin: auto;
-  height: 90vh;
-  max-height: 70rem;
   background: var(--component-bg);
   backdrop-filter: blur(5px);
   border-radius: 8px;
-  padding: 30px 24px 50px;
+  padding: 20px 20px 20px;
 
   @media screen and (min-width: 567px) {
     width: 25rem;
     min-width: 25rem;
   }
-}
 
-.form-wrapper {
-  height: 75%;
-}
-
-.form {
-  height: 100%;
+  @media screen and (min-width: 1680px) {
+    padding: 40px 24px 50px;
+  }
 }
 
 .logo {
@@ -39,9 +33,13 @@
 }
 
 .title {
-  margin: 0 0 30px;
+  margin: 0 0 10px;
   text-align: center;
   font-size: 1.25rem;
+
+  @media screen and (min-width: 1680px) {
+    margin: 0 0 30px;
+  }
 }
 
 .text {
@@ -55,12 +53,9 @@
   flex-grow: 1;
   justify-content: space-around;
   text-align: center;
-  padding-top: 20px;
 }
 
-@supports (
-  background-image: url(@images/bg.webp)
-) {
+@supports (background-image: url(@images/bg.webp)) {
   .page {
     background-image: url(@images/bg.webp);
   }
@@ -71,9 +66,7 @@
     background-image: url(@images/bg-mob.jpg);
   }
 
-  @supports (
-    background-image: url(@images/bg-mob.webp)
-  ) {
+  @supports (background-image: url(@images/bg-mob.webp)) {
     .page {
       background-image: url(@images/bg-mob.webp);
     }
